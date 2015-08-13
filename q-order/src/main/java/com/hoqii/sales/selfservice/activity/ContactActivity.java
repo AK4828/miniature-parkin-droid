@@ -1,6 +1,7 @@
 package com.hoqii.sales.selfservice.activity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -91,7 +92,7 @@ public class ContactActivity extends ActionBarActivity implements TaskService {
     private int orderMenuCount = 0;
     private int totalOrderMenus = 0;
     private String orderRefId;
-
+    private ProgressDialog dialog;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -101,18 +102,28 @@ public class ContactActivity extends ActionBarActivity implements TaskService {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_pay_order) {
-            contactId = saveContact(addressId);
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            case R.id.menu_pay_order:
+                item.setEnabled(false);
+                dialog = new ProgressDialog(this);
+                dialog.setMessage("Menyimpan data ...");
+                dialog.show();
 
-            if (addressId == null) {
-                syncContact();
-            } else {
-                Contact contact = contactDbAdapter.findContactById(contactId);
-                syncUpdateContact(contact.getRefId());
-            }
+                contactId = saveContact(addressId);
 
+                if (addressId == null) {
+                    syncContact();
+                } else {
+                    Contact contact = contactDbAdapter.findContactById(contactId);
+                    syncUpdateContact(contact.getRefId());
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -300,6 +311,7 @@ public class ContactActivity extends ActionBarActivity implements TaskService {
                             + "Total OM: " + totalOrderMenus);
 
                     if (orderMenuCount == totalOrderMenus) {
+                        dialog.dismiss();
                         dialogSuccessOrder();
                         Log.d(getClass().getSimpleName(), "Success ");
                     }
