@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dp100">125dp</dimen>
+    <dimen name="dp150">175dp</dimen>
+    <dimen name="dp200">225dp</dimen>
+    <dimen name="dp250">275dp</dimen>
+    <dimen name="dp300">325dp</dimen>
+    <dimen name="dp400">425dp</dimen>
+</resources>
