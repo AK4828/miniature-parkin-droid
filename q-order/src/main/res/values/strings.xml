@@ -14,6 +14,10 @@
     <string name="go_to_cart">Lihat Keranjang Belanja</string>
     <string name="continue_shopping">Lanjutkan Belanja</string>
 
+    <string name="add_contact">Tambah Contact</string>
+    <string name="save">Simpan</string>
+    <string name="cancel">Batal</string>
+
     <string name="exit">Tekan tombol back lagi untuk menutup halaman ini</string>
     <string name="empty_form">Lengkapi form berikut dengan benar</string>
 

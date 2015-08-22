@@ -23,7 +23,7 @@ import de.greenrobot.event.EventBus;
  * Created by meruvian on 30/07/15.
  */
 public class OrderMenuJob extends Job {
-    public static final int PROCESS_ID = 24;
+    public static final int PROCESS_ID = 34;
 //    private JsonRequestUtils.HttpResponseWrapper<PageEntity<OrderMenu>> response;
     private JsonRequestUtils.HttpResponseWrapper<OrderMenu> response;
     private String orderMenuId;

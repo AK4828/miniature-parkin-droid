@@ -33,18 +33,21 @@ public class MainActivity extends NavigationDrawer {
     public void navigationAdapter(NavigationDrawerAdapter adapter) {
         /*adapter.addNavigation(new Navigation("Campaign", Navigation.NavigationType.MENU));*/
         adapter.addNavigation(new Navigation("Catalog", Navigation.NavigationType.MENU));
+        adapter.addNavigation(new Navigation("Contact", Navigation.NavigationType.MENU));
     }
 
     @Override
     public void selectedItem(int position) {
         if (position == 0) {
 //            startActivity(new Intent(this, PromoActivity.class));
-            finish();
-            startActivity(new Intent(this, MainActivity.class));
+            /*finish();
+            startActivity(new Intent(this, MainActivity.class));*/
+
+            getFragmentManager().beginTransaction().replace(org.meruvian.midas.core.R.id.content_frame, mainFragment()).commit();
 
         } else if (position == 1) {
-            finish();
-            startActivity(new Intent(this, MainActivity.class));
+//            finish();
+            startActivity(new Intent(this, ContactListActivity.class));
         }
 
         closeDrawer();
@@ -59,6 +62,9 @@ public class MainActivity extends NavigationDrawer {
     @Override
     public void onClickLogout() {
         AuthenticationUtils.logout();
+        SharedPreferences.Editor editorHas = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        editorHas.putBoolean("has_sync", false);
+        editorHas.commit();
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

@@ -126,7 +126,6 @@ public class ContactDatabaseAdapter extends DefaultDatabaseAdapter {
     public String updateContact(Contact contact) {
         ContentValues contentValues = new ContentValues();
 
-            Log.d(getClass().getSimpleName(), "Update Save : " + contact.getContactName());
         if (contact.getId() != null) {
             Log.d(getClass().getSimpleName(), "Update Contact: " + contact.getId());
 
@@ -349,6 +348,26 @@ public class ContactDatabaseAdapter extends DefaultDatabaseAdapter {
 
     }
 
+    public String getContactRefIdById(String contactId) {
+        String criteria = ContactDatabaseModel.ID + " = ?";
+        String[] parameter = { contactId };
+        Cursor cursor = context.getContentResolver().query(dbUriContact,
+                null, criteria, parameter, null);
+
+        String id = null;
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                id = cursor.getString(cursor
+                        .getColumnIndex(ContactDatabaseModel.REF_ID));
+            }
+        }
+
+        cursor.close();
+
+        return id;
+    }
+
     public String getContactId() {
         Cursor cursor = context.getContentResolver().query(dbUriContact,
                 null, null, null,
@@ -405,5 +424,16 @@ public class ContactDatabaseAdapter extends DefaultDatabaseAdapter {
             context.getContentResolver().update(dbUriContact, values, ContactDatabaseModel.REF_ID + " = ? ", new String[] { id });
         }
     }
+
+    public void deleteContactById(String contactId) {
+        String criteria = ContactDatabaseModel.ID + " = ?";
+        String[] parameter = { contactId };
+
+        ContentValues values = new ContentValues();
+        values.put(ContactDatabaseModel.STATUS_FLAG, 0);
+
+        context.getContentResolver().update(dbUriContact, values, criteria, parameter);
+    }
+
 
 }

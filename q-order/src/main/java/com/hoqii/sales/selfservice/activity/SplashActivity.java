@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.hoqii.sales.selfservice.R;
 
@@ -30,6 +31,8 @@ public class SplashActivity extends DefaultActivity {
 
         new Handler().postDelayed(new Runnable() {
             public void run() {
+
+                Log.d(getClass().getSimpleName(), "HAS Sync : " + preferences.getBoolean("has_sync", false));
 
                 if (preferences.getBoolean("has_sync", false)) {
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));

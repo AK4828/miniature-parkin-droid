@@ -26,6 +26,7 @@
         <activity android:name="com.hoqii.sales.selfservice.activity.PromoActivity" android:configChanges="orientation|screenSize" android:theme="@style/hoqii" />
         <activity android:name="com.hoqii.sales.selfservice.activity.LoginActivity" android:configChanges="orientation|screenSize" android:theme="@style/hoqii" />
         <activity android:name="com.hoqii.sales.selfservice.activity.ContactActivity" android:configChanges="orientation|screenSize" android:theme="@style/hoqii" />
+        <activity android:name="com.hoqii.sales.selfservice.activity.ContactListActivity" android:configChanges="orientation|screenSize" android:theme="@style/hoqii" />
         <activity android:name="com.hoqii.sales.selfservice.activity.ImageZoomActivity" android:configChanges="orientation|screenSize" android:theme="@style/Transparent"/>
 
         <provider

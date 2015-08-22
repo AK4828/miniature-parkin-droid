@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -71,12 +70,21 @@ public class LoginActivity extends DefaultActivity {
         super.onCreate(savedInstanceState);
         toolbar = (Toolbar) findViewById(org.meruvian.midas.core.R.id.toolbar);
         setSupportActionBar(toolbar);
+
     }
 
     @Override
     public void onViewCreated(Bundle bundle) {
         preferences = getSharedPreferences(SignageVariables.PREFS_SERVER, 0);
         EventBus.getDefault().register(this);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        if (!(preferences.getBoolean("has_url", false))) {
+            editor.putString("server_url", SignageVariables.SERVER_URL);
+            editor.commit();
+        }
+        editor.putBoolean("has_url", true);
+        editor.commit();
 
         jobManager = SignageAppication.getInstance().getJobManager();
     }
@@ -91,8 +99,6 @@ public class LoginActivity extends DefaultActivity {
 
     @OnClick(R.id.button_login)
     public void submitLogin(Button button) {
-        Log.d(getClass().getSimpleName(), preferences.getString("server_url", ""));
-
         LoginManualJob loginJob = new LoginManualJob(username.getText().toString(), password.getText().toString());
 
         jobManager.addJobInBackground(loginJob);

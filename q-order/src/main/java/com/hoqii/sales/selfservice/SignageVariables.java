@@ -7,6 +7,8 @@ public class SignageVariables {
     public static final String PREFS_SERVER = "APP_SERVER";
     public static final String PGA_APP_ID = "419c6697-14b7-4853-880e-b68e3731e316";
     public static final String PGA_API_SECRET = "s3cr3t";
+    public static final String SERVER_URL = "http://e-sales.evc.meruvian.org";
+
 
     /*public static final String PGA_APP_ID = "d1822d20-7534-4730-bef4-1df45e67ca5e";
     public static final String PGA_API_SECRET = "tu8LiU9OHzgpB2t8ThSsK8AEZwSFClM10SM2sys2oMbRZGwgBVv3LsLwGKUFIEBI";*/

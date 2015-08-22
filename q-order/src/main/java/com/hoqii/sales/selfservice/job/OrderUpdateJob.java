@@ -23,7 +23,7 @@ import de.greenrobot.event.EventBus;
  * Created by meruvian on 30/07/15.
  */
 public class OrderUpdateJob extends Job {
-    public static final int PROCESS_ID = 23;
+    public static final int PROCESS_ID = 33;
 //    private JsonRequestUtils.HttpResponseWrapper<PageEntity<Order>> response;
     private JsonRequestUtils.HttpResponseWrapper<Order> response;
     private String orderId;

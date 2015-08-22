@@ -93,6 +93,7 @@ public class ContactActivity extends ActionBarActivity implements TaskService {
     private int totalOrderMenus = 0;
     private String orderRefId;
     private ProgressDialog dialog;
+    private MenuItem item;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -102,15 +103,18 @@ public class ContactActivity extends ActionBarActivity implements TaskService {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        this.item = item;
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
                 return true;
             case R.id.menu_pay_order:
-                item.setEnabled(false);
+//                item.setEnabled(false);
+                setEnabledMenuItem(item, false);
                 dialog = new ProgressDialog(this);
                 dialog.setMessage("Menyimpan data ...");
                 dialog.show();
+                dialog.setCancelable(false);
 
                 contactId = saveContact(addressId);
 
@@ -215,8 +219,10 @@ public class ContactActivity extends ActionBarActivity implements TaskService {
 
     private String saveContact(String id) {
         Contact contact = new Contact();
-
         Log.d(getClass().getSimpleName(), " id : " + id);
+
+        contact.getLogInformation().setCreateBy(AuthenticationUtils.getCurrentAuthentication().getUser().getId());
+        contact.getLogInformation().setLastUpdateBy(AuthenticationUtils.getCurrentAuthentication().getUser().getId());
 
         contact.setId(id);
         contact.getUser().setId(AuthenticationUtils.getCurrentAuthentication().getUser().getId());
@@ -327,6 +333,9 @@ public class ContactActivity extends ActionBarActivity implements TaskService {
     }
 
     public void onEventMainThread(GenericEvent.RequestFailed failed) {
+        dialog.dismiss();
+        Toast.makeText(ContactActivity.this, "Gagal menyimpan data", Toast.LENGTH_SHORT).show();
+        setEnabledMenuItem(item, true);
         Log.e(getClass().getSimpleName(),
                 failed.getResponse().getHttpResponse().getStatusLine().getStatusCode() + " :"
                         + failed.getResponse().getHttpResponse().getStatusLine().getReasonPhrase());
@@ -368,6 +377,11 @@ public class ContactActivity extends ActionBarActivity implements TaskService {
 
         final AlertDialog dialog = builder.create();
         dialog.show();
+        dialog.setCancelable(false);
+    }
+
+    private void setEnabledMenuItem(MenuItem item, boolean flag) {
+        item.setEnabled(flag);
     }
 
     @Override
