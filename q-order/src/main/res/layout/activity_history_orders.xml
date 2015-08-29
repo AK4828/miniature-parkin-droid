@@ -5,8 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:text="Data Contact"
+                android:text="Data Order"
                 android:textSize="@dimen/sp14"
                 android:textStyle="bold" />
 
@@ -55,11 +53,11 @@
             android:layout_height="match_parent">
 
             <ListView
-                android:id="@+id/list_contacts"
+                android:id="@+id/list_history_orders"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <ImageButton
+            <!--<ImageButton
                 android:id="@+id/button_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,17 +66,7 @@
                 android:layout_margin="@dimen/dp10"
                 android:background="@drawable/button_floating"
                 android:elevation="2dp"
-                android:src="@drawable/ic_action_new" />
-
-            <!--<ImageButton
-                android:layout_margin="15dp"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:src="@drawable/ic_action_new"
-                android:background="@drawable/circle"
-                android:id="@+id/imageButton"
-                android:layout_gravity="right|bottom" />-->
-
+                android:src="@drawable/ic_action_new" />-->
 
         </RelativeLayout>
     </LinearLayout>

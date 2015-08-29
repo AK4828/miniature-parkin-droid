@@ -44,7 +44,7 @@
                 <View
                     android:layout_width="@dimen/dp10"
                     android:layout_height="match_parent"
-                    android:background="@color/hoqii" />
+                    android:background="@color/esales" />
 
                 <TextView
                     android:id="@+id/text_title"
@@ -75,7 +75,7 @@
                 android:id="@+id/text_menu_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/hoqii"
+                android:background="@color/esales"
                 android:padding="10dp"
                 android:text="Rp 00,000"
                 android:textColor="@color/abc_primary_text_material_dark"

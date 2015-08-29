@@ -52,7 +52,7 @@ public class CategoryAdapter extends DefaultAdapter<Category, CategoryHolder> {
         holder.name.setTypeface(null, Typeface.NORMAL);
 
         if (position == selectedPosition) {
-            holder.name.setBackgroundColor(getContext().getResources().getColor(R.color.hoqii));
+            holder.name.setBackgroundColor(getContext().getResources().getColor(R.color.esales));
             holder.name.setTextColor(Color.WHITE);
             holder.name.setTypeface(null, Typeface.BOLD);
 

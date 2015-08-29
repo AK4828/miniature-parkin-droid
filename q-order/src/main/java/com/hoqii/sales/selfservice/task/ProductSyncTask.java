@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Created by ludviantoovandi on 28/01/15.
  */
-public class ProductSyncTask extends AsyncTask<Void, Void, JSONObject> {
+public class ProductSyncTask extends AsyncTask<String, Void, JSONObject> {
     private Context context;
     private TaskService service;
 
@@ -56,9 +56,10 @@ public class ProductSyncTask extends AsyncTask<Void, Void, JSONObject> {
     }
 
     @Override
-    protected JSONObject doInBackground(Void... arg0) {
+    protected JSONObject doInBackground(String... params) {
         Log.d(getClass().getSimpleName(), "?access_token= " + AuthenticationUtils.getCurrentAuthentication().getAccessToken());
-        return ConnectionUtil.get(preferences.getString("server_url", "") + "/api/products?access_token=" + AuthenticationUtils.getCurrentAuthentication().getAccessToken());
+        return ConnectionUtil.get(preferences.getString("server_url", "") + "/api/products?access_token="
+                + AuthenticationUtils.getCurrentAuthentication().getAccessToken()+ "&max=" + params[0]);
     }
 
     @Override
@@ -121,98 +122,4 @@ public class ProductSyncTask extends AsyncTask<Void, Void, JSONObject> {
             service.onError(SignageVariables.PRODUCT_GET_TASK, context.getString(R.string.error));
         }
     }
-
-    /*public String getParentCategory() {
-        return parentCategory;
-    }
-
-    public void setParentCategory(String parentCategory) {
-        this.parentCategory = parentCategory;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    private List<Product> phase1(JSONArray jsonArray) throws JSONException{
-        List<Product> products = new ArrayList<Product>();
-
-        for (int a = 0; a < jsonArray.length(); a++) {
-            JSONObject json = jsonArray.getJSONObject(a);
-
-            Category parentCategory = new Category();
-            parentCategory.setId(json.getJSONObject(
-                    "parentCategory").getString("id"));
-
-            JSONObject parentCategoryJson = json.getJSONObject("parentCategory");
-            if (parentCategoryJson.getString("id").equalsIgnoreCase(getParentCategory())) {
-//                Category category = new Category();
-//                if (!json.isNull("category")) {
-//                    category.setId(json.getJSONObject("category")
-//                            .getString("id"));
-//                }
-
-                Product product = new Product();
-                product.setId(json.getString("id"));
-                product.setName(json.getString("name"));
-//                product.setParentCategory(parentCategory);
-//                product.setCategory(category);
-
-                if (!json.isNull("sellPrice")) {
-                    product.setSellPrice(json.getLong("sellPrice"));
-                } else {
-                    product.setSellPrice(0);
-                }
-
-                products.add(product);
-            }
-        }
-
-        return products;
-    }
-
-    private List<Product> phase2(JSONArray jsonArray) throws JSONException{
-        List<Product> products = new ArrayList<Product>();
-
-        for (int a = 0; a < jsonArray.length(); a++) {
-            JSONObject json = jsonArray.getJSONObject(a);
-
-            if (!json.isNull("category")) {
-                JSONObject categoryJson = json.getJSONObject("category");
-                if (categoryJson.getString("id").equalsIgnoreCase(getCategory())) {
-
-                    Product product = new Product();
-                    product.setId(json.getString("id"));
-                    product.setName(json.getString("name"));
-
-                    if (!json.isNull("sellPrice")) {
-                        product.setSellPrice(json.getLong("sellPrice"));
-                    } else {
-                        product.setSellPrice(0);
-                    }
-
-                    products.add(product);
-                }
-            }
-        }
-
-        return products;
-    }*/
-
-    /*List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-        nameValuePairs.add(new BasicNameValuePair("site", SignageVariables.SITE_ID));
-        nameValuePairs.add(new BasicNameValuePair("token", SignageVariables.TOKEN));*/
-
-    //                JSONArray jsonArray = result.getJSONArray("entityList");
-//                if (getParentCategory() != null && getCategory() == null) {
-//                    service.onSuccess(SignageVariables.PRODUCT_GET_TASK, phase1(jsonArray));
-//                } else if (getCategory() != null && getParentCategory() == null) {
-//                    service.onSuccess(SignageVariables.PRODUCT_GET_TASK, phase2(jsonArray));
-//                }
-
-
 }

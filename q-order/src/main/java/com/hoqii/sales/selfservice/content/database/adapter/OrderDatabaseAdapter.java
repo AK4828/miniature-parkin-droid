@@ -10,6 +10,7 @@ import android.util.Log;
 import com.hoqii.sales.selfservice.content.MidasContentProvider;
 import com.hoqii.sales.selfservice.content.database.model.DefaultPersistenceModel;
 import com.hoqii.sales.selfservice.content.database.model.OrderDatabaseModel;
+import com.hoqii.sales.selfservice.entity.Contact;
 import com.hoqii.sales.selfservice.entity.Order;
 
 import java.text.SimpleDateFormat;
@@ -26,9 +27,11 @@ public class OrderDatabaseAdapter extends DefaultDatabaseAdapter {
             + MidasContentProvider.TABLES[4]);
 
     private Context context;
+    private ContactDatabaseAdapter contactDatabaseAdapter;
 
     public OrderDatabaseAdapter(Context context) {
         this.context = context;
+        contactDatabaseAdapter = new ContactDatabaseAdapter(context);
     }
 
     public String saveOrder(Order order) {
@@ -283,6 +286,9 @@ public class OrderDatabaseAdapter extends DefaultDatabaseAdapter {
                 Order order = new Order();
                 com.hoqii.sales.selfservice.core.LogInformation log = getLogInformationDefault(cursor);
 
+                Contact contact = contactDatabaseAdapter.findContactByRefId(cursor.getString(cursor
+                        .getColumnIndex(OrderDatabaseModel.CONTACT_ID)));
+
                 order.setLogInformation(log);
                 order.setId(cursor.getString(cursor
                         .getColumnIndex(OrderDatabaseModel.ID)));
@@ -290,6 +296,8 @@ public class OrderDatabaseAdapter extends DefaultDatabaseAdapter {
                         .getColumnIndex(OrderDatabaseModel.RECIEPT_NUMBER)));
                 order.setOrderType(cursor.getString(cursor
                         .getColumnIndex(OrderDatabaseModel.ORDER_TYPE)));
+                order.setContact(contact);
+
 
                 orders.add(order);
             }

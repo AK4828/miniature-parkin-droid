@@ -7,7 +7,7 @@
 
     <application android:name="com.hoqii.sales.selfservice.SignageAppication" android:allowBackup="true"
         android:icon="@drawable/ic_launcher" android:label="@string/app_name"
-        android:theme="@style/hoqii">
+        android:theme="@style/esales">
 
         <activity android:name="com.hoqii.sales.selfservice.activity.SplashActivity"
             android:configChanges="orientation|screenSize" >
@@ -16,17 +16,17 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.hoqii.sales.selfservice.activity.MainActivity" android:configChanges="orientation|screenSize" android:theme="@style/hoqii" />
-        <activity android:name="com.hoqii.sales.selfservice.activity.WizardActivity" android:configChanges="orientation|screenSize" android:theme="@style/hoqii" />
-        <activity android:name="com.hoqii.sales.selfservice.activity.CatalogActivity" android:configChanges="orientation|screenSize" android:theme="@style/hoqii" />
-        <activity android:name="com.hoqii.sales.selfservice.activity.SettingActivity" android:configChanges="orientation|screenSize" android:theme="@style/hoqii" />
-        <activity android:name="com.hoqii.sales.selfservice.activity.SyncActivity" android:configChanges="orientation|screenSize" android:theme="@style/hoqii" />
-        <activity android:name="com.hoqii.sales.selfservice.activity.SyncCampaignActivity" android:configChanges="orientation|screenSize" android:theme="@style/hoqii" />
-        <activity android:name="com.hoqii.sales.selfservice.activity.CatalogTabActivity" android:configChanges="orientation|screenSize" android:theme="@style/hoqii" />
-        <activity android:name="com.hoqii.sales.selfservice.activity.PromoActivity" android:configChanges="orientation|screenSize" android:theme="@style/hoqii" />
-        <activity android:name="com.hoqii.sales.selfservice.activity.LoginActivity" android:configChanges="orientation|screenSize" android:theme="@style/hoqii" />
-        <activity android:name="com.hoqii.sales.selfservice.activity.ContactActivity" android:configChanges="orientation|screenSize" android:theme="@style/hoqii" />
-        <activity android:name="com.hoqii.sales.selfservice.activity.ContactListActivity" android:configChanges="orientation|screenSize" android:theme="@style/hoqii" />
+        <activity android:name="com.hoqii.sales.selfservice.activity.MainActivity" android:configChanges="orientation|screenSize" android:theme="@style/esales" />
+        <activity android:name="com.hoqii.sales.selfservice.activity.WizardActivity" android:configChanges="orientation|screenSize" android:theme="@style/esales" />
+        <activity android:name="com.hoqii.sales.selfservice.activity.CatalogActivity" android:configChanges="orientation|screenSize" android:theme="@style/esales" />
+        <activity android:name="com.hoqii.sales.selfservice.activity.SettingActivity" android:configChanges="orientation|screenSize" android:theme="@style/esales" />
+        <activity android:name="com.hoqii.sales.selfservice.activity.SyncActivity" android:configChanges="orientation|screenSize" android:theme="@style/esales" />
+        <activity android:name="com.hoqii.sales.selfservice.activity.SyncCampaignActivity" android:configChanges="orientation|screenSize" android:theme="@style/esales" />
+        <activity android:name="com.hoqii.sales.selfservice.activity.CatalogTabActivity" android:configChanges="orientation|screenSize" android:theme="@style/esales" />
+        <activity android:name="com.hoqii.sales.selfservice.activity.PromoActivity" android:configChanges="orientation|screenSize" android:theme="@style/esales" />
+        <activity android:name="com.hoqii.sales.selfservice.activity.LoginActivity" android:configChanges="orientation|screenSize" android:theme="@style/esales" />
+        <activity android:name="com.hoqii.sales.selfservice.activity.ContactActivity" android:configChanges="orientation|screenSize" android:theme="@style/esales" />
+        <activity android:name="com.hoqii.sales.selfservice.activity.ContactListActivity" android:configChanges="orientation|screenSize" android:theme="@style/esales" />
         <activity android:name="com.hoqii.sales.selfservice.activity.ImageZoomActivity" android:configChanges="orientation|screenSize" android:theme="@style/Transparent"/>
 
         <provider

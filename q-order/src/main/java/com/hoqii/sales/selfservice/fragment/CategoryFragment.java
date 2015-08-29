@@ -1,7 +1,7 @@
 package com.hoqii.sales.selfservice.fragment;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -75,11 +75,10 @@ public class CategoryFragment extends DefaultFragment {
     public void onItemClick(int position) {
         categoryAdapter.setItemSelected(position);
 
-        if (getFragmentManager().getBackStackEntryCount() > 5) {
+        /*if (getFragmentManager().getBackStackEntryCount() > 5) {
             getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
-
-        getFragmentManager().popBackStack();
+        getFragmentManager().popBackStack();*/
 
         if (preferences.getBoolean("is_tablet", false)) {
             if (phase == 1) {
@@ -100,7 +99,11 @@ public class CategoryFragment extends DefaultFragment {
                 Fragment fragment = new ProductFragment();
                 fragment.setArguments(bundle);
 
-                getFragmentManager().beginTransaction().replace(R.id.container, fragment, null).addToBackStack(null).commit();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+//                getFragmentManager().beginTransaction().replace(R.id.container, fragment, null).addToBackStack(null).commit();
             } else if (phase == 2) {
                 Category category = categoryAdapter.getItem(position);
 
@@ -110,7 +113,11 @@ public class CategoryFragment extends DefaultFragment {
                 Fragment fragment = new ProductFragment();
                 fragment.setArguments(bundle);
 
-                getFragmentManager().beginTransaction().replace(R.id.container, fragment, null).addToBackStack(null).commit();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+//                getFragmentManager().beginTransaction().replace(R.id.container, fragment, null).addToBackStack(null).commit();
             }
         } else {
             if (getArguments() != null && getArguments().containsKey("parent_category")) {
@@ -122,7 +129,11 @@ public class CategoryFragment extends DefaultFragment {
                 Fragment fragment = new ProductFragment();
                 fragment.setArguments(bundle);
 
-                getFragmentManager().beginTransaction().replace(R.id.container, fragment, null).addToBackStack(null).commit();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+//                getFragmentManager().beginTransaction().replace(R.id.container, fragment, null).addToBackStack(null).commit();
             } else {
                 Category parentCategory = categoryAdapter.getItem(position);
 
@@ -137,7 +148,11 @@ public class CategoryFragment extends DefaultFragment {
                 }
                 fragment.setArguments(bundle);
 
-                getFragmentManager().beginTransaction().replace(R.id.container, fragment, null).addToBackStack(null).commit();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+//                getFragmentManager().beginTransaction().replace(R.id.container, fragment, null).addToBackStack(null).commit();
             }
         }
     }

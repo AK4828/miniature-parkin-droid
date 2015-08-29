@@ -14,9 +14,11 @@ import android.widget.Toast;
 import com.hoqii.sales.selfservice.R;
 import com.hoqii.sales.selfservice.SignageVariables;
 import com.hoqii.sales.selfservice.task.CategorySyncTask;
+import com.hoqii.sales.selfservice.task.CategoryTotalElementsTask;
 import com.hoqii.sales.selfservice.task.ContactSyncTask;
 import com.hoqii.sales.selfservice.task.ImageProductTask;
 import com.hoqii.sales.selfservice.task.ProductSyncTask;
+import com.hoqii.sales.selfservice.task.ProductTotalElementsTask;
 import com.hoqii.sales.selfservice.task.ProductUomsSyncTask;
 
 import org.meruvian.midas.core.defaults.DefaultActivity;
@@ -34,11 +36,15 @@ public class SyncActivity extends DefaultActivity implements TaskService {
     @InjectView(R.id.button_sync) Button buttonSync;
     @InjectView(R.id.progressbar) ProgressBar progressBar;
 
+    private CategoryTotalElementsTask categoryTotalElementsTask;
+    private ProductTotalElementsTask productTotalElementsTask;
+
     private CategorySyncTask categorySyncTask;
     private ProductUomsSyncTask productUomsSyncTask;
     private ProductSyncTask productSyncTask;
     private ImageProductTask imageProductTask;
     private ContactSyncTask contactSyncTask;
+    private int a =1;
 
 
     @Override
@@ -51,8 +57,11 @@ public class SyncActivity extends DefaultActivity implements TaskService {
         if (ConnectionUtil.isInternetAvailable(this)) {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
-                    categorySyncTask = new CategorySyncTask(SyncActivity.this, SyncActivity.this);
-                    categorySyncTask.execute();
+//                    categorySyncTask = new CategorySyncTask(SyncActivity.this, SyncActivity.this);
+//                    categorySyncTask.execute("0");
+                    categoryTotalElementsTask = new CategoryTotalElementsTask(SyncActivity.this, SyncActivity.this);
+                    categoryTotalElementsTask.execute();
+
                 }
             }, 2000);
         } else {
@@ -67,8 +76,11 @@ public class SyncActivity extends DefaultActivity implements TaskService {
     @OnClick(R.id.button_sync)
     public void onClick(Button button) {
         if (button.getId() == R.id.button_sync) {
-            categorySyncTask = new CategorySyncTask(this, this);
-            categorySyncTask.execute();
+//            categorySyncTask = new CategorySyncTask(this, this);
+//            categorySyncTask.execute();
+            categoryTotalElementsTask = new CategoryTotalElementsTask(SyncActivity.this, SyncActivity.this);
+            categoryTotalElementsTask.execute();
+
         }
     }
 
@@ -104,15 +116,33 @@ public class SyncActivity extends DefaultActivity implements TaskService {
     @Override
     public void onSuccess(int code, Object result) {
         if (result != null) {
-            if (code == SignageVariables.CATEGORY_GET_TASK) {
+            if (code == SignageVariables.CATEGORY_ELEMENTS_TASK) {
+                categorySyncTask = new CategorySyncTask(this, this);
+                categorySyncTask.execute(result.toString());
+
+            } else if (code == SignageVariables.CATEGORY_GET_TASK) {
+                //Sync with Page
+                /*if ((int)result > 1 && (int) result > a) {
+                    for(int i=1; i < (int) result; i++) {
+                        categorySyncTask = new CategorySyncTask(SyncActivity.this, SyncActivity.this);
+                        categorySyncTask.execute(String.valueOf(i));
+                        a++;
+                    }
+                }*/
+
                 productUomsSyncTask = new ProductUomsSyncTask(this, this);
                 productUomsSyncTask.execute();
             } else if (code == SignageVariables.PRODUCT_UOM_GET_TASK) {
                 contactSyncTask = new ContactSyncTask(this, this);
                 contactSyncTask.execute();
             } else if (code == SignageVariables.CONTACT_GET_TASK) {
+                productTotalElementsTask = new ProductTotalElementsTask(this, this);
+                productTotalElementsTask.execute();
+
+            } else if (code == SignageVariables.PRODUCT_ELEMENTS_TASK) {
                 productSyncTask = new ProductSyncTask(this, this);
-                productSyncTask.execute();
+                productSyncTask.execute(result.toString());
+
             } else if (code == SignageVariables.PRODUCT_GET_TASK) {
                 imageProductTask = new ImageProductTask(this, this);
                 imageProductTask.execute();

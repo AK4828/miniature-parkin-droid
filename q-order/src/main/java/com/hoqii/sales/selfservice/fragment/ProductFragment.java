@@ -1,6 +1,7 @@
 package com.hoqii.sales.selfservice.fragment;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.GridView;
@@ -73,7 +74,11 @@ public class ProductFragment extends DefaultFragment {
         Fragment fragment = new ProductDetailFragment();
         fragment.setArguments(bundle);
 
-        getFragmentManager().beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+//        getFragmentManager().beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
     }
 
 }

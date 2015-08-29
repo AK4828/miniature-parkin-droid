@@ -35,7 +35,7 @@
                 android:textStyle="bold"
                 android:singleLine="true"
                 android:padding="@dimen/dp10"
-                android:textColor="@color/hoqii" />
+                android:textColor="@color/esales" />
         </LinearLayout>
 
         <View

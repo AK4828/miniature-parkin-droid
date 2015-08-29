@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="Daftar Order"
-                android:textColor="@color/hoqii"
+                android:textColor="@color/esales"
                 android:textSize="@dimen/sp20"
                 android:textStyle="bold" />
 
@@ -29,13 +29,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
                 android:layout_marginTop="5dp"
-                android:background="@color/hoqii" />
+                android:background="@color/esales" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/hoqii"
+            android:background="@color/esales"
             android:orientation="vertical">
 
             <!--<TextView
@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:divider="@color/hoqii"
+            android:divider="@color/esales"
             android:dividerHeight="2dp"
             android:listSelector="@android:color/transparent" />
     </LinearLayout>

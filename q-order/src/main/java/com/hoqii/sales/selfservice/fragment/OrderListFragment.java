@@ -1,7 +1,6 @@
 package com.hoqii.sales.selfservice.fragment;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,13 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hoqii.sales.selfservice.R;
-import com.hoqii.sales.selfservice.SignageVariables;
 import com.hoqii.sales.selfservice.activity.ContactActivity;
 import com.hoqii.sales.selfservice.adapter.OrderListAdapter;
 import com.hoqii.sales.selfservice.content.database.adapter.OrderDatabaseAdapter;
 import com.hoqii.sales.selfservice.content.database.adapter.OrderMenuDatabaseAdapter;
 import com.hoqii.sales.selfservice.content.database.adapter.ProductDatabaseAdapter;
-import com.hoqii.sales.selfservice.entity.Order;
 import com.hoqii.sales.selfservice.entity.OrderMenu;
 
 import org.meruvian.midas.core.defaults.DefaultFragment;
@@ -35,7 +32,6 @@ import butterknife.InjectView;
  */
 public class OrderListFragment extends DefaultFragment {
     @InjectView(R.id.list_order) ListView listOrder;
-//    @InjectView(R.id.text_receipt_number) TextView textReceiptNumber;
     @InjectView(R.id.text_total_item) TextView textTotalItem;
     @InjectView(R.id.text_total_order) TextView textTotalOrder;
 
@@ -44,23 +40,10 @@ public class OrderListFragment extends DefaultFragment {
     private OrderDatabaseAdapter orderDbAdapter;
     private OrderMenuDatabaseAdapter orderMenuDbAdapter;
 
-//    private CartDatabaseAdapter cartDbAdapter;
-//    private CartMenuDatabaseAdapter cartMenuDbAdapter;
-
     private List<OrderMenu> orderMenus = new ArrayList<OrderMenu>();
-//    private List<CartMenu> cartMenus = new ArrayList<CartMenu>();
     private String orderId;
     private DecimalFormat decimalFormat = new DecimalFormat("#,###");
     private long totalPrice;
-    private Order order;
-//    private Cart cart;
-//    private JobManager jobManager;
-    private List<String> orderIdes;
-    private List<String> orderMenuIdes;
-    private int orderCount = 0;
-    private int totalOrders = 0;
-    private SharedPreferences preferences;
-//    private String cartId = null;
 
     @Override
     protected int layout() {
@@ -83,7 +66,6 @@ public class OrderListFragment extends DefaultFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()== R.id.menu_pay_order){
             Log.d(getClass().getSimpleName(), "Click: menu_pay_order");
-//            setTabClear();
 
             Bundle bundle = new Bundle();
             bundle.putString("order_id", orderId);
@@ -92,11 +74,6 @@ public class OrderListFragment extends DefaultFragment {
             Intent intent = new Intent(getActivity(), ContactActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
-
-//            updateOrder();
-//            syncOrder();
-//            startActivity(new Intent(getActivity(), LoginActivity.class));
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -104,8 +81,6 @@ public class OrderListFragment extends DefaultFragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        preferences = getActivity().getSharedPreferences(SignageVariables.PREFS_SERVER, 0);
-
         productDbAdapter = new ProductDatabaseAdapter(getActivity());
         orderDbAdapter = new OrderDatabaseAdapter(getActivity());
         orderMenuDbAdapter = new OrderMenuDatabaseAdapter(getActivity());
@@ -115,27 +90,19 @@ public class OrderListFragment extends DefaultFragment {
         orderId = orderDbAdapter.getOrderId();
 
         if(orderId != null) {
-            order = orderDbAdapter.findOrderById(orderId);
             totalPrice = 0;
 
             Log.d(getClass().getSimpleName(), "Order Id = " + orderId);
             orderMenus = orderMenuDbAdapter.findOrderMenuByOrderId(orderId);
-//            cartMenus = cartMenuDbAdapter.findCartMenuByCartId(cartId);
 
             for (OrderMenu om : orderMenus) {
                 totalPrice += om.getProduct().getSellPrice()*om.getQty();
             }
 
-//            for (OrderMenu om : orderMenus) {
-//                totalPrice += om.getProduct().getSellPrice()*om.getQty();
-//            }
-
-//            textReceiptNumber.setText("No: " + order.getReceiptNumber());
             textTotalItem.setText("Jumlah Item: " + orderMenus.size());
             textTotalOrder.setText("Total Order: " + "Rp " + decimalFormat.format(totalPrice));
 
             orderListAdapter.addAll(orderMenus);
-//            orderListAdapter.addAll(cartMenus);
         }
 
         listOrder.setAdapter(orderListAdapter);
@@ -169,64 +136,4 @@ public class OrderListFragment extends DefaultFragment {
         }
     }
 
-    /*public void setTabClear() {
-//        textReceiptNumber.setText("No: " + rn);
-        textTotalItem.setText("Jumlah Item: " + 0);
-        textTotalOrder.setText("Total Order: " + "Rp " + decimalFormat.format(0));
-    }*/
-
-   /* public void onEventMainThread(GenericEvent.RequestInProgress requestInProgress) {
-        Log.d(getClass().getSimpleName(), "RequestInProgress: " + requestInProgress.getProcessId());
-    }
-
-    public void onEventMainThread(GenericEvent.RequestSuccess requestSuccess) {
-        try {
-            switch (requestSuccess.getProcessId()) {
-                case OrderJob.PROCESS_ID: {
-                    Log.d(getClass().getSimpleName(), "Response OrderRefId : " + requestSuccess.getRefId());
-
-                    orderCount++;
-
-                    Log.d(getClass().getSimpleName(), "RequestSuccess OrderId: " + requestSuccess.getRefId());
-                    orderMenuIdes = orderMenuDbAdapter.findOrderMenuIdesByOrderId(requestSuccess.getEntityId());
-                    for (String id : orderMenuIdes) {
-                        Log.d(getClass().getSimpleName(), "Size Order menu Ides: " + orderMenuIdes.size());
-                        jobManager.addJobInBackground(new OrderMenuJob(requestSuccess.getRefId(), id, preferences.getString("server_url", "")));
-                    }
-
-                    if (orderCount == totalOrders){
-                        finish();
-                        startActivity(new Intent(getActivity(), MainActivity.class));
-                    }
-                    break;
-                }
-                case OrderMenuJob.PROCESS_ID: {
-                    Log.d(getClass().getSimpleName(), "RequestSuccess OrderMenuId: " + requestSuccess.getRefId());
-                    break;
-                }
-            }
-
-        } catch (Exception e) {
-            Log.e(getClass().getSimpleName(), e.getMessage(), e);
-        }
-    }
-
-    public void onEventMainThread(GenericEvent.RequestFailed failed) {
-        Log.e(getClass().getSimpleName(),
-                failed.getResponse().getHttpResponse().getStatusLine().getStatusCode() + " :"
-                        + failed.getResponse().getHttpResponse().getStatusLine().getReasonPhrase());
-    }
-
-    public void syncOrder() {
-        orderIdes = orderDbAdapter.findAllIdOrder();
-        totalOrders = orderIdes.size();
-
-        if (totalOrders <= 0) {
-            Toast.makeText(getActivity(), "Data Order Kosong", Toast.LENGTH_SHORT).show();
-        }
-
-        for (String id : orderIdes) {
-            jobManager.addJobInBackground(new OrderJob(id, preferences.getString("server_url", "")));
-        }
-    }*/
 }

@@ -28,7 +28,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/about_pesca_signage"
+            android:text="@string/about_esales"
             android:textSize="@dimen/sp14"/>
     </LinearLayout>
 </ScrollView>

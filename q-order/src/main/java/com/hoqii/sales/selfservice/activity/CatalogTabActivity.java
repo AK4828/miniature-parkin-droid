@@ -132,7 +132,7 @@ public class CatalogTabActivity extends DefaultActivity {
         if (item.getItemId() == R.id.menu_order_list) {
             Log.d(getClass().getSimpleName(), "Click: menu_order_list ");
             Fragment fragment = new OrderListFragment();
-            getFragmentManager().beginTransaction().replace(R.id.container, fragment, null).addToBackStack(null).commit();
+            getFragmentManager().beginTransaction().replace(R.id.container, fragment, null).commit();
         }
 
         return super.onOptionsItemSelected(item);

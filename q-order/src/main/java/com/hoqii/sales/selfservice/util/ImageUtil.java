@@ -1,5 +1,6 @@
 package com.hoqii.sales.selfservice.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,7 +28,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 
 public class ImageUtil {
-    public static final String PICTURE_DIR = "pesca";
+    public static final String PICTURE_DIR = "esales";
 
 	public static Bitmap convertImage(byte[] data) {
 		return BitmapFactory.decodeByteArray(data, 0, data.length);
@@ -183,6 +184,7 @@ public class ImageUtil {
         return new File(getImageDirectory(context), image).getPath();
     }
 
+    @SuppressLint("LongLogTag")
     public static String getImageDirectory(Context context) {
         String state = Environment.getExternalStorageState();
         File mediaStorageDir = null;
@@ -195,7 +197,7 @@ public class ImageUtil {
 
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdir()) {
-                Log.e("Failed while creating directory: ", mediaStorageDir.getPath());
+                Log.e("Failed creating directory: ", mediaStorageDir.getPath());
             }
         }
 

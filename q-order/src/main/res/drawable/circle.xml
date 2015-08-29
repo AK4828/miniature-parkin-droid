@@ -109,7 +109,7 @@
             <item>
                 <shape android:shape="oval">
 
-                    <solid android:color="@color/hoqii" />
+                    <solid android:color="@color/esales" />
 
 
                 </shape>

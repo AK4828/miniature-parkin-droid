@@ -55,7 +55,7 @@
                         <View
                             android:layout_width="@dimen/dp10"
                             android:layout_height="match_parent"
-                            android:background="@color/pesca" />
+                            android:background="@color/esales" />
 
                         <TextView
                             android:id="@+id/text_title"

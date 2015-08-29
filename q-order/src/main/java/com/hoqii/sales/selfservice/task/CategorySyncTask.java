@@ -32,6 +32,8 @@ public class CategorySyncTask extends AsyncTask<String, Void, JSONObject> {
     private String parentId = "";
 
     private List<String> idCategories = new ArrayList<String>();
+    private List<String> refId = new ArrayList<String>();
+
     private CategoryDatabaseAdapter categoryAdapter;
 
     public CategorySyncTask(Context context, TaskService service) {
@@ -56,13 +58,15 @@ public class CategorySyncTask extends AsyncTask<String, Void, JSONObject> {
     @Override
     protected JSONObject doInBackground(String... params) {
         Log.d(getClass().getSimpleName(), "?access_token= " + AuthenticationUtils.getCurrentAuthentication().getAccessToken());
-        return ConnectionUtil.get(preferences.getString("server_url", "") + "/api/product/categories?access_token=" + AuthenticationUtils.getCurrentAuthentication().getAccessToken());
+        return ConnectionUtil.get(preferences.getString("server_url", "") + "/api/product/categories?access_token="
+                + AuthenticationUtils.getCurrentAuthentication().getAccessToken() + "&max=" + params[0]);
     }
 
     @Override
     protected void onPostExecute(JSONObject result) {
         try {
             if (result != null) {
+                int totalPages = result.getInt("totalElements");
                 JSONArray jsonArray = result.getJSONArray("content");
                 List<Category> categories = new ArrayList<Category>();
 
@@ -93,7 +97,7 @@ public class CategorySyncTask extends AsyncTask<String, Void, JSONObject> {
                 categoryAdapter.saveCategory(categories);
                 categoryAdapter.delete(idCategories);
 
-                service.onSuccess(SignageVariables.CATEGORY_GET_TASK, true);
+                service.onSuccess(SignageVariables.CATEGORY_GET_TASK, totalPages);
             } else {
                 service.onError(SignageVariables.CATEGORY_GET_TASK, context.getString(R.string.error));
             }
@@ -118,88 +122,4 @@ public class CategorySyncTask extends AsyncTask<String, Void, JSONObject> {
     public void setParentId(String parentId) {
         this.parentId = parentId;
     }
-
-    /*private List<Category> phase1(JSONArray jsonArray) throws JSONException{
-        List<Category> categories = new ArrayList<Category>();
-
-        for (int a = 0; a < jsonArray.length(); a++) {
-            JSONObject json = jsonArray.getJSONObject(a);
-
-            if (json.getInt("status") == 1) {
-                Category superParentCategory = new Category();
-                Category parentCategory = new Category();
-                Category category = new Category();
-
-                JSONObject jsonSuperParent = json
-                        .getJSONObject("superParentCategory");
-                superParentCategory.setId(jsonSuperParent
-                        .getString("id"));
-
-                if (jsonSuperParent.getString("id").equalsIgnoreCase(SignageVariables.SUPER_PARENT_PRODUCT_ID) && json.isNull("parentCategory")) {
-//                            JSONObject jsonParent = new JSONObject();
-//                            if (!json.isNull("parentCategory")) {
-//                                jsonParent = json.getJSONObject("parentCategory");
-//                                parentCategory.setId(jsonParent.getString("id"));
-//                            }
-
-                    category.setId(json.getString("id"));
-                    category.setSuperParentCategory(superParentCategory);
-//                            category.setParentCategory(parentCategory);
-                    category.setName(json.getString("name"));
-                    category.setStatus(Integer.parseInt(json.getString("status")));
-
-                    categories.add(category);
-                }
-            }
-        }
-
-        return categories;
-    }
-
-    private List<Category> phase2(JSONArray jsonArray) throws JSONException{
-        List<Category> categories = new ArrayList<Category>();
-
-        for (int a = 0; a < jsonArray.length(); a++) {
-            JSONObject json = jsonArray.getJSONObject(a);
-
-            if (json.getInt("status") == 1) {
-                Category superParentCategory = new Category();
-                Category parentCategory = new Category();
-                Category category = new Category();
-
-                JSONObject jsonSuperParent = json
-                        .getJSONObject("superParentCategory");
-                superParentCategory.setId(jsonSuperParent
-                        .getString("id"));
-
-                JSONObject jsonParent = new JSONObject();
-                if (!json.isNull("parentCategory")) {
-                    jsonParent = json.getJSONObject("parentCategory");
-                    parentCategory.setId(jsonParent.getString("id"));
-
-                    if (jsonSuperParent.getString("id").equalsIgnoreCase(SignageVariables.SUPER_PARENT_PRODUCT_ID) && jsonParent.getString("id").equalsIgnoreCase(getParentId())) {
-                        category.setId(json.getString("id"));
-                        category.setSuperParentCategory(superParentCategory);
-//                            category.setParentCategory(parentCategory);
-                        category.setName(json.getString("name"));
-                        category.setStatus(Integer.parseInt(json.getString("status")));
-
-                        categories.add(category);
-                    }
-                }
-            }
-        }
-
-        return categories;
-    }*/
-
-
-//                JSONArray jsonArray = result.getJSONArray("entityList");
-//
-//                if (phase == 1) {
-//                    service.onSuccess(SignageVariables.CATEGORY_GET_TASK, phase1(jsonArray));
-//                } else if (phase == 2) {
-//                    service.onSuccess(SignageVariables.CATEGORY_GET_TASK, phase2(jsonArray));
-//                }
-
 }

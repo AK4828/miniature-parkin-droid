@@ -372,7 +372,11 @@ public class ProductDetailFragment extends DefaultFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Fragment fragment = new OrderListFragment();
-                getFragmentManager().beginTransaction().replace(R.id.container, fragment, null).addToBackStack(null).commit();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+//                getFragmentManager().beginTransaction().replace(R.id.container, fragment, null).addToBackStack(null).commit();
             }
         });
         builder.setNegativeButton(getString(R.string.continue_shopping), new DialogInterface.OnClickListener() {

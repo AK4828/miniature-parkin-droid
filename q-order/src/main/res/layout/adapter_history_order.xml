@@ -13,33 +13,35 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/text_contact_name"
+            android:id="@+id/text_no_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:singleLine="true"
-            android:text="Name Contact"
+            android:text="Nomer Order"
             android:textSize="@dimen/sp16"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/text_recipient_name"
+            android:id="@+id/text_order_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Name Recipient" />
+            android:textSize="@dimen/sp16"
+            android:text="Tanggal Order" />
 
         <TextView
-            android:id="@+id/text_contact_telp"
+            android:id="@+id/text_contact_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Name Contact Telp" />
+            android:textSize="@dimen/sp16"
+            android:text="Total Order" />
     </LinearLayout>
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:id="@+id/relative_layout"
-        android:layout_width="100dp"
+        android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/linear_layout"
         android:layout_alignParentRight="true"
@@ -61,9 +63,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="5dp"
             android:background="@android:color/transparent"
             android:src="@android:drawable/ic_menu_close_clear_cancel" />
-    </RelativeLayout>
+    </RelativeLayout>-->
 
 </RelativeLayout>

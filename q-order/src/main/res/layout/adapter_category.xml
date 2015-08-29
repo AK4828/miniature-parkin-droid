@@ -12,5 +12,5 @@
         android:paddingTop="@dimen/dp10"
         android:paddingRight="@dimen/dp10"
         android:paddingLeft="@dimen/dp20"
-        android:textColor="@color/pesca" />
+        android:textColor="@color/esales" />
 </LinearLayout>

@@ -31,12 +31,20 @@ public class CatalogFragment extends DefaultFragment {
     private SearchView searchView;
 
     private SharedPreferences preferences;
+    private Menu menu;
 
 //    private int close = 1;
 
     @Override
     protected int layout() {
         return R.layout.fragment_catalog;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setVisibilityContainerCategory(View.VISIBLE);
+        showOverflowMenu(true);
     }
 
     @Override
@@ -70,6 +78,7 @@ public class CatalogFragment extends DefaultFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.search, menu);
+        this.menu = menu;
 
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
@@ -84,7 +93,11 @@ public class CatalogFragment extends DefaultFragment {
                 Fragment fragment = new ProductFragment();
                 fragment.setArguments(bundle);
 
-                getFragmentManager().beginTransaction().replace(R.id.container, fragment, null).addToBackStack(null).commit();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+//                getFragmentManager().beginTransaction().replace(R.id.container, fragment, null).addToBackStack(null).commit();
 
                 return true;
             }
@@ -105,41 +118,27 @@ public class CatalogFragment extends DefaultFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_order_list) {
             Log.d(getClass().getSimpleName(), "Click: menu_order_list ");
+
             Fragment fragment = new OrderListFragment();
-            getFragmentManager().beginTransaction().replace(R.id.container, fragment, null).addToBackStack(null).commit();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+//            getFragmentManager().beginTransaction().replace(R.id.container, fragment, null).commit();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    //    @Override
-//    public void onBackPressed() {
-//        Handler handler = new Handler();
-//
-//        if (getFragmentManager().getBackStackEntryCount() > 0) {
-//            getFragmentManager().popBackStack();
-//        } else {
-//            if (close == 1) {
-//                close++;
-//
-//                handler.postDelayed(new Runnable() {
-//                    public void run() {
-//                        close = 1;
-//                    }
-//                }, 1500);
-//            } else if (close == 2) {
-//                Toast.makeText(this, getString(R.string.exit), Toast.LENGTH_LONG).show();
-//                close++;
-//
-//                handler.postDelayed(new Runnable() {
-//                    public void run() {
-//                        close = 1;
-//                    }
-//                }, 1500);
-//            } else if (close > 1) {
-//                finish();
-//            }
-//        }
-//    }
+    public void setVisibilityContainerCategory(int view){
+        if (containerCategory != null) {
+            containerCategory.setVisibility(view);
+        }
+    }
 
+    public void showOverflowMenu(boolean showMenu){
+        if(menu == null)
+            return;
+        menu.setGroupVisible(R.id.main_menu_group, showMenu);
+    }
 }

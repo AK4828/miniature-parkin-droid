@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="hoqii" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="esales" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="windowActionModeOverlay">true</item>
-        <item name="colorPrimary">@color/hoqii</item>
-        <item name="colorPrimaryDark">@color/hoqii</item>
+        <item name="colorPrimary">@color/esales</item>
+        <item name="colorPrimaryDark">@color/esales</item>
         <!--<item name="android:windowBackground">@android:color/background_light</item>-->
         <!--<item name="android:itemBackground">@android:color/background_light</item>-->
         <!--<item name="android:dialogTheme">@android:style/Theme.Holo.Light.Dialog</item>-->

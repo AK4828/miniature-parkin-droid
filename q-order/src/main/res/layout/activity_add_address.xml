@@ -44,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
                 android:layout_marginBottom="10dp"
-                android:background="@color/hoqii" />
+                android:background="@color/esales" />
 
             <Spinner
                 android:id="@+id/spinner_address_label"

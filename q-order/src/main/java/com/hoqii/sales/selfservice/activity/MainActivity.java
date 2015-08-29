@@ -1,14 +1,19 @@
 package com.hoqii.sales.selfservice.activity;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.hoqii.sales.selfservice.R;
 import com.hoqii.sales.selfservice.fragment.CatalogFragment;
+import com.hoqii.sales.selfservice.fragment.HistoryOrderFragment;
 import com.hoqii.sales.selfservice.util.AuthenticationUtils;
 
 import org.meruvian.midas.core.drawer.Navigation;
@@ -34,20 +39,25 @@ public class MainActivity extends NavigationDrawer {
         /*adapter.addNavigation(new Navigation("Campaign", Navigation.NavigationType.MENU));*/
         adapter.addNavigation(new Navigation("Catalog", Navigation.NavigationType.MENU));
         adapter.addNavigation(new Navigation("Contact", Navigation.NavigationType.MENU));
+        adapter.addNavigation(new Navigation("History Order", Navigation.NavigationType.MENU));
     }
 
     @Override
     public void selectedItem(int position) {
         if (position == 0) {
-//            startActivity(new Intent(this, PromoActivity.class));
-            /*finish();
-            startActivity(new Intent(this, MainActivity.class));*/
-
-            getFragmentManager().beginTransaction().replace(org.meruvian.midas.core.R.id.content_frame, mainFragment()).commit();
-
+            Fragment fragment = new CatalogFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_frame, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         } else if (position == 1) {
-//            finish();
             startActivity(new Intent(this, ContactListActivity.class));
+        } else if (position == 2) {
+            Fragment fragment = new HistoryOrderFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_frame, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
 
         closeDrawer();
@@ -67,6 +77,18 @@ public class MainActivity extends NavigationDrawer {
         editorHas.commit();
         startActivity(new Intent(this, LoginActivity.class));
         finish();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+        FragmentManager fm = getFragmentManager();
+        fm.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if (getFragmentManager().getBackStackEntryCount() == 0) finish();
+            }
+        });
     }
 
     @Override
@@ -92,6 +114,8 @@ public class MainActivity extends NavigationDrawer {
     public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
+        } else if (getFragmentManager().getBackStackEntryCount() == 0) {
+            finish();
         } else {
             finish();
         }
