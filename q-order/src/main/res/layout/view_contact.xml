@@ -10,11 +10,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
+        <!--<TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nama Kontak"
-            android:textSize="@dimen/sp14"/>
+            android:textSize="@dimen/sp14"/>-->
 
         <EditText
             android:id="@+id/edit_contact_name"
@@ -56,11 +56,11 @@
             android:singleLine="true"
             android:text="" />
 
-        <TextView
+        <!--<TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Provinsi"
-            android:textSize="@dimen/sp14" />
+            android:textSize="@dimen/sp14" />-->
 
         <!--<Spinner
             android:id="@+id/spinner_province"
@@ -78,11 +78,11 @@
             android:text="" />
 
 
-        <TextView
+        <!--<TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Kabupaten/Kota"
-            android:textSize="@dimen/sp14" />
+            android:textSize="@dimen/sp14" />-->
 
         <EditText
             android:id="@+id/edit_city"
@@ -99,11 +99,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dp10" />-->
 
-        <TextView
+       <!-- <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Kecamatan"
-            android:textSize="@dimen/sp14" />
+            android:textSize="@dimen/sp14" />-->
 
         <!--<Spinner
             android:id="@+id/spinner_sub_district"
@@ -120,11 +120,11 @@
             android:singleLine="true"
             android:text="" />
 
-        <TextView
+       <!-- <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Alamat Lengkap"
-            android:textSize="@dimen/sp14" />
+            android:textSize="@dimen/sp14" />-->
 
         <EditText
             android:id="@+id/edit_street"
@@ -136,11 +136,11 @@
             android:lines="3"
             android:text="" />
 
-        <TextView
+        <!--<TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Kode Pos"
-            android:textSize="@dimen/sp14" />
+            android:textSize="@dimen/sp14" />-->
 
         <EditText
             android:id="@+id/edit_pos_code"

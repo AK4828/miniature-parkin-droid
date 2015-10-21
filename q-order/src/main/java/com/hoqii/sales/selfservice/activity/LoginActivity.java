@@ -99,8 +99,9 @@ public class LoginActivity extends DefaultActivity {
 
     @OnClick(R.id.button_login)
     public void submitLogin(Button button) {
-        LoginManualJob loginJob = new LoginManualJob(username.getText().toString(), password.getText().toString());
+//        startActivity(new Intent(this, MainActivity.class));
 
+        LoginManualJob loginJob = new LoginManualJob(username.getText().toString(), password.getText().toString());
         jobManager.addJobInBackground(loginJob);
     }
 
@@ -114,12 +115,15 @@ public class LoginActivity extends DefaultActivity {
     private void goToMainActivity() {
         if(preferences.getBoolean("has_sync", false)) {
             startActivity(new Intent(this, MainActivity.class));
+            finish();
         } else {
             startActivity(new Intent(this, SyncActivity.class));
+            finish();
+            this.finish();
         }
 
 //        startActivity(new Intent(this, MainActivity.class));
-        finish();
+
     }
 
     public void onEventMainThread(LoginEvent.LoginSuccess loginSuccess) {

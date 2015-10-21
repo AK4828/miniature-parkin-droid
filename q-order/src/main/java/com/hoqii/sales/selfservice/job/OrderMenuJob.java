@@ -46,12 +46,15 @@ public class OrderMenuJob extends Job {
     @Override
     public void onRun() throws Throwable {
         Log.d(getClass().getSimpleName(), "onRun");
-        JsonRequestUtils request = new JsonRequestUtils(new Formatter().format(url + HoqiiUri.ORDER_MENU, orderRefId).toString());
+        JsonRequestUtils request = new JsonRequestUtils(new Formatter().format(url + ESalesUri.ORDER_MENU, orderRefId).toString());
 
         OrderMenuDatabaseAdapter orderMenuDatabaseAdapter = new OrderMenuDatabaseAdapter(SignageAppication.getInstance());
         OrderMenu orderMenu = orderMenuDatabaseAdapter.findOrderMenuById(orderMenuId);
         orderMenu.setId(null);
         orderMenu.getOrder().setId(orderRefId);
+
+        Log.d(getClass().getSimpleName(), "Order Menu Create By: " + orderMenu.getLogInformation().getCreateBy());
+        Log.d(getClass().getSimpleName(), "Order Menu Site By: " + orderMenu.getLogInformation().getSite());
 
         Log.d(getClass().getSimpleName(), "OrderMenu Id:" + orderMenu.getId());
         response = request.post(orderMenu, new TypeReference<OrderMenu>() {});

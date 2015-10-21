@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">E-Sales</string>
-    <string name="app_summary">E-Sales</string>
+    <string name="app_name">E-Sales Agen</string>
+    <string name="app_summary">E-Sales Agen</string>
 
     <string name="search">Pencarian</string>
     <string name="refresh">Refresh</string>
@@ -8,13 +8,16 @@
     <string name="setting">Pengaturan</string>
     <string name="cart">Cart</string>
     <string name="order">Order</string>
+    <string name="select_contact">Pilih Pembeli</string>
     <string name="submit">Submit</string>
     <string name="added_to_cart">Item Berhasil ditambahkan</string>
     <string name="order_success">Order Berhasil</string>
     <string name="go_to_cart">Lihat Keranjang Belanja</string>
     <string name="continue_shopping">Lanjutkan Belanja</string>
+    <string name="add_contact">Tambah Pembeli</string>
 
-    <string name="add_contact">Tambah Contact</string>
+    <string name="select">Pilih</string>
+    <string name="ok">Ok</string>
     <string name="save">Simpan</string>
     <string name="cancel">Batal</string>
 

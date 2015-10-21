@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class HistoryOrderDetailAdapter extends DefaultAdapter<OrderMenu, HistoryOrderDetailHolder> {
     private DecimalFormat decimalFormat = new DecimalFormat("#,###");
-    private long totalPrice;
+    private double totalPrice;
     private OrderMenuDatabaseAdapter orderMenuDbAdapter;
     private Fragment fragment;
 
@@ -39,7 +39,7 @@ public class HistoryOrderDetailAdapter extends DefaultAdapter<OrderMenu, History
         totalPrice = orderMenu.getProduct().getSellPrice() * (orderMenu.getQty());
         String q = String.valueOf(orderMenu.getQty());
 
-        holder.menuName.setText(orderMenu.getProduct().getName());
+        holder.menuName.setText(orderMenu.getProduct().getProduct().getName());
         holder.menuQuantity.setText(q);
         holder.totalPrice.setText("Rp " + decimalFormat.format(totalPrice));
 

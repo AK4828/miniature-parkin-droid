@@ -26,13 +26,16 @@ import com.desarrollodroide.libraryfragmenttransactionextended.FragmentTransacti
 import com.hoqii.sales.selfservice.R;
 import com.hoqii.sales.selfservice.SignageVariables;
 import com.hoqii.sales.selfservice.activity.ImageZoomActivity;
+import com.hoqii.sales.selfservice.activity.OrderListActivity;
 import com.hoqii.sales.selfservice.content.database.adapter.OrderDatabaseAdapter;
 import com.hoqii.sales.selfservice.content.database.adapter.OrderMenuDatabaseAdapter;
 import com.hoqii.sales.selfservice.content.database.adapter.ProductDatabaseAdapter;
+import com.hoqii.sales.selfservice.content.database.adapter.ProductStoreDatabaseAdapter;
 import com.hoqii.sales.selfservice.entity.CartMenu;
 import com.hoqii.sales.selfservice.entity.Order;
 import com.hoqii.sales.selfservice.entity.OrderMenu;
 import com.hoqii.sales.selfservice.entity.Product;
+import com.hoqii.sales.selfservice.entity.ProductStore;
 import com.hoqii.sales.selfservice.util.AuthenticationUtils;
 import com.hoqii.sales.selfservice.util.ImageUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -73,6 +76,7 @@ public class ProductDetailFragment extends DefaultFragment {
     @InjectView(R.id.edit_order_desc) TextView orderDesc;
 
     private ProductDatabaseAdapter productDbAdapter;
+    private ProductStoreDatabaseAdapter productStoreDbAdapter;
     private OrderDatabaseAdapter orderDbAdapter;
     private OrderMenuDatabaseAdapter orderMenuDbAdapter;
 
@@ -131,12 +135,15 @@ public class ProductDetailFragment extends DefaultFragment {
         });
 
         productDbAdapter = new ProductDatabaseAdapter(getActivity());
+        productStoreDbAdapter = new ProductStoreDatabaseAdapter(getActivity());
         orderDbAdapter = new OrderDatabaseAdapter(getActivity());
         orderMenuDbAdapter = new OrderMenuDatabaseAdapter(getActivity());
 
-        Product product = productDbAdapter.findProductById(productId);
+        Product product = productDbAdapter.findAllProductById(productId);
+        ProductStore productStore = productStoreDbAdapter.findProductStoreByProductId(productId);
+
 //        productId = product.getId();
-        priceMenu = product.getSellPrice();
+        priceMenu = productStore.getSellPrice();
         String desc = product.getDescription();
 
         title.setText(product.getName());
@@ -146,7 +153,7 @@ public class ProductDetailFragment extends DefaultFragment {
         price.setText("Rp" + decimalFormat.format(priceMenu));
 //        price.setText("Rp" + decimalFormat.format(product.getSellPrice()));
 
-        if (product.getSellPrice() <= 0) {
+        if (productStore.getSellPrice() <= 0) {
             price.setVisibility(View.GONE);
         } else {
             price.setVisibility(View.VISIBLE);
@@ -293,34 +300,36 @@ public class ProductDetailFragment extends DefaultFragment {
         }
 
         if(orderId == null) {
-            Log.d(getClass().getSimpleName(), "Order Id = NULL");
-
             orderId = saveOrder();
             OrderMenu orderMenu = new OrderMenu();
             Product product = new Product();
             product.setId(productId);
+            ProductStore productStore = productStoreDbAdapter.findProductStoreByProductId(productId);
+
+            orderMenu.getLogInformation().setCreateBy(AuthenticationUtils.getCurrentAuthentication().getUser().getId());
+            orderMenu.getLogInformation().setLastUpdateBy(AuthenticationUtils.getCurrentAuthentication().getUser().getId());
+            orderMenu.getLogInformation().setSite(AuthenticationUtils.getCurrentAuthentication().getSite().getId());
 
             orderMenu.getOrder().setId(orderId);
             orderMenu.setQty(q);
-            orderMenu.setProduct(product);
+            orderMenu.setProduct(productStore);
             orderMenu.setSellPrice(priceMenu);
             orderMenu.setDescription(desc);
 
-            Log.d(getClass().getSimpleName(), "1.Order Id = " + orderId);
-            Log.d(getClass().getSimpleName(), "1.Product Id = " + productId);
-
             orderMenuDbAdapter.saveOrderMenu(orderMenu);
         } else {
-            Log.d(getClass().getSimpleName(), "2.Order Id = " + orderId);
-            Log.d(getClass().getSimpleName(), "2.Product Id = " + productId);
-
             OrderMenu orderMenu = new OrderMenu();
             Product product = new Product();
             product.setId(productId);
+            ProductStore productStore = productStoreDbAdapter.findProductStoreByProductId(productId);
+
+            orderMenu.getLogInformation().setCreateBy(AuthenticationUtils.getCurrentAuthentication().getUser().getId());
+            orderMenu.getLogInformation().setLastUpdateBy(AuthenticationUtils.getCurrentAuthentication().getUser().getId());
+            orderMenu.getLogInformation().setSite(AuthenticationUtils.getCurrentAuthentication().getSite().getId());
 
             orderMenu.getOrder().setId(orderId);
             orderMenu.setQty(q);
-            orderMenu.setProduct(product);
+            orderMenu.setProduct(productStore);
             orderMenu.setSellPrice(priceMenu);
             orderMenu.setDescription(desc);
 
@@ -328,7 +337,6 @@ public class ProductDetailFragment extends DefaultFragment {
         }
 
         dialogItemAddedToCart();
-//        Toast.makeText(getActivity(), "Barang telah ditambahkan ke Cart", Toast.LENGTH_SHORT).show();
     }
 
     public String saveOrder() {
@@ -337,8 +345,12 @@ public class ProductDetailFragment extends DefaultFragment {
         order.setSiteId("");
         order.setOrderType("1");
         order.setReceiptNumber("");
-        order.getLogInformation().setCreateBy(AuthenticationUtils.getCurrentAuthentication().getAccessToken());
+        order.getLogInformation().setCreateBy(AuthenticationUtils.getCurrentAuthentication().getUser().getId());
         order.getLogInformation().setCreateDate(new Date());
+        order.getLogInformation().setLastUpdateBy(AuthenticationUtils.getCurrentAuthentication().getUser().getId());
+        order.getLogInformation().setSite(AuthenticationUtils.getCurrentAuthentication().getSite().getId());
+
+        order.setStatus(Order.OrderStatus.WAIT);
 
         return orderDbAdapter.saveOrder(order);
     }
@@ -371,12 +383,16 @@ public class ProductDetailFragment extends DefaultFragment {
         builder.setPositiveButton(getString(R.string.go_to_cart), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Fragment fragment = new OrderListFragment();
+
+                Intent intent = new Intent(getActivity(), OrderListActivity.class);
+                startActivity(intent);
+
+//              use OrderListFragment
+                /*Fragment fragment = new OrderListFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.container, fragment);
                 transaction.addToBackStack(null);
-                transaction.commit();
-//                getFragmentManager().beginTransaction().replace(R.id.container, fragment, null).addToBackStack(null).commit();
+                transaction.commit();*/
             }
         });
         builder.setNegativeButton(getString(R.string.continue_shopping), new DialogInterface.OnClickListener() {

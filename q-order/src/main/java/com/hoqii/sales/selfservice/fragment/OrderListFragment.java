@@ -85,7 +85,8 @@ public class OrderListFragment extends DefaultFragment {
         orderDbAdapter = new OrderDatabaseAdapter(getActivity());
         orderMenuDbAdapter = new OrderMenuDatabaseAdapter(getActivity());
 
-        orderListAdapter = new OrderListAdapter(getActivity(), R.layout.adapter_order_list, new ArrayList<OrderMenu>(), this);
+        orderListAdapter = new OrderListAdapter(getActivity(), R.layout.adapter_order_list,
+                new ArrayList<OrderMenu>(), this);
 
         orderId = orderDbAdapter.getOrderId();
 

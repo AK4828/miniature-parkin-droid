@@ -17,16 +17,24 @@ public class MidasContentProvider extends ContentProvider {
     private MidasDatabase dbHelper;
 
     public static final String TABLES[] = {
-        MidasDatabase.CATEGORY_TABLE,//0
-        MidasDatabase.PRODUCT_TABLE,//1
-        MidasDatabase.CAMPAIGN_TABLE,//2
-        MidasDatabase.CAMPAIGN_DETAIL_TABLE,//3
-        MidasDatabase.ORDER_TABLE,//4
-        MidasDatabase.ORDER_MENU_TABLE,//5
-        MidasDatabase.PRODUCT_UOM,//6
-        MidasDatabase.CONTACT,//7
-        MidasDatabase.CART_TABLE,//8
-        MidasDatabase.CART_MENU_TABLE//9
+            MidasDatabase.CATEGORY_TABLE,//0
+            MidasDatabase.PRODUCT_TABLE,//1
+            MidasDatabase.CAMPAIGN_TABLE,//2
+            MidasDatabase.CAMPAIGN_DETAIL_TABLE,//3
+            MidasDatabase.ORDER_TABLE,//4
+            MidasDatabase.ORDER_MENU_TABLE,//5
+            MidasDatabase.PRODUCT_UOM,//6
+            MidasDatabase.CONTACT,//7
+            MidasDatabase.CART_TABLE,//8
+            MidasDatabase.CART_MENU_TABLE,//9
+            MidasDatabase.PRODUCT_STORE_TABLE,//10
+            MidasDatabase.USER_TABLE,//11
+            MidasDatabase.ORDER_MENU_IMEI_TABLE,//12
+            MidasDatabase.ASSIGMENT_TABLE,//13
+            MidasDatabase.ASSIGMENT_DETAIL_TABLE,//14
+            MidasDatabase.ASSIGMENT_DETAIL_ITEM_TABLE,//15
+            MidasDatabase.SETTLE_TABLE//16
+
     };
 
     public static final String AUTHORITY = MidasContentProvider.class.getName().toLowerCase();

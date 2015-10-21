@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.hoqii.sales.selfservice.SignageAppication;
 import com.hoqii.sales.selfservice.SignageVariables;
 import com.hoqii.sales.selfservice.core.commons.Role;
+import com.hoqii.sales.selfservice.core.commons.Site;
 import com.hoqii.sales.selfservice.core.commons.User;
 import com.hoqii.sales.selfservice.core.commons.UserRole;
 import com.hoqii.sales.selfservice.entity.Authentication;
@@ -46,12 +47,14 @@ public abstract class LoginJob extends Job {
             Authentication authentication = responseWrapper.getContent();
             AuthenticationUtils.registerAuthentication(authentication);
             User user = requestUser();
+            Site site = requestSite();
 
             user.setRoles(new ArrayList<Role>());
             for (UserRole userRole : requestRoles().getContent()) {
                 user.getRoles().add(userRole.getRole());
             }
             authentication.setUser(user);
+            authentication.setSite(site);
 
             AuthenticationUtils.registerAuthentication(authentication);
             Log.i(getClass().getSimpleName(), "ACCESS_TOKEN : " + authentication.getAccessToken());
@@ -66,6 +69,12 @@ public abstract class LoginJob extends Job {
         preferences = SignageAppication.getInstance().getSharedPreferences(SignageVariables.PREFS_SERVER, 0);
         JsonRequestUtils requestUtils = new JsonRequestUtils(preferences.getString("server_url", "") + SignageVariables.PGA_CURRENT_ME);
         return requestUtils.get(new TypeReference<User>() {}).getContent();
+    }
+
+    protected Site requestSite() {
+        preferences = SignageAppication.getInstance().getSharedPreferences(SignageVariables.PREFS_SERVER, 0);
+        JsonRequestUtils requestUtils = new JsonRequestUtils(preferences.getString("server_url", "") + SignageVariables.PGA_CURRENT_SITE);
+        return requestUtils.get(new TypeReference<Site>() {}).getContent();
     }
 
     protected PageEntity<UserRole> requestRoles() {

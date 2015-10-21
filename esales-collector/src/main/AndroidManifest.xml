@@ -1,0 +1,63 @@
+<manifest
+    package="org.meruvian.esales.collector"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <application
+        android:name=".SignageAppication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/esales">
+        <activity
+            android:name=".activity.SplashActivity"
+            android:configChanges="orientation|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.SettingActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/esales"/>
+        <activity
+            android:name=".activity.MainActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/esales"/>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/esales"/>
+        <activity
+            android:name=".activity.SyncActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/esales"/>
+        <activity
+            android:name=".activity.SyncJobActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/esales"/>
+        <activity
+            android:name=".activity.ScannerImeiActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/esales"/>
+        <activity
+            android:name=".activity.SettleDetailActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/esales"/>
+        <activity
+            android:name=".activity.AssigmentItemActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/esales"/>
+
+        <provider
+            android:name="org.meruvian.esales.collector.content.MidasContentProvider"
+            android:authorities="org.meruvian.esales.collector.content.midascontentprovider"
+            android:syncable="true"/>
+    </application>
+
+</manifest>

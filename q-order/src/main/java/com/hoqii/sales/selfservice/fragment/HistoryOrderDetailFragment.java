@@ -1,11 +1,15 @@
 package com.hoqii.sales.selfservice.fragment;
 
+import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hoqii.sales.selfservice.R;
+import com.hoqii.sales.selfservice.SignageAppication;
+import com.hoqii.sales.selfservice.SignageVariables;
 import com.hoqii.sales.selfservice.adapter.HistoryOrderDetailAdapter;
 import com.hoqii.sales.selfservice.content.database.adapter.ContactDatabaseAdapter;
 import com.hoqii.sales.selfservice.content.database.adapter.OrderDatabaseAdapter;
@@ -13,6 +17,10 @@ import com.hoqii.sales.selfservice.content.database.adapter.OrderMenuDatabaseAda
 import com.hoqii.sales.selfservice.entity.Contact;
 import com.hoqii.sales.selfservice.entity.Order;
 import com.hoqii.sales.selfservice.entity.OrderMenu;
+import com.hoqii.sales.selfservice.entity.Payment;
+import com.hoqii.sales.selfservice.job.PayGetJob;
+import com.hoqii.sales.selfservice.job.PayUpdateJob;
+import com.path.android.jobqueue.JobManager;
 
 import org.meruvian.midas.core.defaults.DefaultFragment;
 
@@ -45,6 +53,8 @@ public class HistoryOrderDetailFragment extends DefaultFragment {
     TextView textTotalOrder;
     @InjectView(R.id.list_detail_order_items)
     ListView listOrderItems;
+    /*@InjectView(R.id.button_confirm_pay)
+    Button buttonConfirmPay;*/
 
     private OrderDatabaseAdapter orderDatabaseAdapter;
     private OrderMenuDatabaseAdapter orderMenuDatabaseAdapter;
@@ -59,9 +69,13 @@ public class HistoryOrderDetailFragment extends DefaultFragment {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm:ss", new Locale("in", "ID", "ID"));
     private DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
+    private JobManager jobManager;
+    private SharedPreferences preferences;
+    private ProgressDialog dialog;
+
     @Override
     protected int layout() {
-        return R.layout.activity_detail_order;
+        return R.layout.fragment_history_detail;
     }
 
     @Override
@@ -70,6 +84,8 @@ public class HistoryOrderDetailFragment extends DefaultFragment {
         orderMenuDatabaseAdapter = new OrderMenuDatabaseAdapter(getActivity());
         contactDatabaseAdapter = new ContactDatabaseAdapter(getActivity());
         historyOrderDetailAdapter = new HistoryOrderDetailAdapter(getActivity(), R.layout.adapter_detail_order, new ArrayList<OrderMenu>(), this);
+
+        preferences = getActivity().getSharedPreferences(SignageVariables.PREFS_SERVER, 0);
 
         orderId = getArguments().getString("order_id");
         order = orderDatabaseAdapter.findOrderById(orderId);
@@ -80,7 +96,7 @@ public class HistoryOrderDetailFragment extends DefaultFragment {
         listOrderItems.setAdapter(historyOrderDetailAdapter);
 
         setViewOrderContact(order, contact, orderMenus);
-
+        jobManager = SignageAppication.getInstance().getJobManager();
     }
 
     private void setViewOrderContact(Order order, Contact contact, List<OrderMenu> orderMenus) {
@@ -96,9 +112,9 @@ public class HistoryOrderDetailFragment extends DefaultFragment {
 
     }
 
-    private String countTotalOrder(List<OrderMenu> orderMenus){
+    private String countTotalOrder(List<OrderMenu> orderMenus) {
         String totalPrice = null;
-        long totalOrder = 0;
+        double totalOrder = 0;
         for (OrderMenu om : orderMenus) {
              totalOrder = om.getProduct().getSellPrice() * om.getQty();
         }
@@ -114,6 +130,14 @@ public class HistoryOrderDetailFragment extends DefaultFragment {
         totalPrice = kursIndonesia.format(totalOrder);
 
         return totalPrice;
+    }
+
+    private void getPayment() {
+        jobManager.addJobInBackground(new PayGetJob(preferences.getString("server_url", "")));
+    }
+
+    private void syncPayment(Payment payment) {
+        jobManager.addJobInBackground(new PayUpdateJob(orderId,preferences.getString("server_url", "")));
     }
 
 

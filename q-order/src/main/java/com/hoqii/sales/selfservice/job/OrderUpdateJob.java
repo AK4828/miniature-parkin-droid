@@ -46,7 +46,7 @@ public class OrderUpdateJob extends Job {
     @Override
     public void onRun() throws Throwable {
         Log.d(getClass().getSimpleName(), "onRun");
-        JsonRequestUtils request = new JsonRequestUtils(new Formatter().format(url + HoqiiUri.UPDATE_ORDER, orderRefId).toString());
+        JsonRequestUtils request = new JsonRequestUtils(new Formatter().format(url + ESalesUri.UPDATE_ORDER, orderRefId).toString());
 
         OrderDatabaseAdapter orderDatabaseAdapter = new OrderDatabaseAdapter(SignageAppication.getInstance());
         Order order = orderDatabaseAdapter.findOrderById(orderId);

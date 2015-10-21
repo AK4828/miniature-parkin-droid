@@ -45,7 +45,7 @@ public class ContactDeleteJob extends Job {
     @Override
     public void onRun() throws Throwable {
         Log.d(getClass().getSimpleName(), "onRun");
-        JsonRequestUtils request = new JsonRequestUtils(new Formatter().format(url + HoqiiUri.UPDATE_CONTACT, contactRefId).toString());
+        JsonRequestUtils request = new JsonRequestUtils(new Formatter().format(url + ESalesUri.UPDATE_CONTACT, contactRefId).toString());
 
         ContactDatabaseAdapter contactDatabaseAdapter = new ContactDatabaseAdapter(SignageAppication.getInstance());
         Contact contact = contactDatabaseAdapter.findContactById(contactId);

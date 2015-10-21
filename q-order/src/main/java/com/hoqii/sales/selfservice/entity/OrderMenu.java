@@ -1,14 +1,19 @@
 package com.hoqii.sales.selfservice.entity;
 
-
 import com.hoqii.sales.selfservice.core.DefaultPersistence;
 
 public class OrderMenu extends DefaultPersistence {
+	public enum OrderMenuStatus {
+		ORDER, CANCELED
+	}
+
 	private Order order = new Order();
 	private int qty;
 	private double sellPrice;
-	private Product product = new Product();
+	private ProductStore product = new ProductStore();
 	private String description;
+	private String imei;
+	private OrderMenuStatus status = OrderMenuStatus.ORDER;
 
 	public String getDescription() {
 		return description;
@@ -42,12 +47,27 @@ public class OrderMenu extends DefaultPersistence {
 		this.order = order;
 	}
 
-	public Product getProduct() {
+	public ProductStore getProduct() {
 		return product;
 	}
 
-	public void setProduct(Product product) {
+	public void setProduct(ProductStore product) {
 		this.product = product;
 	}
 
+	public String getImei() {
+		return imei;
+	}
+
+	public void setImei(String imei) {
+		this.imei = imei;
+	}
+
+	public OrderMenuStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(OrderMenuStatus status) {
+		this.status = status;
+	}
 }

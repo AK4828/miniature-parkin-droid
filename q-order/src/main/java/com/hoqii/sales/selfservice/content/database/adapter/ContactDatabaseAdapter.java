@@ -274,9 +274,9 @@ public class ContactDatabaseAdapter extends DefaultDatabaseAdapter {
         return contact;
     }
 
-    public List<Contact> findAllContact() {
-        String criteria = ContactDatabaseModel.STATUS_FLAG + " = ?";
-        String[] parameter = { SignageVariables.ACTIVE };
+    public List<Contact> findAllContact(String userId) {
+        String criteria = ContactDatabaseModel.STATUS_FLAG + " = ? AND " + ContactDatabaseModel.USER_ID + " = ?";
+        String[] parameter = { SignageVariables.ACTIVE, userId };
         Cursor cursor = context.getContentResolver().query(dbUriContact,
                 null, criteria, parameter, null);
 

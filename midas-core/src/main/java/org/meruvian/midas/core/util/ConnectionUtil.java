@@ -16,11 +16,9 @@
 
 package org.meruvian.midas.core.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.List;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -36,15 +34,18 @@ import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
 
 /**
  * @author Dias Nurul Arifin
- * 
+ *
  */
 public class ConnectionUtil {
-	
+
 	public static final int TIMEOUT = 15000;
 
 	public static boolean isInternetAvailable(Context context) {
@@ -55,7 +56,7 @@ public class ConnectionUtil {
 		else
 			return false;
 	}
-	
+
 	public static HttpParams getHttpParams(int connectionTimeout,
 			int socketTimeout) {
 		HttpParams params = new BasicHttpParams();
@@ -65,17 +66,19 @@ public class ConnectionUtil {
 
 		return params;
 	}
-	
+
 	public static JSONObject get(String url) {
 		JSONObject json = null;
-		
+
 		try {
 			HttpClient httpClient = new DefaultHttpClient(getHttpParams(TIMEOUT, TIMEOUT));
 			HttpGet httpGet = new HttpGet(url);
-			
+
+			Log.d("ConnectionUtil", "URL Get: " + url);
+
 			httpGet.setHeader("Content-Type", "application/json");
 			HttpResponse response = httpClient.execute(httpGet);
-			
+
 			json = new JSONObject(convertEntityToString(response.getEntity()));
 		} catch (IOException e) {
 			json = null;
@@ -89,13 +92,13 @@ public class ConnectionUtil {
 		}
 		return json;
 	}
-	
+
 	public static JSONObject post(String url, List<NameValuePair> nameValuePairs) {
 		JSONObject json = null;
 		try {
 			HttpClient httpClient = new DefaultHttpClient(getHttpParams(TIMEOUT, TIMEOUT));
 			HttpPost httpPost = new HttpPost(url);
-			
+
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 			HttpResponse response = httpClient.execute(httpPost);
 			json = new JSONObject(convertEntityToString(response.getEntity()));

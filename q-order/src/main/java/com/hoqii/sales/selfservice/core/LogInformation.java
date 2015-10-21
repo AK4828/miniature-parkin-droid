@@ -11,6 +11,7 @@ public class LogInformation {
     private String createBy;
     private String lastUpdateBy;
     private int activeFlag = ACTIVE;
+    private String site;
 
     public final static int ACTIVE = 1;
     public final static int INACTIVE = 0;
@@ -61,5 +62,13 @@ public class LogInformation {
 
     public boolean getInactive() {
         return (getActiveFlag() == INACTIVE);
+    }
+
+    public String getSite() {
+        return site;
+    }
+
+    public void setSite(String site) {
+        this.site = site;
     }
 }

@@ -23,7 +23,6 @@ import butterknife.OnItemClick;
  * Created by ludviantoovandi on 29/01/15.
  */
 public class ProductFragment extends DefaultFragment {
-
     @InjectView(R.id.grid_image) GridView gridView;
 
     private ProductGridAdapter productGridAdapter;

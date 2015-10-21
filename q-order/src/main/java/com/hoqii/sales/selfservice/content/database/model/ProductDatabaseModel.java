@@ -19,4 +19,5 @@ public class ProductDatabaseModel extends DefaultPersistenceModel {
     public static final String PRODUCT_VALUE = "product_value";
     public static final String MIN_QUANTITY = "min_quantity";
     public static final String MAX_QUANTITY = "max_quantity";
+
 }

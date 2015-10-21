@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -17,6 +18,7 @@ import com.hoqii.sales.selfservice.task.CategorySyncTask;
 import com.hoqii.sales.selfservice.task.CategoryTotalElementsTask;
 import com.hoqii.sales.selfservice.task.ContactSyncTask;
 import com.hoqii.sales.selfservice.task.ImageProductTask;
+import com.hoqii.sales.selfservice.task.ProductStoreSyncTask;
 import com.hoqii.sales.selfservice.task.ProductSyncTask;
 import com.hoqii.sales.selfservice.task.ProductTotalElementsTask;
 import com.hoqii.sales.selfservice.task.ProductUomsSyncTask;
@@ -44,8 +46,8 @@ public class SyncActivity extends DefaultActivity implements TaskService {
     private ProductSyncTask productSyncTask;
     private ImageProductTask imageProductTask;
     private ContactSyncTask contactSyncTask;
-    private int a =1;
-
+    private ProductStoreSyncTask productStoreSyncTask;
+    private int a =1, i = 0;
 
     @Override
     protected int layout() {
@@ -110,6 +112,10 @@ public class SyncActivity extends DefaultActivity implements TaskService {
             progressBar.setVisibility(View.VISIBLE);
             textSync.setVisibility(View.VISIBLE);
             textSync.setText(R.string.sync_contact);
+        } else if(code == SignageVariables.PRODUCT_STORE_GET_TASK) {
+            progressBar.setVisibility(View.VISIBLE);
+            textSync.setVisibility(View.VISIBLE);
+            textSync.setText(R.string.sync_product);
         }
     }
 
@@ -136,19 +142,37 @@ public class SyncActivity extends DefaultActivity implements TaskService {
                 contactSyncTask = new ContactSyncTask(this, this);
                 contactSyncTask.execute();
             } else if (code == SignageVariables.CONTACT_GET_TASK) {
-                productTotalElementsTask = new ProductTotalElementsTask(this, this);
-                productTotalElementsTask.execute();
+//                productTotalElementsTask = new ProductTotalElementsTask(this, this);
+//                productTotalElementsTask.execute();
+                Log.e(getClass().getSimpleName(), "CONTACT_GET_TASK: Finish -> productStoreSyncTask");
+                productStoreSyncTask = new ProductStoreSyncTask(this, this, 0);
+                productStoreSyncTask.execute();
 
+            } else if (code == SignageVariables.PRODUCT_STORE_GET_TASK) {
+                if ((int)result > 1 && (int) result > a) {
+                    for(i=1; i < (int) result; i++) {
+                        productStoreSyncTask = new ProductStoreSyncTask(this, this, i);
+                        productStoreSyncTask.execute();
+                        a++;
+                    }
+                } else {
+                    imageProductTask = new ImageProductTask(this, this);
+                    imageProductTask.execute();
+                }
             } else if (code == SignageVariables.PRODUCT_ELEMENTS_TASK) {
+                Log.e(getClass().getSimpleName(), "PRODUCT_ELEMENTS_TASK: Finish");
                 productSyncTask = new ProductSyncTask(this, this);
                 productSyncTask.execute(result.toString());
 
             } else if (code == SignageVariables.PRODUCT_GET_TASK) {
+                Log.e(getClass().getSimpleName(), "PRODUCT_GET_TASK: Finish");
                 imageProductTask = new ImageProductTask(this, this);
                 imageProductTask.execute();
             } else if (code == SignageVariables.IMAGE_PRODUCT_TASK) {
                 progressBar.setVisibility(View.GONE);
                 textSync.setText(R.string.finish_sync);
+
+                Log.e(getClass().getSimpleName(), "IMAGE_PRODUCT_TASK: Finish");
 
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
@@ -157,8 +181,10 @@ public class SyncActivity extends DefaultActivity implements TaskService {
                         editor.commit();
 
                         if (getIntent().getBooleanExtra("just_sync", false)) {
+                            Log.e(getClass().getSimpleName(), "IMAGE_PRODUCT_TASK: Handler-just_sync");
                             finish();
                         } else {
+                            Log.e(getClass().getSimpleName(), "IMAGE_PRODUCT_TASK: Handler");
                             startActivity(new Intent(SyncActivity.this, MainActivity.class));
                             finish();
                         }

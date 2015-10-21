@@ -1,6 +1,7 @@
 package com.hoqii.sales.selfservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hoqii.sales.selfservice.core.commons.Site;
 import com.hoqii.sales.selfservice.core.commons.User;
 
 /**
@@ -18,6 +19,7 @@ public class Authentication {
     private String scope;
     private String jti;
     private User user = new User();
+    private Site site = new Site();
 
     public String getAccessToken() {
         return accessToken;
@@ -74,5 +76,13 @@ public class Authentication {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Site getSite() {
+        return site;
+    }
+
+    public void setSite(Site site) {
+        this.site = site;
     }
 }

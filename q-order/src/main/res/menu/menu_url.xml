@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/menu_setup_parameter"
-        android:title="URL Server"
-        android:icon="@drawable/navigation_settings"/>
+          android:title="URL Server"
+          android:icon="@drawable/navigation_settings"/>
 
 </menu>

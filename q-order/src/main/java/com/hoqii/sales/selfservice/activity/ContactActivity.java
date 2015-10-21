@@ -350,7 +350,7 @@ public class ContactActivity extends ActionBarActivity implements TaskService {
     }
 
     private void findAllContact() {
-        contacts = contactDbAdapter.findAllContact();
+        contacts = contactDbAdapter.findAllContact(AuthenticationUtils.getCurrentAuthentication().getUser().getId());
 
         Contact contact = new Contact();
         contact.setContactName("- Kontak Baru -");

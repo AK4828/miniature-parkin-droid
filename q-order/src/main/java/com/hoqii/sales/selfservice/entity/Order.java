@@ -1,9 +1,12 @@
 package com.hoqii.sales.selfservice.entity;
 
-
 import com.hoqii.sales.selfservice.core.DefaultPersistence;
 
 public class Order extends DefaultPersistence {
+	public enum OrderStatus {
+		WAIT, SETTLE, DONE, CANCELED
+	}
+
 	private String receiptNumber;
 	private String name;
 	private String handphone;
@@ -19,6 +22,7 @@ public class Order extends DefaultPersistence {
     private String orderType;
     private String siteId;
 	private Contact contact = new Contact();
+	private OrderStatus status = OrderStatus.WAIT;
 
 	public String getName() {
 		return name;
@@ -138,5 +142,13 @@ public class Order extends DefaultPersistence {
 
 	public void setContact(Contact contact) {
 		this.contact = contact;
+	}
+
+	public OrderStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(OrderStatus status) {
+		this.status = status;
 	}
 }

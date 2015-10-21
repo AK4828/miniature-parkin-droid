@@ -140,28 +140,119 @@
                 android:text="Alamat Lengkap"
                 android:textSize="@dimen/sp14" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <EditText
+                    android:id="@+id/edit_first_name"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:hint="First Name"
+                    android:layout_marginRight="3dp"
+                    android:layout_height="wrap_content"/>
+
+                <EditText
+                    android:id="@+id/edit_last_name"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="3dp"
+                    android:hint="Last Name"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
             <EditText
-                android:id="@+id/edit_street"
+                android:id="@+id/edit_register_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:gravity="top"
-                android:hint="Alamat Lengkap"
-                android:lines="5"
+                android:hint="City"
+                android:singleLine="true"
                 android:text="" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Kode Pos"
-                android:textSize="@dimen/sp14" />
-
             <EditText
-                android:id="@+id/edit_pos_code"
+                android:id="@+id/edit_register_state"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:hint="Kode Pos"
+                android:hint="State"
+                android:singleLine="true"
+                android:text="" />
+
+            <EditText
+                android:id="@+id/edit_register_zip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:hint="Zip"
+                android:singleLine="true"
+                android:text="" />
+
+            <EditText
+                android:id="@+id/edit_register_street"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:hint="Street"
+                android:gravity="top"
+                android:lines="3"
+                android:text="" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/main_title3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Bank"
+                    android:textSize="@dimen/sp14"
+                    android:textStyle="bold" />
+
+                <!--<TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="1/13" />-->
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/esales" />
+
+            <EditText
+                android:id="@+id/edit_bank_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:hint="Bank Name"
+                android:singleLine="true"
+                android:text="" />
+
+            <EditText
+                android:id="@+id/edit_account_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:hint="Account Number"
+                android:singleLine="true"
+                android:text="" />
+
+            <EditText
+                android:id="@+id/edit_account_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:hint="Account Name"
                 android:singleLine="true"
                 android:text="" />
 

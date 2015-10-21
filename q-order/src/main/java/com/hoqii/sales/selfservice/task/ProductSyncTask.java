@@ -109,8 +109,7 @@ public class ProductSyncTask extends AsyncTask<String, Void, JSONObject> {
                         idProducts.remove(product.getId());
                     }
                 }
-
-                productAdapter.saveProduct(products);
+                productAdapter.saveProducts(products);
                 productAdapter.voidProduct(idProducts);
 
                 service.onSuccess(SignageVariables.PRODUCT_GET_TASK, true);

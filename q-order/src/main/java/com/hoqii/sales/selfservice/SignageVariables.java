@@ -11,6 +11,7 @@ public class SignageVariables {
 
     public static final String PGA_REQUEST_TOKEN = "/oauth/token";
     public static final String PGA_CURRENT_ME = "/api/users/me";
+    public static final String PGA_CURRENT_SITE = "/api/sites/me";
     public static final String PGA_CURRENT_ROLE = "/api/users/me/roles";
 
     public static final String PUBLIC_FOLDER = "signage";
@@ -33,5 +34,8 @@ public class SignageVariables {
 
     public static final int CATEGORY_ELEMENTS_TASK = 11;
     public static final int PRODUCT_ELEMENTS_TASK = 12;
+
+    public static final int PRODUCT_STORE_GET_TASK = 13;
+    public static final int PRODUCT_STORE_ELEMENTS_TASK = 14;
 
 }

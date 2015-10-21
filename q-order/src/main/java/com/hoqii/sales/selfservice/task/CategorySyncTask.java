@@ -58,7 +58,7 @@ public class CategorySyncTask extends AsyncTask<String, Void, JSONObject> {
     @Override
     protected JSONObject doInBackground(String... params) {
         Log.d(getClass().getSimpleName(), "?access_token= " + AuthenticationUtils.getCurrentAuthentication().getAccessToken());
-        return ConnectionUtil.get(preferences.getString("server_url", "") + "/api/product/categories?access_token="
+        return ConnectionUtil.get(preferences.getString("server_url", "") + "/api/product/store/categories?access_token="
                 + AuthenticationUtils.getCurrentAuthentication().getAccessToken() + "&max=" + params[0]);
     }
 

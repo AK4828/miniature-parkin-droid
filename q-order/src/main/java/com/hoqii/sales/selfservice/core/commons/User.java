@@ -16,15 +16,18 @@ public class User extends DefaultPersistence {
     private Name name = new Name();
     private Address address = new Address();
     private List<Role> roles = new ArrayList<Role>();
-    private String reference;
-//    private User upline = new User();
-    private Bank bank = new Bank();
     private String agentCode;
+    private UserUpline upline = new UserUpline();
+    private String reference;
+    private String phone;
+    private Bank bank = new Bank();
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
@@ -77,6 +80,22 @@ public class User extends DefaultPersistence {
         this.roles = roles;
     }
 
+    public String getAgentCode() {
+        return agentCode;
+    }
+
+    public void setAgentCode(String agentCode) {
+        this.agentCode = agentCode;
+    }
+
+    public UserUpline getUpline() {
+        return upline;
+    }
+
+    public void setUpline(UserUpline upline) {
+        this.upline = upline;
+    }
+
     public String getReference() {
         return reference;
     }
@@ -85,19 +104,19 @@ public class User extends DefaultPersistence {
         this.reference = reference;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public Bank getBank() {
         return bank;
     }
 
     public void setBank(Bank bank) {
         this.bank = bank;
-    }
-
-    public String getAgentCode() {
-        return agentCode;
-    }
-
-    public void setAgentCode(String agentCode) {
-        this.agentCode = agentCode;
     }
 }

@@ -18,7 +18,7 @@ public class ContactHolder extends DefaultHolder {
         super(view);
     }
 
-    @InjectView(R.id.text_contact_name) public TextView contactName;
+//    @InjectView(R.id.text_contact_name) public TextView contactName;
     @InjectView(R.id.text_recipient_name) public TextView recipientName;
     @InjectView(R.id.text_contact_telp) public TextView contactTelp;
     @InjectView(R.id.image_button_delete_contact) public ImageButton buttonDelete;

@@ -42,13 +42,16 @@ public class OrderJob extends Job {
     @Override
     public void onRun() throws Throwable {
         Log.d(getClass().getSimpleName(), "onRun");
-        JsonRequestUtils request = new JsonRequestUtils(url + HoqiiUri.ORDER);
+        JsonRequestUtils request = new JsonRequestUtils(url + ESalesUri.ORDER);
 
         OrderDatabaseAdapter orderDatabaseAdapter = new OrderDatabaseAdapter(SignageAppication.getInstance());
         Order order = orderDatabaseAdapter.findOrderById(orderId);
         order.setId(null);
 
-        Log.d(getClass().getSimpleName(), "Order Id:" + order.getReceiptNumber());
+        Log.d(getClass().getSimpleName(), "Order Id: " + order.getReceiptNumber());
+        Log.d(getClass().getSimpleName(), "Order Create By: " + order.getLogInformation().getCreateBy());
+        Log.d(getClass().getSimpleName(), "Order Site By: " + order.getLogInformation().getSite());
+
         response = request.post(order, new TypeReference<Order>() {});
         HttpResponse r = response.getHttpResponse();
 

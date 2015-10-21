@@ -117,7 +117,7 @@ public class CartMenuDatabaseAdapter {
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst();
 
-                Product product = productDbAdapter.findProductById(cursor.getString(cursor.getColumnIndex(CartMenuDatabaseModel.PRODUCT_ID)));
+                Product product = productDbAdapter.findAllProductById(cursor.getString(cursor.getColumnIndex(CartMenuDatabaseModel.PRODUCT_ID)));
 //                product.setId();
 
                 Cart cart = new Cart();
@@ -149,7 +149,7 @@ public class CartMenuDatabaseAdapter {
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                Product product = productDbAdapter.findProductById(cursor.getString(cursor.getColumnIndex(CartMenuDatabaseModel.PRODUCT_ID)));
+                Product product = productDbAdapter.findAllProductById(cursor.getString(cursor.getColumnIndex(CartMenuDatabaseModel.PRODUCT_ID)));
 //                product.setId();
 
                 Cart cart = new Cart();

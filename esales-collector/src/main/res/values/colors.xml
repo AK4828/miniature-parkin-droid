@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="transparent_black">#AA000000</color>
+    <color name="transparent_activity">#99000000</color>
+
+    <color name="grey">#777777</color>
+    <color name="red_dark">#8B000A</color>
+    <!--<color name="hoqii">#003A7B</color>-->
+    <color name="esales">#CA5B1E</color>
+
+    <color name="black">#000000</color>
+    <color name="text_white">#FFFFFF</color>
+
+</resources>

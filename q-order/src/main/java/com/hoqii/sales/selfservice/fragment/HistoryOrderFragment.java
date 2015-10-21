@@ -11,6 +11,7 @@ import com.hoqii.sales.selfservice.R;
 import com.hoqii.sales.selfservice.adapter.HistoryOrderAdapter;
 import com.hoqii.sales.selfservice.content.database.adapter.OrderDatabaseAdapter;
 import com.hoqii.sales.selfservice.entity.Order;
+import com.hoqii.sales.selfservice.util.AuthenticationUtils;
 
 import org.meruvian.midas.core.defaults.DefaultFragment;
 
@@ -32,7 +33,7 @@ public class HistoryOrderFragment extends DefaultFragment {
 
     @Override
     protected int layout() {
-        return R.layout.activity_history_orders;
+        return R.layout.fragment_history_orders;
     }
 
     @Override
@@ -46,9 +47,12 @@ public class HistoryOrderFragment extends DefaultFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         orderDatabaseAdapter = new OrderDatabaseAdapter(getActivity());
-        historyOrderAdapter = new HistoryOrderAdapter(getActivity(), R.layout.adapter_history_order, new ArrayList<Order>());
+        historyOrderAdapter = new HistoryOrderAdapter(getActivity(), R.layout.adapter_history_order,
+                new ArrayList<Order>());
 
-        orders = orderDatabaseAdapter.getHistoryOrders(50);
+        orders = orderDatabaseAdapter.getHistoryOrders(50, AuthenticationUtils
+                .getCurrentAuthentication().getUser().getId());
+
         historyOrderAdapter.addAll(orders);
 
         listHistoryOrder.setAdapter(historyOrderAdapter);

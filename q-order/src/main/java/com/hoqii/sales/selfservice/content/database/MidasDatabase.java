@@ -4,6 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.hoqii.sales.selfservice.content.database.model.AssigmentDatabaseModel;
+import com.hoqii.sales.selfservice.content.database.model.AssigmentDetailDatabaseModel;
+import com.hoqii.sales.selfservice.content.database.model.AssigmentDetailItemDatabaseModel;
 import com.hoqii.sales.selfservice.content.database.model.CampaignDatabaseModel;
 import com.hoqii.sales.selfservice.content.database.model.CampaignDetailDatabaseModel;
 import com.hoqii.sales.selfservice.content.database.model.CartDatabaseModel;
@@ -13,15 +16,18 @@ import com.hoqii.sales.selfservice.content.database.model.ContactDatabaseModel;
 import com.hoqii.sales.selfservice.content.database.model.DefaultPersistenceModel;
 import com.hoqii.sales.selfservice.content.database.model.OrderDatabaseModel;
 import com.hoqii.sales.selfservice.content.database.model.OrderMenuDatabaseModel;
+import com.hoqii.sales.selfservice.content.database.model.OrderMenuImeiDatabaseModel;
 import com.hoqii.sales.selfservice.content.database.model.ProductDatabaseModel;
+import com.hoqii.sales.selfservice.content.database.model.ProductStoreDatabaseModel;
 import com.hoqii.sales.selfservice.content.database.model.ProductUomDatabaseModel;
+import com.hoqii.sales.selfservice.content.database.model.SettleDatabaseModel;
+import com.hoqii.sales.selfservice.content.database.model.UserDatabaseModel;
 
 /**
- * Created by meruvian on 29/01/15.
+ * Created by meruvian on 07/10/15.
  */
-
 public class MidasDatabase extends SQLiteOpenHelper {
-    public static final String DATABASE = "hoqii_sales";
+    public static final String DATABASE = "e_sales";
     private static final int VERSION = 1;
 
     public static final String CATEGORY_TABLE = "category";
@@ -37,6 +43,16 @@ public class MidasDatabase extends SQLiteOpenHelper {
     public static final String CART_TABLE = "shopping_cart";
     public static final String CART_MENU_TABLE = "cart_menu";
 
+    public static final String PRODUCT_STORE_TABLE = "product_store";
+    public static final String USER_TABLE = "user_store";
+
+    public static final String ORDER_MENU_IMEI_TABLE = "order_menu_imei";
+
+    public static final String ASSIGMENT_TABLE = "assigment";
+    public static final String ASSIGMENT_DETAIL_TABLE = "assigment_detail";
+    public static final String ASSIGMENT_DETAIL_ITEM_TABLE = "assigment_detail_item";
+    public static final String SETTLE_TABLE = "settle";
+
     private Context context;
 
     public MidasDatabase(Context context) {
@@ -48,7 +64,7 @@ public class MidasDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + CATEGORY_TABLE + "("
-                + CategoryDatabaseModel.ID + " TEXT PRIMARY KEY, "
+                + DefaultPersistenceModel.ID + " TEXT PRIMARY KEY, "
                 + DefaultPersistenceModel.CREATE_BY + " TEXT, "
                 + DefaultPersistenceModel.CREATE_DATE + " INTEGER, "
                 + DefaultPersistenceModel.UPDATE_BY + " TEXT, "
@@ -61,7 +77,7 @@ public class MidasDatabase extends SQLiteOpenHelper {
                 + CategoryDatabaseModel.CATEGORY_NAME + " TEXT)");
 
         db.execSQL("CREATE TABLE " + PRODUCT_TABLE + "("
-                + ProductDatabaseModel.ID + " TEXT PRIMARY KEY, "
+                + DefaultPersistenceModel.ID + " TEXT PRIMARY KEY, "
                 + DefaultPersistenceModel.CREATE_BY + " TEXT, "
                 + DefaultPersistenceModel.CREATE_DATE + " INTEGER, "
                 + DefaultPersistenceModel.UPDATE_BY + " TEXT, "
@@ -86,7 +102,7 @@ public class MidasDatabase extends SQLiteOpenHelper {
                 + ProductDatabaseModel.COMPOSITION_STATUS + " INTEGER)");
 
         db.execSQL("CREATE TABLE " + CAMPAIGN_TABLE + "("
-                + CategoryDatabaseModel.ID + " TEXT PRIMARY KEY, "
+                + DefaultPersistenceModel.ID + " TEXT PRIMARY KEY, "
                 + DefaultPersistenceModel.CREATE_BY + " TEXT, "
                 + DefaultPersistenceModel.CREATE_DATE + " INTEGER, "
                 + DefaultPersistenceModel.UPDATE_BY + " TEXT, "
@@ -100,7 +116,7 @@ public class MidasDatabase extends SQLiteOpenHelper {
                 + CampaignDatabaseModel.SHOW_ON_ANDROID + " INTEGER)");
 
         db.execSQL("CREATE TABLE " + CAMPAIGN_DETAIL_TABLE + "("
-                + CategoryDatabaseModel.ID + " TEXT PRIMARY KEY, "
+                + DefaultPersistenceModel.ID + " TEXT PRIMARY KEY, "
                 + DefaultPersistenceModel.CREATE_BY + " TEXT, "
                 + DefaultPersistenceModel.CREATE_DATE + " INTEGER, "
                 + DefaultPersistenceModel.UPDATE_BY + " TEXT, "
@@ -125,7 +141,8 @@ public class MidasDatabase extends SQLiteOpenHelper {
                 + DefaultPersistenceModel.SYNC_STATUS + " INTEGER, "
                 + OrderDatabaseModel.ORDER_TYPE + " TEXT, "
                 + OrderDatabaseModel.CONTACT_ID + " TEXT, "
-                + OrderDatabaseModel.RECIEPT_NUMBER + " TEXT)");
+                + OrderDatabaseModel.RECIEPT_NUMBER + " TEXT, "
+                + OrderDatabaseModel.STATUS + " TEXT)");
 
         db.execSQL("CREATE TABLE " + ORDER_MENU_TABLE + " ("
                 + DefaultPersistenceModel.ID + " TEXT, "
@@ -139,13 +156,14 @@ public class MidasDatabase extends SQLiteOpenHelper {
                 + DefaultPersistenceModel.REF_ID + " TEXT, "
                 + OrderMenuDatabaseModel.QUANTITY + " INTEGER, "
                 + OrderMenuDatabaseModel.DELIVERY_STATUS + " INTEGER, "
-                + OrderMenuDatabaseModel.PRODUCT_ID + " TEXT, "
+                + OrderMenuDatabaseModel.PRODUCT_STORE_ID + " TEXT, "
                 + OrderMenuDatabaseModel.ORDER_ID + " TEXT, "
                 + OrderMenuDatabaseModel.DISCOUNT_NOMINAL + " TEXT, "
                 + OrderMenuDatabaseModel.DISCOUNT_PERCENT + " TEXT, "
                 + OrderMenuDatabaseModel.DISCOUNT_NAME + " TEXT, "
                 + OrderMenuDatabaseModel.DESC + " TEXT, "
-                + OrderMenuDatabaseModel.PRICE + " TEXT)");
+                + OrderMenuDatabaseModel.PRICE + " TEXT, "
+                + OrderMenuDatabaseModel.STATUS + " TEXT)");
 
         db.execSQL("CREATE TABLE " + CART_TABLE + " ("
                 + DefaultPersistenceModel.ID + " TEXT, "
@@ -214,7 +232,118 @@ public class MidasDatabase extends SQLiteOpenHelper {
                 + ContactDatabaseModel.CONTACT_NAME + " TEXT, "
                 + ContactDatabaseModel.ADDRESS + " TEXT)");
 
+        db.execSQL("CREATE TABLE " + PRODUCT_STORE_TABLE + "("
+                + DefaultPersistenceModel.ID + " TEXT PRIMARY KEY, "
+                + DefaultPersistenceModel.CREATE_BY + " TEXT, "
+                + DefaultPersistenceModel.CREATE_DATE + " INTEGER, "
+                + DefaultPersistenceModel.UPDATE_BY + " TEXT, "
+                + DefaultPersistenceModel.UPDATE_DATE + " INTEGER, "
+                + DefaultPersistenceModel.REF_ID + " TEXT, "
+                + DefaultPersistenceModel.STATUS_FLAG + " INTEGER, "
+                + DefaultPersistenceModel.SITE_ID + " TEXT, "
+                + DefaultPersistenceModel.SYNC_STATUS + " INTEGER, "
+                + ProductStoreDatabaseModel.PRODUCT_ID + " TEXT, "
+                + ProductStoreDatabaseModel.SELL_PRICE + " TEXT, "
+                + ProductStoreDatabaseModel.INCENTIVE + " TEXT, "
+                + ProductStoreDatabaseModel.STOCK + " TEXT)");
 
+        db.execSQL("CREATE TABLE " + USER_TABLE + "("
+                + DefaultPersistenceModel.ID + " TEXT PRIMARY KEY, "
+                + DefaultPersistenceModel.CREATE_BY + " TEXT, "
+                + DefaultPersistenceModel.CREATE_DATE + " INTEGER, "
+                + DefaultPersistenceModel.UPDATE_BY + " TEXT, "
+                + DefaultPersistenceModel.UPDATE_DATE + " INTEGER, "
+                + DefaultPersistenceModel.REF_ID + " TEXT, "
+                + DefaultPersistenceModel.STATUS_FLAG + " INTEGER, "
+                + DefaultPersistenceModel.SITE_ID + " TEXT, "
+                + DefaultPersistenceModel.SYNC_STATUS + " INTEGER, "
+                + UserDatabaseModel.USERNAME + " TEXT, "
+                + UserDatabaseModel.PASSWORD + " TEXT, "
+                + UserDatabaseModel.EMAIL + " TEXT, "
+                + UserDatabaseModel.NAME_PREFIX + " TEXT, "
+                + UserDatabaseModel.NAME_FIRST + " TEXT, "
+                + UserDatabaseModel.NAME_MIDDLE + " TEXT, "
+                + UserDatabaseModel.NAME_LAST + " TEXT, "
+                + UserDatabaseModel.ADDRESS_STREET1 + " TEXT, "
+                + UserDatabaseModel.ADDRESS_STREET2 + " TEXT, "
+                + UserDatabaseModel.ADDRESS_CITY + " TEXT, "
+                + UserDatabaseModel.ADDRESS_STATE + " TEXT, "
+                + UserDatabaseModel.ADDRESS_ZIP + " TEXT, "
+                + UserDatabaseModel.BANK_NAME + " TEXT, "
+                + UserDatabaseModel.ACCOUNT_NUMBER + " TEXT, "
+                + UserDatabaseModel.ACCOUNT_NAME + " TEXT, "
+                + UserDatabaseModel.PHONE + " TEXT, "
+                + UserDatabaseModel.UPLINE + " TEXT, "
+                + UserDatabaseModel.REFERENCE + " TEXT, "
+                + UserDatabaseModel.AGENT_CODE + " TEXT)");
+
+        db.execSQL("CREATE TABLE " + ORDER_MENU_IMEI_TABLE + "("
+                + DefaultPersistenceModel.ID + " TEXT PRIMARY KEY, "
+                + DefaultPersistenceModel.CREATE_BY + " TEXT, "
+                + DefaultPersistenceModel.CREATE_DATE + " INTEGER, "
+                + DefaultPersistenceModel.UPDATE_BY + " TEXT, "
+                + DefaultPersistenceModel.UPDATE_DATE + " INTEGER, "
+                + DefaultPersistenceModel.REF_ID + " TEXT, "
+                + DefaultPersistenceModel.STATUS_FLAG + " INTEGER, "
+                + DefaultPersistenceModel.SITE_ID + " TEXT, "
+                + DefaultPersistenceModel.SYNC_STATUS + " INTEGER, "
+                + OrderMenuImeiDatabaseModel.ORDER_MENU_ID + " TEXT, "
+                + OrderMenuImeiDatabaseModel.IMEI + " TEXT)");
+
+        db.execSQL("CREATE TABLE " + ASSIGMENT_TABLE + "("
+                + DefaultPersistenceModel.ID + " TEXT PRIMARY KEY, "
+                + DefaultPersistenceModel.CREATE_BY + " TEXT, "
+                + DefaultPersistenceModel.CREATE_DATE + " INTEGER, "
+                + DefaultPersistenceModel.UPDATE_BY + " TEXT, "
+                + DefaultPersistenceModel.UPDATE_DATE + " INTEGER, "
+                + DefaultPersistenceModel.REF_ID + " TEXT, "
+                + DefaultPersistenceModel.STATUS_FLAG + " INTEGER, "
+                + DefaultPersistenceModel.SITE_ID + " TEXT, "
+                + DefaultPersistenceModel.SYNC_STATUS + " INTEGER, "
+                + AssigmentDatabaseModel.COLLECTOR_ID + " TEXT, "
+                + AssigmentDatabaseModel.STATUS + " TEXT)");
+
+        db.execSQL("CREATE TABLE " + ASSIGMENT_DETAIL_TABLE + "("
+                + DefaultPersistenceModel.ID + " TEXT PRIMARY KEY, "
+                + DefaultPersistenceModel.CREATE_BY + " TEXT, "
+                + DefaultPersistenceModel.CREATE_DATE + " INTEGER, "
+                + DefaultPersistenceModel.UPDATE_BY + " TEXT, "
+                + DefaultPersistenceModel.UPDATE_DATE + " INTEGER, "
+                + DefaultPersistenceModel.REF_ID + " TEXT, "
+                + DefaultPersistenceModel.STATUS_FLAG + " INTEGER, "
+                + DefaultPersistenceModel.SITE_ID + " TEXT, "
+                + DefaultPersistenceModel.SYNC_STATUS + " INTEGER, "
+                + AssigmentDetailDatabaseModel.ASSIGMENT_ID + " TEXT, "
+                + AssigmentDetailDatabaseModel.AGENT_ID + " TEXT)");
+
+        db.execSQL("CREATE TABLE " + ASSIGMENT_DETAIL_ITEM_TABLE + "("
+                + DefaultPersistenceModel.ID + " TEXT PRIMARY KEY, "
+                + DefaultPersistenceModel.CREATE_BY + " TEXT, "
+                + DefaultPersistenceModel.CREATE_DATE + " INTEGER, "
+                + DefaultPersistenceModel.UPDATE_BY + " TEXT, "
+                + DefaultPersistenceModel.UPDATE_DATE + " INTEGER, "
+                + DefaultPersistenceModel.REF_ID + " TEXT, "
+                + DefaultPersistenceModel.STATUS_FLAG + " INTEGER, "
+                + DefaultPersistenceModel.SITE_ID + " TEXT, "
+                + DefaultPersistenceModel.SYNC_STATUS + " INTEGER, "
+                + AssigmentDetailItemDatabaseModel.ASSIGMENT_DETAIL_ID + " TEXT, "
+                + AssigmentDetailItemDatabaseModel.PRODUCT_ID + " TEXT, "
+                + AssigmentDetailItemDatabaseModel.QUANTITY + " TEXT)");
+
+        db.execSQL("CREATE TABLE " + SETTLE_TABLE + "("
+                + DefaultPersistenceModel.ID + " TEXT PRIMARY KEY, "
+                + DefaultPersistenceModel.CREATE_BY + " TEXT, "
+                + DefaultPersistenceModel.CREATE_DATE + " INTEGER, "
+                + DefaultPersistenceModel.UPDATE_BY + " TEXT, "
+                + DefaultPersistenceModel.UPDATE_DATE + " INTEGER, "
+                + DefaultPersistenceModel.REF_ID + " TEXT, "
+                + DefaultPersistenceModel.STATUS_FLAG + " INTEGER, "
+                + DefaultPersistenceModel.SITE_ID + " TEXT, "
+                + DefaultPersistenceModel.SYNC_STATUS + " INTEGER, "
+                + SettleDatabaseModel.ASSIGMENT_DETAIL_ID + " TEXT, "
+                + SettleDatabaseModel.PRODUCT_ID + " TEXT, "
+                + SettleDatabaseModel.SELL_PRICE + " TEXT, "
+                + SettleDatabaseModel.QUANTITY + " TEXT)");
 
     }
 

@@ -106,6 +106,15 @@ public class ContactListActivity extends DefaultActivity {
         final EditText street = (EditText) view.findViewById(R.id.edit_street);
         final EditText posCode = (EditText) view.findViewById(R.id.edit_pos_code);
 
+        contactName.setVisibility(View.GONE);
+        province.setVisibility(View.GONE);
+        city.setVisibility(View.GONE);
+        subDistrict.setVisibility(View.GONE);
+        street.setVisibility(View.GONE);
+        posCode.setVisibility(View.GONE);
+
+        dialog = new ProgressDialog(ContactListActivity.this);
+
         if (contactId != null) {
             Contact contact = contactDbAdapter.findContactById(contactId);
             contactName.setText(contact.getContactName());
@@ -152,7 +161,8 @@ public class ContactListActivity extends DefaultActivity {
                     String contactRefId = contactDbAdapter.getContactRefIdById(cId);
                     syncUpdateContact(contactRefId, cId);
                     contactAdapter.clear();
-                    contactAdapter.addAll(contactDbAdapter.findAllContact());
+                    contactAdapter.addAll(contactDbAdapter.findAllContact(
+                            AuthenticationUtils.getCurrentAuthentication().getUser().getId()));
                 } else  {
                     syncContact(cId);
                     contact.setId(cId);
@@ -221,14 +231,13 @@ public class ContactListActivity extends DefaultActivity {
     }
 
     public void startDialog() {
-        dialog = new ProgressDialog(ContactListActivity.this);
         dialog.setMessage("Menyimpan data ...");
         dialog.show();
         dialog.setCancelable(false);
     }
 
     private void findAllContact() {
-        contactAdapter.addAll(contactDbAdapter.findAllContact());
+        contactAdapter.addAll(contactDbAdapter.findAllContact(AuthenticationUtils.getCurrentAuthentication().getUser().getId()));
     }
 
 }

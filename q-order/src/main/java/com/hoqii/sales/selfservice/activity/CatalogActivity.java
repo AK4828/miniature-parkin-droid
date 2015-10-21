@@ -38,9 +38,7 @@ public class CatalogActivity extends DefaultActivity {
     @Optional @InjectView(R.id.container_category) FrameLayout containerCategory;
 
     private SearchView searchView;
-
     private SharedPreferences preferences;
-
     private int close = 1;
 
     @Override

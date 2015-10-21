@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">E-Sales Collector</string>
+    <string name="app_summary">E-Sales Collector</string>
+
+    <string name="search">Pencarian</string>
+    <string name="refresh">Refresh</string>
+    <string name="required">Required</string>
+    <string name="setting">Pengaturan</string>
+    <string name="cart">Cart</string>
+    <string name="order">Order</string>
+    <string name="submit">Submit</string>
+    <string name="added_to_cart">Item Berhasil ditambahkan</string>
+    <string name="order_success">Order Berhasil</string>
+    <string name="settle_success">Settlement Berhasil</string>
+    <string name="go_to_cart">Lihat Keranjang Belanja</string>
+    <string name="continue_shopping">Lanjutkan Belanja</string>
+    <string name="ok">Ok</string>
+
+    <string name="add_contact">Tambah Contact</string>
+    <string name="save">Simpan</string>
+    <string name="cancel">Batal</string>
+
+    <string name="exit">Tekan tombol back lagi untuk menutup halaman ini</string>
+    <string name="empty_form">Lengkapi form berikut dengan benar</string>
+
+    <string name="outlet_name">Nama Outlet</string>
+    <string name="description">Deskripsi :</string>
+
+    <string name="start_sync">Mulai Sinkronisasi</string>
+    <string name="start_sync_campaign">Mulai Sinkronisasi Campaign</string>
+    <string name="sync_category">Sinkronisasi Kategori ...</string>
+    <string name="sync_product">Sinkronisasi Produk ...</string>
+    <string name="sync_product_uom">Sinkronisasi Produk Uom ...</string>
+    <string name="sync_image">Sinkronisasi Gambar ...</string>
+    <string name="sync_contact">Sinkronisasi Kontak ...</string>
+
+    <string name="sync_campaign">Sinkronisasi Campaign ...</string>
+    <string name="sync_campaign_detail">Sinkronisasi Campaign Detail ...</string>
+    <string name="sync_image_campaign">Sinkronisasi Gambar Campaign ...</string>
+
+
+    <string name="finish_sync">Sinkronisasi telah selesai</string>
+
+    <string name="data_null_sync">Data Kosong</string>
+
+    <string name="save_data">Menyimpan data ...</string>
+    <string name="check_internet">Terdapat masalah dengan koneksi Internet!</string>
+
+    <string name="about_esales">
+        Ini adalah aplikasi produk katalog dan order digital dari E-Sales  Collector.
+    </string>
+
+    <string name="about">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Fusce euismod rhoncus felis, sit amet pellentesque diam feugiat sed.
+        Vivamus ac scelerisque nisi.
+        Donec dapibus rhoncus interdum.
+        Phasellus nec feugiat velit, eget cursus risus.
+        Quisque congue auctor pretium.
+        Nulla commodo accumsan urna, suscipit convallis elit luctus nec.
+        In lacinia lobortis interdum.
+        Quisque at elementum purus.
+        Nunc et lectus in sapien aliquet viverra sit amet in libero.
+        Donec hendrerit enim eget ultrices fermentum.
+        Mauris viverra ut mauris at vulputate.
+        Vestibulum efficitur nibh orci, nec porttitor dui lobortis vitae.
+        Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+        Vivamus pulvinar ante ac accumsan facilisis.
+    </string>
+
+
+</resources>

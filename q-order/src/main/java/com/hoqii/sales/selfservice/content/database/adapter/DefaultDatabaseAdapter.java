@@ -2,7 +2,8 @@ package com.hoqii.sales.selfservice.content.database.adapter;
 
 import android.database.Cursor;
 
-import org.meruvian.midas.core.content.database.model.DefaultPersistenceModel;
+import com.hoqii.sales.selfservice.content.database.model.DefaultPersistenceModel;
+
 import org.meruvian.midas.core.entity.LogInformation;
 
 import java.util.Date;
@@ -39,6 +40,8 @@ public class DefaultDatabaseAdapter {
         logInformation.setLastUpdateDate(new Date(cursor.getLong(cursor.getColumnIndex(DefaultPersistenceModel.UPDATE_DATE))));
         logInformation.setLastUpdateBy(cursor.getString(cursor.getColumnIndex(DefaultPersistenceModel.UPDATE_BY)));
         logInformation.setActiveFlag(cursor.getInt(cursor.getColumnIndex(DefaultPersistenceModel.STATUS_FLAG)));
+        logInformation.setSite(cursor.getString(cursor.getColumnIndex(DefaultPersistenceModel.SITE_ID)));
+
 //        logInformation.setRefId(cursor.getString(cursor.getColumnIndex(DefaultPersistenceModel.REF_ID)));
 //        logInformation.setSyncStatus(cursor.getInt(cursor.getColumnIndex(DefaultPersistenceModel.SYNC_STATUS)));
 

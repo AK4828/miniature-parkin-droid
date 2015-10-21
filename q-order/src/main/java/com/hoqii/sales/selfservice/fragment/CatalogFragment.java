@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.hoqii.sales.selfservice.R;
+import com.hoqii.sales.selfservice.activity.OrderListActivity;
 
 import org.meruvian.midas.core.defaults.DefaultFragment;
 
@@ -119,12 +121,15 @@ public class CatalogFragment extends DefaultFragment {
         if (item.getItemId() == R.id.menu_order_list) {
             Log.d(getClass().getSimpleName(), "Click: menu_order_list ");
 
-            Fragment fragment = new OrderListFragment();
+            Intent intent = new Intent(getActivity(), OrderListActivity.class);
+            startActivity(intent);
+
+//          use Fragment OrderList
+            /*Fragment fragment = new OrderListFragment();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.container, fragment);
             transaction.addToBackStack(null);
-            transaction.commit();
-//            getFragmentManager().beginTransaction().replace(R.id.container, fragment, null).commit();
+            transaction.commit();*/
         }
 
         return super.onOptionsItemSelected(item);

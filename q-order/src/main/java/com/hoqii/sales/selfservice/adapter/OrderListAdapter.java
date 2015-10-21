@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import com.hoqii.sales.selfservice.content.database.adapter.OrderMenuDatabaseAdapter;
 import com.hoqii.sales.selfservice.entity.OrderMenu;
 import com.hoqii.sales.selfservice.fragment.OrderListFragment;
-import com.hoqii.sales.selfservice.holder.OrderListHolder;
+import com.hoqii.sales.selfservice.holder.OrderHolder;
 
 import org.meruvian.midas.core.defaults.DefaultAdapter;
 
@@ -20,9 +20,9 @@ import java.util.List;
 /**
  * Created by meruvian on 14/07/15.
  */
-public class OrderListAdapter extends DefaultAdapter<OrderMenu, OrderListHolder> {
+public class OrderListAdapter extends DefaultAdapter<OrderMenu, OrderHolder> {
     private DecimalFormat decimalFormat = new DecimalFormat("#,###");
-    private long totalPrice;
+    private double totalPrice;
     private OrderMenuDatabaseAdapter orderMenuDbAdapter;
     private Fragment fragment;
 
@@ -34,16 +34,16 @@ public class OrderListAdapter extends DefaultAdapter<OrderMenu, OrderListHolder>
     }
 
     @Override
-    public OrderListHolder ViewHolder(View view) {
-        return new OrderListHolder(view);
+    public OrderHolder ViewHolder(View view) {
+        return new OrderHolder(view);
     }
 
     @Override
-    public View createdView(View view, OrderListHolder holder, OrderMenu orderMenu) {
+    public View createdView(View view, OrderHolder holder, OrderMenu orderMenu) {
         totalPrice = orderMenu.getProduct().getSellPrice() * (orderMenu.getQty());
         String q = String.valueOf(orderMenu.getQty());
 
-        holder.menuName.setText(orderMenu.getProduct().getName());
+        holder.menuName.setText(orderMenu.getProduct().getProduct().getName());
         holder.menuQuantity.setText(q);
         holder.totalPrice.setText("Rp " + decimalFormat.format(totalPrice));
 

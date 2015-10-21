@@ -41,7 +41,7 @@ public class ContactJob extends Job {
     @Override
     public void onRun() throws Throwable {
         Log.d(getClass().getSimpleName(), "onRun");
-        JsonRequestUtils request = new JsonRequestUtils(url + HoqiiUri.CONTACT);
+        JsonRequestUtils request = new JsonRequestUtils(url + ESalesUri.CONTACT);
 
         ContactDatabaseAdapter contactDatabaseAdapter = new ContactDatabaseAdapter(SignageAppication.getInstance());
         Contact contact = contactDatabaseAdapter.findContactById(contactId);

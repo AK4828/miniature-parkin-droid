@@ -27,19 +27,22 @@ public class MainActivity extends NavigationDrawer {
     private SharedPreferences preferences;
     private Handler handler;
     private Runnable runnable;
-    private boolean startCampaignTimer = true;
+//    private boolean startCampaignTimer = true;
 
     @Override
     public Fragment mainFragment() {
         return new CatalogFragment();
+//        return new AgentFragment();
     }
 
     @Override
     public void navigationAdapter(NavigationDrawerAdapter adapter) {
-        /*adapter.addNavigation(new Navigation("Campaign", Navigation.NavigationType.MENU));*/
         adapter.addNavigation(new Navigation("Catalog", Navigation.NavigationType.MENU));
         adapter.addNavigation(new Navigation("Contact", Navigation.NavigationType.MENU));
         adapter.addNavigation(new Navigation("History Order", Navigation.NavigationType.MENU));
+        adapter.addNavigation(new Navigation("Settlement", Navigation.NavigationType.MENU));
+
+//        adapter.addNavigation(new Navigation("Agents", Navigation.NavigationType.MENU));
     }
 
     @Override
@@ -58,7 +61,17 @@ public class MainActivity extends NavigationDrawer {
             transaction.replace(R.id.content_frame, fragment);
             transaction.addToBackStack(null);
             transaction.commit();
+        } else if (position == 3) {
+            startActivity(new Intent(this, SettleAgentActivity.class));
         }
+
+        /*if (position == 0) {
+            Fragment fragment = new AgentFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_frame, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }*/
 
         closeDrawer();
     }
@@ -75,8 +88,16 @@ public class MainActivity extends NavigationDrawer {
         SharedPreferences.Editor editorHas = PreferenceManager.getDefaultSharedPreferences(this).edit();
         editorHas.putBoolean("has_sync", false);
         editorHas.commit();
-        startActivity(new Intent(this, LoginActivity.class));
-        finish();
+
+        clearBackStack();
+        MainActivity.this.finish();
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+
+//        startActivity(new Intent(this, LoginActivity.class));
+//        finish();
+
     }
 
     @Override
@@ -104,7 +125,7 @@ public class MainActivity extends NavigationDrawer {
                 startActivity(intent);
 
                 handler.removeCallbacks(this);
-                startCampaignTimer = false;
+//                startCampaignTimer = false;
                 Log.d(MainActivity.class.getName(), "Start campaign activity");
             }
         };
@@ -121,7 +142,14 @@ public class MainActivity extends NavigationDrawer {
         }
     }
 
-    @Override
+    private void clearBackStack() {
+        final FragmentManager fragmentManager = getFragmentManager();
+        while (fragmentManager.getBackStackEntryCount() != 0) {
+            fragmentManager.popBackStackImmediate();
+        }
+    }
+
+    /*@Override
     public void onUserInteraction() {
         super.onUserInteraction();
 
@@ -142,6 +170,6 @@ public class MainActivity extends NavigationDrawer {
             handler.removeCallbacks(runnable);
             handler.postDelayed(runnable, idle * 60 * 1000);
         }
-    }
+    }*/
 
 }

@@ -38,7 +38,7 @@ public class ContactAdapter extends DefaultAdapter<Contact, ContactHolder> {
 
     @Override
     public View createdView(View view, ContactHolder holder, Contact contact) {
-        holder.contactName.setText(contact.getContactName());
+//        holder.contactName.setText(contact.getContactName());
         holder.recipientName.setText(contact.getRecipient());
         holder.contactTelp.setText(contact.getPhone());
 
