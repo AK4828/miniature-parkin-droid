@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:title="@string/nav_home"
+            android:icon="@drawable/ic_dashboard_black_24dp"/>
+        <!--<item-->
+            <!--android:id="@+id/nav_profile"-->
+            <!--android:title="@string/nav_profile"-->
+            <!--android:icon="@drawable/ic_info_black_24dp"/>-->
+    </group>
+
+    <item android:title="@string/nav_order">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_order_purches"
+                    android:icon="@drawable/ic_shopping_cart_black_24dp"
+                    android:title="@string/nav_order_purches" />
+
+                <item
+                    android:id="@+id/seller_order_list"
+                    android:title="@string/nav_order_list"
+                    android:icon="@drawable/ic_shopping_basket_black_24dp"/>
+            </group>
+        </menu>
+    </item>
+
+    <!--<item android:title="Shipment">-->
+        <!--<menu>-->
+            <!--<group android:checkableBehavior="single">-->
+                <!--&lt;!&ndash;<item&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:id="@+id/seller_order_list"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:title="@string/nav_order_list"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:icon="@drawable/ic_shopping_basket_black_24dp"/>&ndash;&gt;-->
+                <!--&lt;!&ndash;<item&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:id="@+id/seller_purchase_order_list"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:title="@string/nav_seller_purchase_order"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:icon="@drawable/ic_shopping_basket_black_24dp"/>&ndash;&gt;-->
+            <!--</group>-->
+        <!--</menu>-->
+    <!--</item>-->
+
+    <item android:title="">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_logout"
+                    android:title="@string/logout" />
+            </group>
+        </menu>
+    </item>
+
+
+</menu>

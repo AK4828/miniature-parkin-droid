@@ -1,6 +1,25 @@
 <resources>
-    <string name="app_name">E-Sales Agen</string>
-    <string name="app_summary">E-Sales Agen</string>
+    <string name="app_name">Point Store</string>
+    <string name="app_summary">Point Store</string>
+
+    <string name="drawer_open">open</string>
+    <string name="drawer_close">close</string>
+
+    //nav title
+    <string name="nav_order">Procurement</string>
+    <string name="nav_shipment">Shipment</string>
+    <string name="nav_seller_purchase_order">Purchase Order</string>
+
+
+    //nav menu
+    <string name="nav_home">Beranda</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_order_requesition">Requesition</string>
+    <string name="nav_order_quantity">Quotation</string>
+    <string name="nav_order_purches">Redeem</string>
+    <string name="nav_order_list">History</string>
+    <string name="nav_menu_shipment">Shipment</string>
+
 
     <string name="search">Pencarian</string>
     <string name="refresh">Refresh</string>
@@ -10,6 +29,7 @@
     <string name="order">Order</string>
     <string name="select_contact">Pilih Pembeli</string>
     <string name="submit">Submit</string>
+    <string name="add_product">Add product</string>
     <string name="added_to_cart">Item Berhasil ditambahkan</string>
     <string name="order_success">Order Berhasil</string>
     <string name="go_to_cart">Lihat Keranjang Belanja</string>
@@ -20,6 +40,8 @@
     <string name="ok">Ok</string>
     <string name="save">Simpan</string>
     <string name="cancel">Batal</string>
+
+    <string name="transition_string">animating transition</string>
 
     <string name="exit">Tekan tombol back lagi untuk menutup halaman ini</string>
     <string name="empty_form">Lengkapi form berikut dengan benar</string>
@@ -69,5 +91,8 @@
         Vivamus pulvinar ante ac accumsan facilisis.
     </string>
 
+    <string name="failed_recieve">Failed receive Data</string>
+    <string name="loading">Please wait ...</string>
 
 </resources>
+
