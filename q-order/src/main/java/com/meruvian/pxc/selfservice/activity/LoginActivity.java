@@ -126,17 +126,8 @@ public class LoginActivity extends DefaultActivity implements TaskService {
     }
 
     private void goToMainActivity() {
-        if(preferences.getBoolean("has_sync", false)) {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        } else {
-            startActivity(new Intent(this, SyncActivity.class));
-            finish();
-            this.finish();
-        }
-
-// startActivity(new Intent(this, MainActivity.class));
-
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     public void onEventMainThread(LoginEvent.LoginSuccess loginSuccess) {

@@ -24,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.meruvian.pxc.selfservice.R;
+import com.meruvian.pxc.selfservice.SignageVariables;
 import com.meruvian.pxc.selfservice.content.database.adapter.CategoryDatabaseAdapter;
 import com.meruvian.pxc.selfservice.content.database.adapter.OrderDatabaseAdapter;
 import com.meruvian.pxc.selfservice.content.database.adapter.OrderMenuDatabaseAdapter;
@@ -68,7 +69,7 @@ public class OrderActivity extends AppCompatActivity {
     private String productId, categoryId;
     private long orderMenuPrice;
     private List<Integer> orderCountList = new ArrayList<Integer>();
-    private DecimalFormat decimalFormat = new DecimalFormat("#,###");
+    private DecimalFormat decimalFormat = new DecimalFormat("#.###");
     private OrderMenu.OrderType orderMenuType;
 
     @Override
@@ -89,6 +90,7 @@ public class OrderActivity extends AppCompatActivity {
             categoryId = product.getParentCategory().getId();
             Log.d("Category id      ","==="+product.getParentCategory().getId());
             category = categoryDatabaseAdapter.findCategoryById(categoryId);
+            Log.d("Cek name", category.getName());
         }
 
         initSet();
@@ -143,8 +145,9 @@ public class OrderActivity extends AppCompatActivity {
     }
 
     private void initSet() {
+        String loadImage = SignageVariables.SERVER_URL+"/api/products/" + product.getId() + "/image?access_token=" + AuthenticationUtils.getCurrentAuthentication().getAccessToken();
         collapsingToolbarLayout.setTitle("Order " + product.getName());
-        imagePreview.displayImage("file://" + ImageUtil.getImagePath(this, productId), prodcutThumb);
+        imagePreview.displayImage(loadImage, prodcutThumb);
         productName.setText(product.getName());
         productNameSub.setText(product.getName());
         productDesc.setText(product.getDescription());
@@ -202,7 +205,7 @@ public class OrderActivity extends AppCompatActivity {
 
 
         try{
-            Bitmap linearBitmap = BitmapFactory.decodeFile(ImageUtil.getImagePath(this, productId));
+            Bitmap linearBitmap = BitmapFactory.decodeFile(loadImage);
             Palette.from(linearBitmap).generate(new Palette.PaletteAsyncListener() {
                 @Override
                 public void onGenerated(Palette palette) {

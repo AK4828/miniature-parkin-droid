@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.meruvian.pxc.selfservice.R;
+import com.meruvian.pxc.selfservice.SignageAppication;
 import com.meruvian.pxc.selfservice.activity.MainActivity;
 import com.meruvian.pxc.selfservice.activity.MainActivityMaterial;
 import com.meruvian.pxc.selfservice.activity.OrderActivity;
@@ -19,14 +21,26 @@ import com.meruvian.pxc.selfservice.adapter.ProductAdapter;
 import com.meruvian.pxc.selfservice.content.database.adapter.OrderDatabaseAdapter;
 import com.meruvian.pxc.selfservice.content.database.adapter.OrderMenuDatabaseAdapter;
 import com.meruvian.pxc.selfservice.content.database.adapter.ProductDatabaseAdapter;
+import com.meruvian.pxc.selfservice.entity.Category;
+import com.meruvian.pxc.selfservice.entity.MainBody;
 import com.meruvian.pxc.selfservice.entity.OrderMenu;
 import com.meruvian.pxc.selfservice.entity.Product;
+import com.meruvian.pxc.selfservice.entity.ProductUom;
+import com.meruvian.pxc.selfservice.service.ProductService;
+import com.meruvian.pxc.selfservice.util.AuthenticationUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by miftakhul on 11/16/15.
@@ -36,13 +50,12 @@ public class ProductFragmentGrid extends Fragment {
     private ImageLoader imageLoader = ImageLoader.getInstance();
     private GridView gridView;
     private ProductAdapter productAdapter;
+    private ProductDatabaseAdapter productDbAdapter;
     private int tx = 2;
-    private DecimalFormat decimalFormat = new DecimalFormat("#,###");
-    private ProductDatabaseAdapter productDatabaseAdapter;
-    private OrderDatabaseAdapter orderDbAdapter;
-    private OrderMenuDatabaseAdapter orderMenuDbAdapter;
-    private List<OrderMenu> orderMenus = new ArrayList<OrderMenu>();
+    private DecimalFormat decimalFormat = new DecimalFormat("#.###");
+    private List<Product> productList = new ArrayList<Product>();
     private boolean isMinLoli = false;
+    private List<String> idProducts = new ArrayList<String>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +76,7 @@ public class ProductFragmentGrid extends Fragment {
         } else {
             isMinLoli = false;
         }
+
     }
 
 
@@ -73,15 +87,83 @@ public class ProductFragmentGrid extends Fragment {
         if (!imageLoader.isInited()) {
             imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
         }
+        productAdapter = new ProductAdapter(getActivity());
+        productDbAdapter = new ProductDatabaseAdapter(getActivity());
 
-        productDatabaseAdapter = new ProductDatabaseAdapter(getActivity());
-        orderDbAdapter = new OrderDatabaseAdapter(getActivity());
-        orderMenuDbAdapter = new OrderMenuDatabaseAdapter(getActivity());
+        SignageAppication application = SignageAppication.getInstance();
+        Map<String, String> param = new HashMap<>();
+        param.put("access_token", AuthenticationUtils.getCurrentAuthentication().getAccessToken());
 
-        productAdapter = new ProductAdapter(getActivity(), dataProduct());
 
         gridView = (GridView) view.findViewById(R.id.grid_image);
         gridView.setAdapter(productAdapter);
+
+        try {
+            String limitData = "100";
+            Map<String, String> limit = new HashMap<>();
+            limit.put("max", limitData);
+            ProductService productService = application.getRetrofit().create(ProductService.class);
+            Call<MainBody<Product>> products = productService.getAllProducts(param, limit);
+            products.enqueue(new Callback<MainBody<Product>>() {
+                @Override
+                public void onResponse(Response<MainBody<Product>> response, Retrofit retrofit) {
+                    MainBody<Product> mainBody = response.body();
+                    List<Product> pulledProducts = new ArrayList<Product>();
+                    for (Product p : mainBody.getContent()) {
+                        productAdapter.addProducts(p);
+                        Log.d("cek null", String.valueOf(p.getCategory()));
+                        productList.add(p);
+
+                        Product product = new Product();
+                        product.setId(p.getId());
+                        product.setName(p.getName());
+                        if (p.getSellPrice() >= 1) {
+                            product.setSellPrice(p.getSellPrice());
+                        } else {
+                            product.setSellPrice(0);
+                        }
+
+                        Category parentCategory = new Category();
+                        if (p.getParentCategory() != null) {
+                            parentCategory.setId(p.getParentCategory().getId());
+                            Log.d("parent", p.getParentCategory().getId());
+                        }
+
+                        Category category = new Category();
+
+                        if (p.getCategory() != null) {
+                            category.setId(p.getCategory().getId());
+                            Log.d("category", p.getCategory().getId());
+                        }
+
+                        ProductUom uom = new ProductUom();
+                        if (p.getUom() != null) {
+                            uom.setId(p.getUom().getId());
+                            Log.d("uom", p.getUom().getId());
+                        }
+                        product.setParentCategory(parentCategory);
+                        product.setCategory(category);
+                        product.setUom(uom);
+                        product.setCode(p.getCode());
+                        product.setDescription(p.getDescription());
+
+                        pulledProducts.add(product);
+
+
+                    }
+                    productDbAdapter.saveProducts(pulledProducts);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+
+                    Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -89,7 +171,7 @@ public class ProductFragmentGrid extends Fragment {
                     Intent intentOrder = new Intent(getActivity(), OrderActivity.class);
 
                     intentOrder.putExtra("tx", 0);
-                    intentOrder.putExtra("productId", dataProduct().get(position).getId());
+                    intentOrder.putExtra("productId", productList.get(position).getId());
                     View startView = gridView.getChildAt(position).findViewById(R.id.image);
 
                     ((MainActivity) getActivity()).order(intentOrder, startView);
@@ -97,7 +179,7 @@ public class ProductFragmentGrid extends Fragment {
                 } else if (tx == 1) {
                     Intent intentOrder = new Intent(getActivity(), OrderActivity.class);
                     intentOrder.putExtra("tx", 1);
-                    intentOrder.putExtra("productId", dataProduct().get(position).getId());
+                    intentOrder.putExtra("productId", productList.get(position).getId());
                     View startView = gridView.getChildAt(position).findViewById(R.id.image);
 
                     ((MainActivity) getActivity()).order(intentOrder, startView);
@@ -106,7 +188,7 @@ public class ProductFragmentGrid extends Fragment {
                     Intent intentOrder = new Intent(getActivity(), OrderActivity.class);
 
                     intentOrder.putExtra("tx", 2);
-                    intentOrder.putExtra("productId", dataProduct().get(position).getId());
+                    intentOrder.putExtra("productId", productList.get(position).getId());
                     View startView = gridView.getChildAt(position).findViewById(R.id.image);
 
 // ((MainActivity)getActivity()).order(intentOrder, startView);
@@ -129,35 +211,4 @@ public class ProductFragmentGrid extends Fragment {
 
         return view;
     }
-
-
-    private List<Product> dataProduct() {
-        List<Product> products = new ArrayList<Product>();
-
-        String parentCategory = null;
-        String category = null;
-        String name = null;
-
-        if (getArguments() != null) {
-            parentCategory = getArguments().getString("parent_category", null);
-            category = getArguments().getString("category", null);
-            name = getArguments().getString("name", null);
-        }
-
-
-        if (parentCategory != null) {
-            products = productDatabaseAdapter.getMenuByParentCategory(parentCategory);
-        } else if (category != null) {
-            products = productDatabaseAdapter.getMenuByCategory(category);
-        } else if (name != null) {
-            products = productDatabaseAdapter.getMenuByName(name);
-        } else {
-            products = productDatabaseAdapter.getMenu();
-        }
-
-        Log.d("jumlah total", Integer.toString(products.size()));
-        return products;
-    }
-
-
 }

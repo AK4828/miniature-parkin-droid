@@ -7,7 +7,7 @@ public class SignageVariables {
     public static final String PREFS_SERVER = "APP_SERVER";
     public static final String PGA_APP_ID = "419c6697-14b7-4853-880e-b68e3731e316";
     public static final String PGA_API_SECRET = "s3cr3t";
-    public static final String SERVER_URL = "http://192.168.2.213";
+    public static final String SERVER_URL = "http://point.demo.meruvian.org";
 
     public static final String FXPC_APP_ID = "ef1157dc-39de-4bf1-b1aa-dae9c15d6d60";
     public static final String FXPC_APP_SECRET = "4ipZr2tK3feVx3DjkFm7KQXHTKtW3tL9PnGephjnSbEJhfrxZlRR5j58SxmZco4Q";

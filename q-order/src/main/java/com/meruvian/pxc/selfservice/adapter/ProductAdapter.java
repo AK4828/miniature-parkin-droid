@@ -15,7 +15,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.meruvian.pxc.selfservice.R;
+import com.meruvian.pxc.selfservice.SignageVariables;
 import com.meruvian.pxc.selfservice.entity.Product;
+import com.meruvian.pxc.selfservice.util.AuthenticationUtils;
 import com.meruvian.pxc.selfservice.util.ImageUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -23,6 +25,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,18 +34,16 @@ import java.util.List;
 public class ProductAdapter extends BaseAdapter {
     private Context mcontext;
     private ImageLoader imageLoader = ImageLoader.getInstance();
-    private List<Product> products;
+    private List<Product> products = new ArrayList<Product>();
     private DecimalFormat decimalFormat = new DecimalFormat("#,###");
     private int mutedColor;
 
 
     private static LayoutInflater infalter = null;
 
-    public ProductAdapter(Context c, List<Product> products) {
+    public ProductAdapter(Context c) {
         mcontext = c;
         infalter = (LayoutInflater) mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        this.products = products;
 
         if (!imageLoader.isInited()) {
             imageLoader.init(ImageLoaderConfiguration.createDefault(mcontext));
@@ -69,7 +70,9 @@ public class ProductAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         final Holder holder = new Holder();
+        Product product = products.get(position);
         View itemView = infalter.inflate(R.layout.adapter_product_grid, null);
+        String loadImage = SignageVariables.SERVER_URL+"/api/products/" + product.getId() + "/image?access_token=" + AuthenticationUtils.getCurrentAuthentication().getAccessToken();
 
 
         holder.title = (TextView) itemView.findViewById(R.id.text_name);
@@ -78,13 +81,13 @@ public class ProductAdapter extends BaseAdapter {
         holder.imageView = (ImageView) itemView.findViewById(R.id.image);
         holder.detailLayout = (RelativeLayout) itemView.findViewById(R.id.detail_layout);
 
-        holder.title.setText(products.get(position).getName());
+        holder.title.setText(product.getName());
 
-        holder.price.setText(decimalFormat.format(products.get(position).getSellPrice()) + " Pt");
+        holder.price.setText(decimalFormat.format(product.getSellPrice()) + " Pt");
 
-        Log.d("check point", String.valueOf(products.get(position).getSellPrice()));
+        Log.d("check point", String.valueOf(product.getSellPrice()));
 
-        imageLoader.displayImage("file://" + ImageUtil.getImagePath(mcontext, products.get(position).getId()), holder.imageView, new SimpleImageLoadingListener() {
+        imageLoader.displayImage(loadImage, holder.imageView, new SimpleImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
                 holder.progressImage.setVisibility(View.VISIBLE);
@@ -104,9 +107,9 @@ public class ProductAdapter extends BaseAdapter {
             }
         });
 
-        Log.d("path i   mage",ImageUtil.getImagePath(mcontext, products.get(position).getId()));
+        Log.d("path image",loadImage);
 
-        Bitmap bitmap = BitmapFactory.decodeFile(ImageUtil.getImagePath(mcontext, products.get(position).getId()));
+        Bitmap bitmap = BitmapFactory.decodeFile(loadImage);
 
         try {
             Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
@@ -120,6 +123,11 @@ public class ProductAdapter extends BaseAdapter {
             e.printStackTrace();
         }
         return itemView;
+    }
+
+    public void addProducts(Product product) {
+        products.add(product);
+        notifyDataSetChanged();
     }
 
     public class Holder {

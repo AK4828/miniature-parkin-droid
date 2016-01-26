@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Q Sales.iml" filepath="$PROJECT_DIR$/Q Sales.iml" />
+      <module fileurl="file://$PROJECT_DIR$/QSales.iml" filepath="$PROJECT_DIR$/QSales.iml" />
       <module fileurl="file://$PROJECT_DIR$/esales-collector/esales-collector.iml" filepath="$PROJECT_DIR$/esales-collector/esales-collector.iml" />
       <module fileurl="file://$PROJECT_DIR$/midas-core/midas-core.iml" filepath="$PROJECT_DIR$/midas-core/midas-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/q-order/q-order.iml" filepath="$PROJECT_DIR$/q-order/q-order.iml" />

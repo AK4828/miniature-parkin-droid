@@ -4,6 +4,7 @@ import android.app.Application;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.meruvian.pxc.selfservice.interceptor.SecurityInterceptor;
@@ -17,7 +18,9 @@ import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.path.android.jobqueue.JobManager;
 import com.path.android.jobqueue.config.Configuration;
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
+import io.fabric.sdk.android.Fabric;
 import java.io.File;
 
 import retrofit.JacksonConverterFactory;
@@ -41,6 +44,7 @@ public class SignageAppication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .showImageForEmptyUri(R.drawable.no_image)
@@ -84,11 +88,15 @@ public class SignageAppication extends Application {
     }
 
     private void configureRestAdaper() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient();
         client.interceptors().add(new SecurityInterceptor());
+        client.interceptors().add(logging);
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://fxpc.demo.meruvian.org")
+                .baseUrl(SignageVariables.SERVER_URL)
                 .client(client)
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .build();

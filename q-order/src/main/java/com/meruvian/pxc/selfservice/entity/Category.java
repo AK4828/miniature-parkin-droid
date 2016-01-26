@@ -1,13 +1,18 @@
 package com.meruvian.pxc.selfservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.meruvian.midas.core.entity.DefaultEntity;
 
 /**
  * Created by meruvian on 22/01/15.
  */
 public class Category extends DefaultEntity {
+    @JsonProperty("name")
     private String name;
+    @JsonProperty("description")
     private String description;
+    @JsonProperty("parent")
     private Category parentCategory;
     private int status;
 

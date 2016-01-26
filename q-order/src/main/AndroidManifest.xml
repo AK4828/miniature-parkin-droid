@@ -46,6 +46,9 @@
             android:name="com.meruvian.pxc.selfservice.content.MidasContentProvider"
             android:authorities="com.meruvian.pxc.selfservice.content.midascontentprovider"
             android:syncable="true" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="55c5d6591dd96b913045881a4581bd84ae994187" />
     </application>
 
 </manifest>

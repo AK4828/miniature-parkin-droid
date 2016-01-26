@@ -23,10 +23,9 @@ public class SecurityInterceptor implements Interceptor {
 
         if (auth != null) {
             request = request.newBuilder()
-                    .addHeader("Authorization", "Bearer" + auth.getAccessToken())
+                    .addHeader("Authorization", "Bearer " + auth.getAccessToken())
                     .build();
 
-            Log.d("aaaa",auth.getAccessToken());
         }
 
         return chain.proceed(request);
