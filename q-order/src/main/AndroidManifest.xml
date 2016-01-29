@@ -24,6 +24,8 @@
             android:configChanges="orientation|screenSize" android:theme="@style/AppTheme.NoActionBar" />
         <!--<activity android:name=".activity.OrderListActivityMaterial" android:theme="@style/AppTheme.NoActionBar"/>-->
         <activity android:name="com.meruvian.pxc.selfservice.activity.OrderActivity" android:theme="@style/AppTheme.NoActionBar.Collapse" />
+        <activity android:name="com.meruvian.pxc.selfservice.activity.RewardActivity" android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name="com.meruvian.pxc.selfservice.activity.WizardActivity"
                   android:configChanges="orientation|screenSize" android:theme="@style/esales" />
@@ -36,9 +38,9 @@
         <activity android:name="com.meruvian.pxc.selfservice.activity.LoginActivity"
                   android:configChanges="orientation|screenSize" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name="com.meruvian.pxc.selfservice.activity.SellerOrderListActivity"
-            android:configChanges="orientation|screenSize" android:theme="@style/esales"/>
+            android:configChanges="orientation|screenSize" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name="com.meruvian.pxc.selfservice.activity.SellerOrderMenuListActivity"
-            android:configChanges="orientation|screenSize" android:theme="@style/esales"/>
+            android:configChanges="orientation|screenSize" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name="com.meruvian.pxc.selfservice.activity.WebViewActivity"
             android:configChanges="orientation|screenSize" android:theme="@style/esales"/>
 

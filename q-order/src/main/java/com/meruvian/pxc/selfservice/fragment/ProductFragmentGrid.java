@@ -111,7 +111,6 @@ public class ProductFragmentGrid extends Fragment {
                     List<Product> pulledProducts = new ArrayList<Product>();
                     for (Product p : mainBody.getContent()) {
                         productAdapter.addProducts(p);
-                        Log.d("cek null", String.valueOf(p.getCategory()));
                         productList.add(p);
 
                         Product product = new Product();
@@ -126,20 +125,17 @@ public class ProductFragmentGrid extends Fragment {
                         Category parentCategory = new Category();
                         if (p.getParentCategory() != null) {
                             parentCategory.setId(p.getParentCategory().getId());
-                            Log.d("parent", p.getParentCategory().getId());
                         }
 
                         Category category = new Category();
 
                         if (p.getCategory() != null) {
                             category.setId(p.getCategory().getId());
-                            Log.d("category", p.getCategory().getId());
                         }
 
                         ProductUom uom = new ProductUom();
                         if (p.getUom() != null) {
                             uom.setId(p.getUom().getId());
-                            Log.d("uom", p.getUom().getId());
                         }
                         product.setParentCategory(parentCategory);
                         product.setCategory(category);

@@ -56,6 +56,16 @@ public class SellerOrderAdapter extends RecyclerView.Adapter<SellerOrderAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.orderNumber.setText("Order number : "+orderList.get(position).getReceiptNumber());
+//        if (orderList.get(position).getStatus()) {
+//            holder.orderStatus.setText("Status : " + "Diproses");
+//        } else if (orderList.get(position).getStatus().equals("SENDING")) {
+//            holder.orderStatus.setText("Status : " + "Dikirim");
+//        } else if (orderList.get(position).getStatus().equals("RECEIVED")) {
+//            holder.orderStatus.setText("Status : " + "Diterima");
+//        } else if (orderList.get(position).getStatus().equals("CANCELED")) {
+//            holder.orderStatus.setText("Status : " + "Dibatalkan");
+//        }
+        holder.orderStatus.setText("Status : " + orderList.get(position).getStatus());
         holder.orderDate.setText("Tanggal : "+orderList.get(position).getLogInformation().getCreateDate().toString());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -86,12 +96,13 @@ public class SellerOrderAdapter extends RecyclerView.Adapter<SellerOrderAdapter.
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView orderNumber, orderDate;
+        private TextView orderNumber, orderDate, orderStatus;
 
         public ViewHolder(View itemView) {
             super(itemView);
             orderNumber = (TextView) itemView.findViewById(R.id.ol_number);
             orderDate = (TextView) itemView.findViewById(R.id.ol_tgl);
+            orderStatus = (TextView) itemView.findViewById(R.id.ol_status);
         }
     }
 

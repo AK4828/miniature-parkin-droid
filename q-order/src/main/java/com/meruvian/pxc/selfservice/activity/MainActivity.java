@@ -22,10 +22,8 @@ import android.widget.TextView;
 import com.meruvian.pxc.selfservice.R;
 import com.meruvian.pxc.selfservice.SignageAppication;
 import com.meruvian.pxc.selfservice.fragment.CategoryFragmentGrid;
-import com.meruvian.pxc.selfservice.fragment.MainMaterialFragment;
 import com.meruvian.pxc.selfservice.fragment.OrderListFragment;
 import com.meruvian.pxc.selfservice.fragment.ProductFragmentGrid;
-import com.meruvian.pxc.selfservice.fragment.UserProfileFragment;
 import com.meruvian.pxc.selfservice.job.RefreshTokenJob;
 import com.meruvian.pxc.selfservice.util.AuthenticationUtils;
 import com.path.android.jobqueue.JobManager;
@@ -55,6 +53,12 @@ public class MainActivity extends AppCompatActivity {
         } else {
             isMinLoli = false;
         }
+        if (isAccess()) {
+            Log.d("Granted", "refresh ok");
+        } else {
+            Log.d("HMMMMMMMMMM", "refreshing...");
+            jobManager.addJobInBackground(new RefreshTokenJob());
+        }
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -83,12 +87,6 @@ public class MainActivity extends AppCompatActivity {
         categoryGrid.addToBackStack(null);
         categoryGrid.commit();
 
-        if (isAccess()) {
-            Log.d("Granted", "refresh ok");
-        } else {
-            Log.d("HMMMMMMMMMM", "refreshing...");
-            jobManager.addJobInBackground(new RefreshTokenJob());
-        }
 
     }
 
@@ -116,14 +114,6 @@ public class MainActivity extends AppCompatActivity {
                         categoryGrid.commit();
                         break;
 
-//                    case R.id.nav_profile:
-//                        UserProfileFragment userProfileFragment = new UserProfileFragment();
-//                        FragmentTransaction profile = getSupportFragmentManager().beginTransaction();
-//                        profile.replace(R.id.content_frame, userProfileFragment);
-//                        profile.addToBackStack(null);
-//                        profile.commit();
-//                        break;
-
                     case R.id.nav_order_purches:
                         CategoryFragmentGrid category_purches = new CategoryFragmentGrid();
 
@@ -144,11 +134,10 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(orderIntent);
                         break;
 
-//                    case R.id.seller_purchase_order_list :
-//                        Intent purchaseOrderIntent = new Intent(MainActivity.this, SellerOrderListActivity.class);
-//                        purchaseOrderIntent.putExtra("orderListType", "purchaseOrderList");
-//                        startActivity(purchaseOrderIntent);
-//                        break;
+                    case R.id.nav_point :
+                        Intent pointIntent = new Intent(MainActivity.this, RewardActivity.class);
+                        startActivity(pointIntent);
+                        break;
 
                     case R.id.nav_logout:
                         AuthenticationUtils.logout();

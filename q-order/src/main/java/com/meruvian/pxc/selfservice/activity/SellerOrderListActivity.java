@@ -66,9 +66,7 @@ public class SellerOrderListActivity extends AppCompatActivity implements TaskSe
             orderType = getIntent().getExtras().get("orderListType").toString();
             Log.d(getClass().getSimpleName(), "order type "+ orderType);
 
-            if (getIntent().getExtras().get("orderListType").toString().equalsIgnoreCase("purchaseOrderList")){
-                orderUrl = "/api/purchaseOrders";
-            }else if (getIntent().getExtras().get("orderListType").toString().equalsIgnoreCase("orderList")){
+           if (getIntent().getExtras().get("orderListType").toString().equalsIgnoreCase("orderList")){
                 orderUrl = "/api/orders";
             }
         }
@@ -207,20 +205,6 @@ public class SellerOrderListActivity extends AppCompatActivity implements TaskSe
                             contact.setOtherPhone(contactObject.getString("otherPhone"));
                             contact.setEmail(contactObject.getString("email"));
                             contact.setOtherEmail(contactObject.getString("otherEmail"));
-
-                            JSONObject businessPartnerObject = new JSONObject();
-                            if (!contactObject.isNull("businessPartner")){
-                                businessPartnerObject = contactObject.getJSONObject("businessPartner");
-                                BusinessPartner businessPartner = new BusinessPartner();
-                                businessPartner.setId(businessPartnerObject.getString("id"));
-                                businessPartner.setName(businessPartnerObject.getString("name"));
-                                businessPartner.setEmail(businessPartnerObject.getString("email"));
-                                businessPartner.setAddress(businessPartnerObject.getString("address"));
-                                businessPartner.setZipCode(businessPartnerObject.getString("zipCode"));
-
-                                contact.setBusinessPartner(businessPartner);
-                            }
-                            order.setContact(contact);
                         }
 
                         orders.add(order);

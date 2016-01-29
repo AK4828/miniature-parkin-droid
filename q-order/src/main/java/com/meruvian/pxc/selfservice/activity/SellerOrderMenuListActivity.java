@@ -143,7 +143,6 @@ public class SellerOrderMenuListActivity extends AppCompatActivity implements Ta
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.shipment_menu, menu);
@@ -158,30 +157,6 @@ public class SellerOrderMenuListActivity extends AppCompatActivity implements Ta
                 super.onBackPressed();
                 break;
 
-            case R.id.menu_submit_shipment:
-
-                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                alert.setTitle("Shipment");
-                alert.setMessage("Send shipment ?");
-                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Shipment shipment = new Shipment();
-                        shipment.setOrder(orderShip);
-
-                        jobManager.addJobInBackground(new ShipmentJob(preferences.getString("server_url_point", ""), orderShip.getId()));
-                        Log.d("ORDER ID", orderShip.getId());
-                        progressDialog.show();
-                    }
-                });
-                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                alert.show();
-                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -204,7 +179,6 @@ public class SellerOrderMenuListActivity extends AppCompatActivity implements Ta
 
         omDate.setText(simpleDateFormat.format(date).toString());
         omReceipt.setText("Order Number : " + getIntent().getExtras().getString("orderReceipt"));
-//        omBusinessPartner.setText("Business Partner : " + getIntent().getExtras().getString("orderBusinessPartnerName"));
 
     }
 

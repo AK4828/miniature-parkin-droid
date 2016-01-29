@@ -88,9 +88,7 @@ public class OrderActivity extends AppCompatActivity {
 
             product = productDatabaseAdapter.findAllProductById(productId);
             categoryId = product.getParentCategory().getId();
-            Log.d("Category id      ","==="+product.getParentCategory().getId());
             category = categoryDatabaseAdapter.findCategoryById(categoryId);
-            Log.d("Cek name", category.getName());
         }
 
         initSet();

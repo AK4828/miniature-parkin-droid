@@ -9,6 +9,7 @@
     <string name="nav_order">Procurement</string>
     <string name="nav_shipment">Shipment</string>
     <string name="nav_seller_purchase_order">Purchase Order</string>
+    <string name="nav_rewards">Rewards</string>
 
 
     //nav menu
@@ -19,6 +20,7 @@
     <string name="nav_order_purches">Redeem</string>
     <string name="nav_order_list">History</string>
     <string name="nav_menu_shipment">Shipment</string>
+    <string name="nav_point">Point</string>
 
 
     <string name="search">Pencarian</string>

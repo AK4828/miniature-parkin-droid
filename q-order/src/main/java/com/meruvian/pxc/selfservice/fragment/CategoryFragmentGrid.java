@@ -84,7 +84,6 @@ public class CategoryFragmentGrid extends Fragment {
                         MainBody<Category> mainBody = response.body();
                         List<Category> pulledCategories = new ArrayList<Category>();
                         for (Category c : mainBody.getContent()) {
-                            Log.d("Null check", c.getId());
                             categoryGridAdapter.addItem(c);
                             categoryList.add(c);
 
@@ -95,12 +94,8 @@ public class CategoryFragmentGrid extends Fragment {
                                 parentCategory.setId(c.getParentCategory().getId());
                             }
                             category.setName(c.getName());
-                            Log.d("Null check", c.getName());
-
                             category.setParentCategory(parentCategory);
-
                             pulledCategories.add(category);
-                            Log.d("Null check", String.valueOf(pulledCategories.size()));
                         }
                         categoryAdapter.saveCategory(pulledCategories);
                     }

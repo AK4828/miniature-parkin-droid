@@ -15,6 +15,7 @@ import com.path.android.jobqueue.Params;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.oltu.oauth2.common.message.types.GrantType;
 import org.meruvian.midas.core.job.Priority;
 
 import de.greenrobot.event.EventBus;
@@ -37,7 +38,7 @@ public class RefreshTokenJob extends LoginJob {
         Log.d(getClass().getSimpleName(), preferences.getString("server_url_point", ""));
 
         JsonRequestUtils requestUtils = new JsonRequestUtils(preferences.getString("server_url_point", "") + SignageVariables.PGA_REQUEST_TOKEN);
-        requestUtils.addQueryParam("grant_type", "refresh_token");
+        requestUtils.addQueryParam("grant_type", String.valueOf(GrantType.REFRESH_TOKEN));
         requestUtils.addQueryParam("client_id", SignageVariables.PGA_APP_ID);
         requestUtils.addQueryParam("client_secret", SignageVariables.PGA_API_SECRET);
         requestUtils.addQueryParam("refresh_token", AuthenticationUtils.getCurrentAuthentication().getRefreshToken());
