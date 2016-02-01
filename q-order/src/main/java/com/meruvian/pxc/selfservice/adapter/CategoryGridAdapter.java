@@ -9,18 +9,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.meruvian.pxc.selfservice.R;
+import com.meruvian.pxc.selfservice.SignageAppication;
 import com.meruvian.pxc.selfservice.SignageVariables;
 import com.meruvian.pxc.selfservice.content.database.adapter.ProductDatabaseAdapter;
 import com.meruvian.pxc.selfservice.entity.Category;
 import com.meruvian.pxc.selfservice.entity.Product;
+import com.meruvian.pxc.selfservice.job.RefreshTokenJob;
 import com.meruvian.pxc.selfservice.util.AuthenticationUtils;
 import com.meruvian.pxc.selfservice.util.ImageUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.path.android.jobqueue.JobManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +82,7 @@ public class CategoryGridAdapter extends BaseAdapter {
         holder.imageView = (ImageView) itemView.findViewById(R.id.category_image);
         holder.title = (TextView) itemView.findViewById(R.id.category_title);
         holder.cardView = (View) itemView.findViewById(R.id.category_view);
+
 //
 //        if (products.size() == 0) {
 //            holder.imageView.setImageResource(R.drawable.no_image);
@@ -103,6 +108,7 @@ public class CategoryGridAdapter extends BaseAdapter {
 //            }
         holder.cardView.setBackgroundColor(mcontext.getResources().getColor(R.color.colorPrimary));
         holder.title.setText(category.getName());
+
         return itemView;
 
     }

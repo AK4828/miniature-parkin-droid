@@ -17,6 +17,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.oltu.oauth2.common.message.types.GrantType;
 import org.meruvian.midas.core.job.Priority;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.greenrobot.event.EventBus;
 
@@ -54,9 +56,27 @@ public class RefreshTokenJob extends LoginJob {
 
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
             registerAuthentication(responseWrapper);
+            EventBus.getDefault().post(new RefreshEvent(RefreshEvent.REFRESH_SUCCESS));
         } else {
             Log.e(RefreshTokenJob.class.getSimpleName(), "Access Code: " + response.getStatusLine().getStatusCode() + " " +response.getStatusLine().getReasonPhrase());
-            EventBus.getDefault().post(new LoginEvent.LoginFailed(response.getStatusLine().getStatusCode()));
+            EventBus.getDefault().post(new RefreshEvent(RefreshEvent.REFRESH_FAILED));
+        }
+    }
+
+    public static class RefreshEvent {
+        public static final int REFRESH_SUCCESS = 0;
+        public static final int REFRESH_FAILED = 1;
+        public static final int REFRESH_ERROR = 2;
+        public static final int REFRESH_STARTED = 3;
+
+        private final int status;
+
+        public RefreshEvent(int status) {
+            this.status = status;
+        }
+
+        public int getStatus() {
+            return status;
         }
     }
 }

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -20,9 +21,11 @@ import com.meruvian.pxc.selfservice.content.database.adapter.ProductDatabaseAdap
 import com.meruvian.pxc.selfservice.entity.Category;
 import com.meruvian.pxc.selfservice.entity.MainBody;
 import com.meruvian.pxc.selfservice.entity.Product;
+import com.meruvian.pxc.selfservice.job.RefreshTokenJob;
 import com.meruvian.pxc.selfservice.service.CategoryService;
 import com.meruvian.pxc.selfservice.service.ProductService;
 import com.meruvian.pxc.selfservice.util.AuthenticationUtils;
+import com.path.android.jobqueue.JobManager;
 
 import org.json.JSONObject;
 

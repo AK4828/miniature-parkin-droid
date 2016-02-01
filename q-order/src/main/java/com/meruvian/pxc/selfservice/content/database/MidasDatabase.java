@@ -29,7 +29,7 @@ import com.meruvian.pxc.selfservice.content.database.model.UserDatabaseModel;
  */
 public class MidasDatabase extends SQLiteOpenHelper {
     public static final String DATABASE = "point_xchange";
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
 
     public static final String CATEGORY_TABLE = "point_category";
     public static final String PRODUCT_TABLE = "point_product";
