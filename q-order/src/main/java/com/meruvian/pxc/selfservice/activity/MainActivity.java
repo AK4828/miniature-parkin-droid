@@ -41,14 +41,12 @@ public class MainActivity extends AppCompatActivity {
     private boolean isMinLoli = false;
     private static final int ORDER_REQUEST = 300;
     private static final int ORDER_REQUEST_OPTIONS = 301;
-    private JobManager jobManager;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        jobManager = SignageAppication.getInstance().getJobManager();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             isMinLoli = true;
@@ -90,31 +88,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (isAccess()) {
-            Log.d("Granted", "No needed");
-        } else {
-            Log.d("HMMMMMMMMMM", "refreshing...");
-            jobManager.addJobInBackground(new RefreshTokenJob());
-        }
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        EventBus.getDefault().unregister(this);
     }
 
     private void setNav() {
         TextView currentUser = (TextView)findViewById(R.id.username);
-        currentUser.setText(AuthenticationUtils.getCurrentAuthentication().getSite().getName());
+        currentUser.setText(AuthenticationUtils.getCurrentAuthentication().getUser().getName().getFirst());
         NavigationView navi = (NavigationView) findViewById(R.id.nav_view);
         navi.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -188,12 +167,9 @@ public class MainActivity extends AppCompatActivity {
             ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this, startView, transitionName);
 
             startActivityForResult(intent, ORDER_REQUEST, optionsCompat.toBundle());
-            Log.d("order", " loli========================================");
         } else {
             startActivityForResult(intent, ORDER_REQUEST);
-            Log.d("order", " not loli========================================");
         }
-        Log.d("order", "========================================");
     }
 
     public void orderOption(){
@@ -202,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("result", "on=========================");
 
         if (requestCode == ORDER_REQUEST) {
 
@@ -212,17 +187,13 @@ public class MainActivity extends AppCompatActivity {
                 orderList.replace(R.id.content_frame, orderFragment);
                 orderList.addToBackStack(null);
                 orderList.commitAllowingStateLoss();
-                Log.d("result","ok =========================");
             }
         }else if (requestCode == ORDER_REQUEST_OPTIONS){
             if (resultCode == RESULT_OK){
-                Log.d("result","ok orderOptions =========================");
 
                 if (data != null){
 
                     String type = data.getExtras().getString("type",null);
-                    Log.d("result type", type);
-
                     if (type.equalsIgnoreCase("orderList")){
 
                         OrderListFragment orderFragment = new OrderListFragment();
@@ -257,30 +228,4 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager.popBackStackImmediate();
         }
     }
-
-    public boolean isAccess() {
-        boolean access = false;
-        long expiresIn = AuthenticationUtils.getCurrentAuthentication().getExpiresIn();
-        long loginTime = AuthenticationUtils.getCurrentAuthentication().getLoginTime();
-        long curentTime = System.currentTimeMillis();
-        long realDuration = curentTime - loginTime;
-        long realDurationInSecon = TimeUnit.MILLISECONDS.toSeconds(realDuration);
-
-        if (expiresIn > realDurationInSecon){
-            access = true;
-        }else {
-            access = false;
-        }
-        return access;
-    }
-
-    public void onEventMainThread(RefreshTokenJob.RefreshEvent event) {
-        int status = event.getStatus();
-
-        if (status == RefreshTokenJob.RefreshEvent.REFRESH_FAILED) {
-            AuthenticationUtils.logout();
-        }
-
-    }
-
 }

@@ -10,7 +10,8 @@ import com.meruvian.pxc.selfservice.R;
 
 import org.meruvian.midas.core.defaults.DefaultHolder;
 
-import butterknife.InjectView;
+import butterknife.Bind;
+
 
 /**
  * Created by meruvian on 03/10/15.
@@ -20,15 +21,15 @@ public class SettelItemHolder extends DefaultHolder {
         super(view);
     }
 
-    @InjectView(R.id.text_item_name)
+    @Bind(R.id.text_item_name)
     public TextView textItem;
-    @InjectView(R.id.button_min_item)
+    @Bind(R.id.button_min_item)
     public Button btnMin;
-    @InjectView(R.id.edit_quantity)
+    @Bind(R.id.edit_quantity)
     public EditText editQuantity;
-    @InjectView(R.id.button_add_item)
+    @Bind(R.id.button_add_item)
     public Button btnAdd;
-    @InjectView(R.id.button_cancel)
+    @Bind(R.id.button_cancel)
     public ImageButton btnCancel;
 
 }

@@ -7,7 +7,12 @@ import android.util.Log;
 import com.crashlytics.android.Crashlytics;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.joanzapata.iconify.Iconify;
+import com.joanzapata.iconify.fonts.FontAwesomeModule;
+import com.joanzapata.iconify.fonts.TypiconsModule;
 import com.meruvian.pxc.selfservice.interceptor.SecurityInterceptor;
+import com.meruvian.pxc.selfservice.job.RefreshTokenJob;
+import com.meruvian.pxc.selfservice.util.AuthenticationUtils;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -20,8 +25,10 @@ import com.path.android.jobqueue.config.Configuration;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
+import de.greenrobot.event.EventBus;
 import io.fabric.sdk.android.Fabric;
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 import retrofit.JacksonConverterFactory;
 import retrofit.Retrofit;
@@ -45,6 +52,10 @@ public class SignageAppication extends Application {
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
+        Iconify
+                .with(new FontAwesomeModule())
+                .with(new TypiconsModule());
+
 
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .showImageForEmptyUri(R.drawable.no_image)
@@ -83,8 +94,12 @@ public class SignageAppication extends Application {
 
         configureRestAdaper();
 
-
-        Log.d(getClass().getName(), "onCreate");
+        if (AuthenticationUtils.getCurrentAuthentication() != null) {
+            if (isAccess()) {
+            } else {
+                jobManager.addJobInBackground(new RefreshTokenJob());
+            }
+        }
     }
 
     private void configureRestAdaper() {
@@ -100,6 +115,22 @@ public class SignageAppication extends Application {
                 .client(client)
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .build();
+    }
+
+    public boolean isAccess() {
+        boolean access = false;
+        long expiresIn = AuthenticationUtils.getCurrentAuthentication().getExpiresIn();
+        long loginTime = AuthenticationUtils.getCurrentAuthentication().getLoginTime();
+        long curentTime = System.currentTimeMillis();
+        long realDuration = curentTime - loginTime;
+        long realDurationInSecon = TimeUnit.MILLISECONDS.toSeconds(realDuration);
+
+        if (expiresIn > realDurationInSecon){
+            access = true;
+        }else {
+            access = false;
+        }
+        return access;
     }
 
     public static ObjectMapper getObjectMapper() {

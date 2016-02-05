@@ -7,15 +7,15 @@ import com.meruvian.pxc.selfservice.R;
 
 import org.meruvian.midas.core.defaults.DefaultHolder;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 
 /**
  * Created by meruvian on 14/07/15.
  */
 public class HistoryOrderDetailHolder extends DefaultHolder {
-    @InjectView(R.id.text_menu_name) public TextView menuName;
-    @InjectView(R.id.text_menu_quantity) public TextView menuQuantity;
-    @InjectView(R.id.text_total_price) public TextView totalPrice;
+    @Bind(R.id.text_menu_name) public TextView menuName;
+    @Bind(R.id.text_menu_quantity) public TextView menuQuantity;
+    @Bind(R.id.text_total_price) public TextView totalPrice;
 
     public HistoryOrderDetailHolder(View view) {
         super(view);

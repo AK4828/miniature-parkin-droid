@@ -9,16 +9,22 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.meruvian.pxc.selfservice.R;
+import com.meruvian.pxc.selfservice.SignageAppication;
+import com.meruvian.pxc.selfservice.job.RefreshTokenJob;
+import com.meruvian.pxc.selfservice.util.AuthenticationUtils;
+import com.path.android.jobqueue.JobManager;
 
 import org.meruvian.midas.core.defaults.DefaultActivity;
+
+import java.util.concurrent.TimeUnit;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by ludviantoovandi on 15/10/14.
  */
 public class SplashActivity extends DefaultActivity {
     private SharedPreferences preferences;
-
-    private ProgressDialog progressDialog;
 
     @Override
     public int layout() {
@@ -32,22 +38,38 @@ public class SplashActivity extends DefaultActivity {
         new Handler().postDelayed(new Runnable() {
             public void run() {
 
-                Log.d(getClass().getSimpleName(), "HAS Sync : " + preferences.getBoolean("has_sync_point", false));
-
                 if (preferences.getBoolean("has_sync_point", false)) {
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 } else if (!preferences.getBoolean("has_sync_point", false)) {
                     startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-//                    startActivity(new Intent(SplashActivity.this, SyncActivity.class));
                 }
-
-                /*else if (!preferences.getBoolean("has_wizard", false) && !preferences.getBoolean("has_sync", false)) {
-                    startActivity(new Intent(SplashActivity.this, WizardActivity.class));
-                }*/
 
                 finish();
             }
         }, 2000);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void onEventMainThread(RefreshTokenJob.RefreshEvent event) {
+        int status = event.getStatus();
+
+        if (status == RefreshTokenJob.RefreshEvent.REFRESH_FAILED) {
+            AuthenticationUtils.logout();
+        }
 
     }
 }

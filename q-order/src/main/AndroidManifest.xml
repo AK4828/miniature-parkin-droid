@@ -25,6 +25,7 @@
         <!--<activity android:name=".activity.OrderListActivityMaterial" android:theme="@style/AppTheme.NoActionBar"/>-->
         <activity android:name="com.meruvian.pxc.selfservice.activity.OrderActivity" android:theme="@style/AppTheme.NoActionBar.Collapse" />
         <activity android:name="com.meruvian.pxc.selfservice.activity.RewardActivity" android:configChanges="orientation|screenSize"
+            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name="com.meruvian.pxc.selfservice.activity.WizardActivity"

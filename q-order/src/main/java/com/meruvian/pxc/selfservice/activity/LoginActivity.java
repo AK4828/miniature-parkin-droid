@@ -31,7 +31,7 @@ import com.path.android.jobqueue.JobManager;
 import org.meruvian.midas.core.defaults.DefaultActivity;
 import org.meruvian.midas.core.service.TaskService;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
@@ -39,13 +39,13 @@ import de.greenrobot.event.EventBus;
  * Created by meruvian on 29/07/15.
  */
 public class LoginActivity extends DefaultActivity implements TaskService {
-    @InjectView(R.id.button_login)
+    @Bind(R.id.button_login)
     Button submit;
-    @InjectView(R.id.edit_username)
+    @Bind(R.id.edit_username)
     TextView username;
-    @InjectView(R.id.edit_password)
+    @Bind(R.id.edit_password)
     TextView password;
-    @InjectView(R.id.login_progress)
+    @Bind(R.id.login_progress)
     View loginProgress;
 
     private ProgressDialog progressDialog;
@@ -131,10 +131,7 @@ public class LoginActivity extends DefaultActivity implements TaskService {
     }
 
     public void onEventMainThread(LoginEvent.LoginSuccess loginSuccess) {
-        preferences = getSharedPreferences(SignageVariables.PREFS_SERVER, 0);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putLong("default_point", SignageVariables.DEFAULT_POINT);
-        editor.commit();
+
         goToMainActivity();
     }
     public void onEventMainThread(LoginEvent.LoginFailed loginFailed) {

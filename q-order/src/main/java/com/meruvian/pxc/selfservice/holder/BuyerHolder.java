@@ -7,7 +7,7 @@ import com.meruvian.pxc.selfservice.R;
 
 import org.meruvian.midas.core.defaults.DefaultHolder;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 
 /**
  * Created by meruvian on 15/08/15.
@@ -17,8 +17,8 @@ public class BuyerHolder extends DefaultHolder {
         super(view);
     }
 
-    @InjectView(R.id.text_contact_name_buyer) public TextView buyerName;
-    @InjectView(R.id.text_recipient_name_buyer) public TextView buyerRecipientName;
-    @InjectView(R.id.text_contact_telp_buyer) public TextView buyerTelp;
+    @Bind(R.id.text_contact_name_buyer) public TextView buyerName;
+    @Bind(R.id.text_recipient_name_buyer) public TextView buyerRecipientName;
+    @Bind(R.id.text_contact_telp_buyer) public TextView buyerTelp;
 
 }

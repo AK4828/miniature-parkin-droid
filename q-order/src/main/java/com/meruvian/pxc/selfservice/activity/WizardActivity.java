@@ -29,8 +29,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by ludviantoovandi on 29/01/15.
@@ -40,11 +40,11 @@ public class WizardActivity extends FragmentActivity implements
         ReviewFragment.Callbacks,
         ModelCallbacks {
 
-    @InjectView(R.id.pager)
+    @Bind(R.id.pager)
     ViewPager pager;
-    @InjectView(R.id.strip) StepPagerStrip strip;
-    @InjectView(R.id.next_button) Button nextButton;
-    @InjectView(R.id.prev_button) Button prevButton;
+    @Bind(R.id.strip) StepPagerStrip strip;
+    @Bind(R.id.next_button) Button nextButton;
+    @Bind(R.id.prev_button) Button prevButton;
 
     private WizardAdapter wizardAdapter;
     private AbstractWizardModel model;
@@ -60,7 +60,7 @@ public class WizardActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wizard);
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 

@@ -7,7 +7,8 @@ import com.meruvian.pxc.selfservice.R;
 
 import org.meruvian.midas.core.defaults.DefaultHolder;
 
-import butterknife.InjectView;
+import butterknife.Bind;
+
 
 /**
  * Created by meruvian on 03/10/15.
@@ -17,10 +18,10 @@ public class SettleDetailHolder extends DefaultHolder {
         super(view);
     }
 
-    @InjectView(R.id.text_item_name)
+    @Bind(R.id.text_item_name)
     public TextView textItem;
-    @InjectView(R.id.text_item_quantity)
+    @Bind(R.id.text_item_quantity)
     public TextView textQuantity;
-    @InjectView(R.id.text_total_price)
+    @Bind(R.id.text_total_price)
     public TextView textPrice;
 }

@@ -8,14 +8,15 @@ import com.meruvian.pxc.selfservice.R;
 
 import org.meruvian.midas.core.defaults.DefaultHolder;
 
-import butterknife.InjectView;
+import butterknife.Bind;
+
 
 /**
  * Created by ludviantoovandi on 28/01/15.
  */
 public class CatalogGridHolder extends DefaultHolder {
-    @InjectView(R.id.image) public ImageView image;
-    @InjectView(R.id.text_name) public TextView name;
+    @Bind(R.id.image) public ImageView image;
+    @Bind(R.id.text_name) public TextView name;
 
     public CatalogGridHolder(View view) {
         super(view);

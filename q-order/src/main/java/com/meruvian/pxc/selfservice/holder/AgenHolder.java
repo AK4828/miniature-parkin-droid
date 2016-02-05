@@ -7,7 +7,7 @@ import com.meruvian.pxc.selfservice.R;
 
 import org.meruvian.midas.core.defaults.DefaultHolder;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 
 /**
  * Created by meruvian on 15/09/15.
@@ -18,6 +18,6 @@ public class AgenHolder extends DefaultHolder {
         super(view);
     }
 
-    @InjectView(R.id.text_agent_name) public TextView textAgentName;
+    @Bind(R.id.text_agent_name) public TextView textAgentName;
 
 }

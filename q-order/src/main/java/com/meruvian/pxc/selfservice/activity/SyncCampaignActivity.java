@@ -27,18 +27,18 @@ import org.meruvian.midas.core.util.ConnectionUtil;
 
 import java.util.List;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
  * Created by meruvian on 24/03/15.
  */
 public class SyncCampaignActivity extends DefaultActivity implements TaskService {
-    @InjectView(R.id.text_sync_campaign)
+    @Bind(R.id.text_sync_campaign)
     TextView textSync;
-    @InjectView(R.id.button_sync_campaign)
+    @Bind(R.id.button_sync_campaign)
     Button buttonSync;
-    @InjectView(R.id.progressbar_campaign)
+    @Bind(R.id.progressbar_campaign)
     ProgressBar progressBar;
 
     private CampaignSyncTask campaignSyncTask;

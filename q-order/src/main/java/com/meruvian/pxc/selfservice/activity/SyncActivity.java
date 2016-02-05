@@ -27,16 +27,16 @@ import org.meruvian.midas.core.defaults.DefaultActivity;
 import org.meruvian.midas.core.service.TaskService;
 import org.meruvian.midas.core.util.ConnectionUtil;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
  * Created by ludviantoovandi on 30/01/15.
  */
 public class SyncActivity extends DefaultActivity implements TaskService {
-    @InjectView(R.id.text_sync) TextView textSync;
-    @InjectView(R.id.button_sync) Button buttonSync;
-    @InjectView(R.id.progressbar) ProgressBar progressBar;
+    @Bind(R.id.text_sync) TextView textSync;
+    @Bind(R.id.button_sync) Button buttonSync;
+    @Bind(R.id.progressbar) ProgressBar progressBar;
 
     private CategoryTotalElementsTask categoryTotalElementsTask;
     private ProductTotalElementsTask productTotalElementsTask;
