@@ -1,12 +1,16 @@
 package com.meruvian.pxc.selfservice.job;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.meruvian.pxc.selfservice.SignageAppication;
 import com.meruvian.pxc.selfservice.content.database.adapter.OrderMenuDatabaseAdapter;
 import com.meruvian.pxc.selfservice.entity.OrderMenu;
+import com.meruvian.pxc.selfservice.entity.Transaction;
 import com.meruvian.pxc.selfservice.event.GenericEvent;
+import com.meruvian.pxc.selfservice.service.CategoryService;
+import com.meruvian.pxc.selfservice.service.PointService;
 import com.meruvian.pxc.selfservice.util.JsonRequestUtils;
 import com.path.android.jobqueue.Job;
 import com.path.android.jobqueue.Params;
@@ -18,6 +22,10 @@ import org.meruvian.midas.core.job.Priority;
 import java.util.Formatter;
 
 import de.greenrobot.event.EventBus;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by meruvian on 30/07/15.
@@ -47,7 +55,6 @@ public class OrderMenuJob extends Job {
     public void onRun() throws Throwable {
         Log.d(getClass().getSimpleName(), "onRun");
         JsonRequestUtils request = new JsonRequestUtils(new Formatter().format(url + ESalesUri.ORDER_MENU, orderRefId).toString());
-
         OrderMenuDatabaseAdapter orderMenuDatabaseAdapter = new OrderMenuDatabaseAdapter(SignageAppication.getInstance());
         OrderMenu orderMenu = orderMenuDatabaseAdapter.findOrderMenuById(orderMenuId);
         orderMenu.setId(null);

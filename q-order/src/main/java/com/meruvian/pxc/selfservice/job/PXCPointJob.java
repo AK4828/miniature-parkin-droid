@@ -1,12 +1,8 @@
 package com.meruvian.pxc.selfservice.job;
 
-import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.meruvian.pxc.selfservice.SignageAppication;
-import com.meruvian.pxc.selfservice.SignageVariables;
-import com.meruvian.pxc.selfservice.entity.MainBody;
 import com.meruvian.pxc.selfservice.entity.Point;
 import com.meruvian.pxc.selfservice.service.JobStatus;
 import com.meruvian.pxc.selfservice.service.PointService;
@@ -24,19 +20,19 @@ import retrofit.Response;
 import retrofit.Retrofit;
 
 /**
- * Created by akm on 04/02/16.
+ * Created by akm on 26/02/16.
  */
-public class PointJob extends Job {
+public class PXCPointJob extends Job {
 
-    protected PointJob() {
+    protected PXCPointJob() {
         super(new Params(1).requireNetwork().persist());
     }
 
-    public static PointJob newInstance() {
+    public static PXCPointJob newInstance() {
 
-        PointJob pointJob = new PointJob();
+        PXCPointJob pxcPointJob = new PXCPointJob();
 
-        return pointJob;
+        return pxcPointJob;
 
     }
     @Override
@@ -51,7 +47,7 @@ public class PointJob extends Job {
         param.put("access_token", AuthenticationUtils.getCurrentAuthentication().getAccessToken());
         try {
             PointService service = appication.getRetrofit().create(PointService.class);
-            Call<Point> pointService = service.getUserPoint(param);
+            Call<Point> pointService = service.getUserPointPXC(param);
             pointService.enqueue(new Callback<Point>() {
                 @Override
                 public void onResponse(Response<Point> response, Retrofit retrofit) {

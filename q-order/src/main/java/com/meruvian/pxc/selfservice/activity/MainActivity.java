@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.meruvian.pxc.selfservice.R;
 import com.meruvian.pxc.selfservice.SignageAppication;
+import com.meruvian.pxc.selfservice.SignageVariables;
 import com.meruvian.pxc.selfservice.fragment.CategoryFragmentGrid;
 import com.meruvian.pxc.selfservice.fragment.OrderListFragment;
 import com.meruvian.pxc.selfservice.fragment.ProductFragmentGrid;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean isMinLoli = false;
     private static final int ORDER_REQUEST = 300;
     private static final int ORDER_REQUEST_OPTIONS = 301;
+    private SharedPreferences preferences;
+
 
 
     @Override

@@ -24,13 +24,14 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="30dp"
-                android:text="PXC Login"
+                android:text="FXPC Login"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="15dp"
                 android:gravity="center"
                 android:layout_gravity="center_horizontal"
                 android:textStyle="bold"
                 android:textSize="15dp"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,14 +69,13 @@
                 android:textColor="@color/text_white" />
 
             <Button
-                android:id="@+id/button_login_fxpc"
+                android:id="@+id/button_login_PXC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="@color/colorPrimary"
-                android:text="Login with FXPC"
+                android:text="Login with PXC"
                 android:textColor="@color/text_white" />
-
 
             <ProgressBar
                 android:id="@+id/login_progress"

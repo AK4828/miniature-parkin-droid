@@ -21,8 +21,8 @@ import com.meruvian.pxc.selfservice.R;
 import com.meruvian.pxc.selfservice.SignageAppication;
 import com.meruvian.pxc.selfservice.SignageVariables;
 import com.meruvian.pxc.selfservice.event.LoginEvent;
+import com.meruvian.pxc.selfservice.job.LoginManualFXPCJob;
 import com.meruvian.pxc.selfservice.job.LoginManualJob;
-import com.meruvian.pxc.selfservice.task.RequestAccesFxpc;
 import com.meruvian.pxc.selfservice.task.RequestTokenFxpc;
 import com.meruvian.pxc.selfservice.util.AuthenticationUtils;
 import com.meruvian.pxc.selfservice.util.SocialAuthenticationUtils;
@@ -36,28 +36,23 @@ import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 /**
- * Created by meruvian on 29/07/15.
+ * Created by akm on 26/02/16.
  */
-public class LoginActivity extends DefaultActivity implements TaskService {
-    @Bind(R.id.button_login)
-    Button submit;
-    @Bind(R.id.edit_username)
-    TextView username;
-    @Bind(R.id.edit_password)
-    TextView password;
-    @Bind(R.id.login_progress)
-    View loginProgress;
-    @Bind(R.id.button_login_fxpc) Button submit_fxpc;
+public class FXPCLoginActvity extends DefaultActivity implements TaskService {
+
+    @Bind(R.id.button_login) Button submit;
+    @Bind(R.id.edit_username) TextView username;
+    @Bind(R.id.edit_password) TextView password;
+    @Bind(R.id.login_progress) View loginProgress;
 
     private ProgressDialog progressDialog;
 
     private JobManager jobManager;
     private SharedPreferences preferences;
 
-
     @Override
     protected int layout() {
-        return R.layout.activity_login;
+        return R.layout.activity_login_fxpc;
     }
 
     @Override
@@ -77,23 +72,23 @@ public class LoginActivity extends DefaultActivity implements TaskService {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        preferences = this.getSharedPreferences(SignageVariables.PREFS_SERVER, 0);
-
     }
 
+
+
     @Override
-    public void onViewCreated(Bundle bundle)     {
+    public void onViewCreated(Bundle bundle) {
         preferences = getSharedPreferences(SignageVariables.PREFS_SERVER, 0);
         EventBus.getDefault().register(this);
         SharedPreferences.Editor editor = preferences.edit();
 
         if (!(preferences.getBoolean("has_url_point", false))) {
             editor.putString("server_url_point", SignageVariables.SERVER_URL);
+
             editor.commit();
         }
-        editor.putString("login status", "pxc user");
         editor.putBoolean("has_url_point", true);
+        editor.putString("login status", "fxpc user");
         editor.commit();
 
         jobManager = SignageAppication.getInstance().getJobManager();
@@ -115,14 +110,14 @@ public class LoginActivity extends DefaultActivity implements TaskService {
         if (username.getText()==null && password.getText()==null) {
             Toast.makeText(this, "Username or Password is empty", Toast.LENGTH_SHORT).show();
         } else {
-            LoginManualJob loginJob = new LoginManualJob(username.getText().toString(), password.getText().toString());
+            LoginManualFXPCJob loginJob = new LoginManualFXPCJob(username.getText().toString(), password.getText().toString());
             jobManager.addJobInBackground(loginJob);
         }
     }
 
-    @OnClick(R.id.button_login_fxpc)
-    public void onFXPCClicked() {
-        startActivity(new Intent(this, FXPCLoginActvity.class));
+    @OnClick(R.id.button_login_PXC)
+    public void onPXCClicked() {
+        startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
 
@@ -213,7 +208,7 @@ public class LoginActivity extends DefaultActivity implements TaskService {
                 String results = (String) result;
                 if (result != null && !"".equalsIgnoreCase(results)) {
 
-                   goToMainActivity();
+                    goToMainActivity();
 
                 }
             } else if(code == SignageVariables.FXPC_REQUEST_ACCESS) {

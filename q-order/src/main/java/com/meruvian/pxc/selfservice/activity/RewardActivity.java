@@ -5,15 +5,18 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.meruvian.pxc.selfservice.R;
 import com.meruvian.pxc.selfservice.SignageAppication;
 import com.meruvian.pxc.selfservice.SignageVariables;
+import com.meruvian.pxc.selfservice.job.PXCPointJob;
 import com.meruvian.pxc.selfservice.job.PointJob;
 import com.meruvian.pxc.selfservice.service.JobStatus;
 import com.meruvian.pxc.selfservice.util.AuthenticationUtils;
+import com.path.android.jobqueue.Job;
 import com.path.android.jobqueue.JobManager;
 
 import butterknife.Bind;
@@ -42,9 +45,14 @@ public class RewardActivity extends AppCompatActivity{
         actionBar.setDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
 
+        preferences = this.getSharedPreferences(SignageVariables.PREFS_SERVER, 0);
+        Log.d("CEK PREF", preferences.getString("login status", ""));
         jobManager = SignageAppication.getInstance().getJobManager();
-        jobManager.addJobInBackground(PointJob.newInstance());
-
+        if (preferences.getString("login status", "").equals("fxpc user")) {
+            jobManager.addJobInBackground(PointJob.newInstance());
+        } else if (preferences.getString("login status", "").equals("pxc user")) {
+            jobManager.addJobInBackground(PXCPointJob.newInstance());
+        }
 
         username.setText(AuthenticationUtils.getCurrentAuthentication().getUser().getName().getFirst());
         userEmail.setText(AuthenticationUtils.getCurrentAuthentication().getUser().getEmail());
@@ -71,17 +79,15 @@ public class RewardActivity extends AppCompatActivity{
 
         if (status == JobStatus.SUCCESS) {
             userPoint.setText(Double.toString(point));
-            preferences = getSharedPreferences(SignageVariables.PREFS_SERVER, 0);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putLong("default_point", Long.parseLong(Double.toString(point)));
-            editor.commit();
         }
         if (status == JobStatus.USER_ERROR) {
-            Toast.makeText(this, "Failed retrieve data" ,Toast.LENGTH_LONG);
-            preferences = getSharedPreferences(SignageVariables.PREFS_SERVER, 0);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putLong("default_point", 0);
-            editor.commit();
+            Toast.makeText(this, "No Point Available" ,Toast.LENGTH_LONG).show();
+        }
+        if (status == JobStatus.SYSTEM_ERROR) {
+            Toast.makeText(this, "Failed" ,Toast.LENGTH_LONG).show();
+        }
+        if (status == JobStatus.ABORTED) {
+            Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
         }
     }
 }

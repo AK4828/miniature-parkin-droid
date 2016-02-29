@@ -30,11 +30,15 @@ import com.meruvian.pxc.selfservice.content.database.adapter.OrderMenuDatabaseAd
 import com.meruvian.pxc.selfservice.entity.Contact;
 import com.meruvian.pxc.selfservice.entity.Order;
 import com.meruvian.pxc.selfservice.entity.OrderMenu;
+import com.meruvian.pxc.selfservice.entity.Transaction;
 import com.meruvian.pxc.selfservice.event.GenericEvent;
 import com.meruvian.pxc.selfservice.job.ContactJob;
 import com.meruvian.pxc.selfservice.job.ContactUpdateJob;
 import com.meruvian.pxc.selfservice.job.OrderMenuJob;
 import com.meruvian.pxc.selfservice.job.OrderUpdateJob;
+import com.meruvian.pxc.selfservice.job.PointJob;
+import com.meruvian.pxc.selfservice.service.JobStatus;
+import com.meruvian.pxc.selfservice.service.PointService;
 import com.meruvian.pxc.selfservice.task.RequestOrderSyncTask;
 import com.path.android.jobqueue.JobManager;
 
@@ -45,6 +49,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by miftakhul on 12/4/15.
@@ -83,6 +91,7 @@ public class OrderListFragment extends Fragment implements TaskService{
     private String orderId = null, contactId = null, addressId = null;
     private DecimalFormat decimalFormat = new DecimalFormat("#,###");
     private long totalPrice;
+    private double point;
 
     private TextView text_total_item;
     private TextView textTotalPoint;
@@ -121,8 +130,6 @@ public class OrderListFragment extends Fragment implements TaskService{
         if (orderId != null) {
             totalPrice = 0;
 
-            Log.d(getClass().getSimpleName(), "Order Id = " + orderId);
-            Log.d("cekk", String.valueOf(preferences.getLong("default_point", 0)));
             orderMenus = orderMenuDbAdapter.findOrderMenuByOrderId(orderId);
 
             for (OrderMenu om : orderMenus) {
@@ -141,6 +148,12 @@ public class OrderListFragment extends Fragment implements TaskService{
         return view;
     }
 
+    public void onEventMainThread(PointJob.PointEvent event) {
+        int status = event.getStatus();
+        point = event.getPoint();
+
+    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -156,21 +169,15 @@ public class OrderListFragment extends Fragment implements TaskService{
 
             case R.id.menu_pay_order:
 
-                preferences = getActivity().getSharedPreferences(SignageVariables.PREFS_SERVER, 0);
+                orderId = orderDbAdapter.getOrderId();
+                orderMenus = orderMenuDbAdapter.findOrderMenuByOrderId(orderId);
 
-                long PointValidation = preferences.getLong("default_point", 0);
-
-                if (PointValidation < totalPrice) {
+                if (orderMenus.size() <=0) {
+                    Toast.makeText(getActivity(), "Order is empty", Toast.LENGTH_SHORT).show();
+                } else if (point < totalPrice){
                     Toast.makeText(getActivity(),"Jumlah order anda melebihi point yang dimiliki", Toast.LENGTH_LONG).show();
-                } else if (PointValidation > totalPrice){
+                } else {
                     setEnabledMenuItem(item, false);
-
-                    long count = PointValidation - totalPrice;
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putLong("default_point", count);
-                    editor.commit();
-
-                    Log.d("sisa", String.valueOf(count));
                     dialog = new ProgressDialog(getActivity());
                     dialog.setMessage("Menyimpan data ...");
                     dialog.show();
@@ -178,11 +185,10 @@ public class OrderListFragment extends Fragment implements TaskService{
 
                     saveOrder();
                 }
-                return true;
+
+            return true;
 
             case R.id.menu_add_order :
-
-//                startActivity(new Intent(getActivity(), MainActivityMaterial.class));
                 ((MainActivity)getActivity()).orderOption();
 
                 EventBus.getDefault().unregister(this);
@@ -222,47 +228,7 @@ public class OrderListFragment extends Fragment implements TaskService{
     }
 
     private void saveOrder() {
-//        orderId = orderDbAdapter.getOrderId();
-//        TaskService taskService = new TaskService() {
-//            @Override
-//            public void onExecute(int code) {
-//
-//            }
-//
-//            @Override
-//            public void onSuccess(int code, Object result) {
-//                Log.d(getClass().getSimpleName(), result + "");
-//
-//                if (result != null) {
-//                    if (code == SignageVariables.REQUEST_ORDER) {
-//                        Log.d(getClass().getSimpleName(), result + ">> RequestOrderSyncTask * Success");
-//                        Order order = orderDbAdapter.findOrderById(orderId);
-//
-//                        Log.d(getClass().getSimpleName(), "Order ID : " + orderId
-//                                + " Update Parameter : >> RefId " + order.getRefId()
-//                                + " \n>> EntittyOrderId : " + order.getId() + " | "
-//                                + preferences.getString("server_url_point", ""));
-//
-//                        jobManager.addJobInBackground(new OrderUpdateJob(order.getRefId(), order.getId(),
-//                                preferences.getString("server_url_point", "")));
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancel(int code, String message) {
-//                Log.d(getClass().getSimpleName(), message);
-//            }
-//
-//            @Override
-//            public void onError(int code, String message) {
-//                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
-//                Log.e(getClass().getSimpleName(), message);
-//            }
-//        };
-
-        requestOrderSyncTask = new RequestOrderSyncTask(getActivity(),
-                OrderListFragment.this, orderId);
+        requestOrderSyncTask = new RequestOrderSyncTask(getActivity(), OrderListFragment.this, orderId);
         requestOrderSyncTask.execute();
 
     }
@@ -275,45 +241,54 @@ public class OrderListFragment extends Fragment implements TaskService{
         try {
             switch (requestSuccess.getProcessId()) {
                 case ContactJob.PROCESS_ID: {
-                    Log.d(getClass().getSimpleName(), "Response ContactRefId : " + requestSuccess.getRefId());
                     saveOrder();
                     break;
                 }
                 case ContactUpdateJob.PROCESS_ID: {
-                    Log.d(getClass().getSimpleName(), "Response ContactRefId : " + requestSuccess.getRefId());
                     saveOrder();
                     break;
                 }
                 case OrderUpdateJob.PROCESS_ID: {
-                    Log.d(getClass().getSimpleName(), "RequestSuccess OrderUpdateJob: >> RefId : "
-                            + requestSuccess.getRefId() + "\n >> Entity id: " + requestSuccess.getEntityId());
-
                     orderMenuIdes = orderMenuDbAdapter.findOrderMenuIdesByOrderId(requestSuccess.getEntityId());
                     totalOrderMenus = orderMenuIdes.size();
 
-                    Log.d(getClass().getSimpleName(), "Order Menu Ides Size : " + orderMenuIdes.size());
 
                     for (String id : orderMenuIdes) {
                         Log.d(getClass().getSimpleName(), "ORDER REF ID : " + requestSuccess.getRefId());
                         jobManager.addJobInBackground(new OrderMenuJob(requestSuccess.getRefId(), id,
                                 preferences.getString("server_url_point", "")));
                     }
-
                     break;
                 }
                 case OrderMenuJob.PROCESS_ID: {
                     orderMenuCount++;
-                    Log.d(getClass().getSimpleName(), "Count OM: " + orderMenuCount + " <<>> "
-                            + "Total OM: " + totalOrderMenus);
 
                     if (orderMenuCount == totalOrderMenus) {
+
+                        Order order = orderDbAdapter.findOrderById(orderId);
+                        String status = "done";
+                        Transaction transaction = new Transaction(status, order.getRefId());
+                        SignageAppication application = SignageAppication.getInstance();
+                        PointService pointService= application.getRetrofit().create(PointService.class);
+
+                        Call<Transaction> sendStatus = pointService.sendOrderStatus(transaction);
+                        sendStatus.enqueue(new Callback<Transaction>() {
+                            @Override
+                            public void onResponse(Response<Transaction> response, Retrofit retrofit) {
+
+                            }
+
+                            @Override
+                            public void onFailure(Throwable t) {
+
+                            }
+                        });
+
                         dialog.dismiss();
                         dialogSuccessOrder();
-                        Log.d(getClass().getSimpleName(), "Success ");
+
                     }
 
-                    Log.d(getClass().getSimpleName(), "RequestSuccess OrderMenuId: "
-                            + requestSuccess.getRefId());
                     break;
                 }
             }
@@ -334,11 +309,8 @@ public class OrderListFragment extends Fragment implements TaskService{
 
     private void dialogSuccessOrder() {
         View view = View.inflate(getActivity(), R.layout.view_add_to_cart, null);
-
         TextView textItem = (TextView) view.findViewById(R.id.text_item_cart);
-
         textItem.setText("Pesanan Anda sedang kami proses");
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
         builder.setTitle(R.string.order_success);

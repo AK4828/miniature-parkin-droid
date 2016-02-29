@@ -38,6 +38,8 @@
                   android:configChanges="orientation|screenSize" android:theme="@style/esales" />
         <activity android:name="com.meruvian.pxc.selfservice.activity.LoginActivity"
                   android:configChanges="orientation|screenSize" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name="com.meruvian.pxc.selfservice.activity.FXPCLoginActvity"
+            android:configChanges="orientation|screenSize" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name="com.meruvian.pxc.selfservice.activity.SellerOrderListActivity"
             android:configChanges="orientation|screenSize" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name="com.meruvian.pxc.selfservice.activity.SellerOrderMenuListActivity"

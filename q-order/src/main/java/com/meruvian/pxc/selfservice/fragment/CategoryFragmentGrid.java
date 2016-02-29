@@ -76,7 +76,9 @@ public class CategoryFragmentGrid extends Fragment {
 
         SignageAppication application = SignageAppication.getInstance();
         Map<String, String> param = new HashMap<>();
-        param.put("access_token", AuthenticationUtils.getCurrentAuthentication().getAccessToken());
+        if (AuthenticationUtils.getCurrentAuthentication() != null) {
+            param.put("access_token", AuthenticationUtils.getCurrentAuthentication().getAccessToken());
+        }
         try {
             CategoryService categoryService = application.getRetrofit().create(CategoryService.class);
             Call<MainBody<Category>> categories = categoryService.getAllCategories(param);
