@@ -46,7 +46,6 @@ public class RewardActivity extends AppCompatActivity{
         ButterKnife.bind(this);
 
         preferences = this.getSharedPreferences(SignageVariables.PREFS_SERVER, 0);
-        Log.d("CEK PREF", preferences.getString("login status", ""));
         jobManager = SignageAppication.getInstance().getJobManager();
         if (preferences.getString("login status", "").equals("fxpc user")) {
             jobManager.addJobInBackground(PointJob.newInstance());
@@ -78,7 +77,8 @@ public class RewardActivity extends AppCompatActivity{
         double point = event.getPoint();
 
         if (status == JobStatus.SUCCESS) {
-            userPoint.setText(Double.toString(point));
+            SharedPreferences.Editor editor = preferences.edit();
+            userPoint.setText(Double.toString(point) + " Point");
         }
         if (status == JobStatus.USER_ERROR) {
             Toast.makeText(this, "No Point Available" ,Toast.LENGTH_LONG).show();

@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,27 +40,17 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by meruvian on 29/07/15.
  */
-public class LoginActivity extends DefaultActivity implements TaskService {
-    @Bind(R.id.button_login)
-    Button submit;
-    @Bind(R.id.edit_username)
-    TextView username;
-    @Bind(R.id.edit_password)
-    TextView password;
-    @Bind(R.id.login_progress)
-    View loginProgress;
+public class LoginActivity extends AppCompatActivity implements TaskService {
+    @Bind(R.id.button_login) Button submit;
+    @Bind(R.id.edit_username) TextView username;
+    @Bind(R.id.edit_password) TextView password;
+    @Bind(R.id.login_progress) View loginProgress;
     @Bind(R.id.button_login_fxpc) Button submit_fxpc;
 
     private ProgressDialog progressDialog;
 
     private JobManager jobManager;
     private SharedPreferences preferences;
-
-
-    @Override
-    protected int layout() {
-        return R.layout.activity_login;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -77,14 +69,9 @@ public class LoginActivity extends DefaultActivity implements TaskService {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
 
         preferences = this.getSharedPreferences(SignageVariables.PREFS_SERVER, 0);
-
-    }
-
-    @Override
-    public void onViewCreated(Bundle bundle)     {
-        preferences = getSharedPreferences(SignageVariables.PREFS_SERVER, 0);
         EventBus.getDefault().register(this);
         SharedPreferences.Editor editor = preferences.edit();
 
@@ -97,6 +84,7 @@ public class LoginActivity extends DefaultActivity implements TaskService {
         editor.commit();
 
         jobManager = SignageAppication.getInstance().getJobManager();
+
     }
 
     @Override
@@ -112,6 +100,7 @@ public class LoginActivity extends DefaultActivity implements TaskService {
 
     @OnClick(R.id.button_login)
     public void submitLogin(Button button) {
+        Log.d("CLicked", "isClicked");
         if (username.getText()==null && password.getText()==null) {
             Toast.makeText(this, "Username or Password is empty", Toast.LENGTH_SHORT).show();
         } else {
@@ -122,6 +111,7 @@ public class LoginActivity extends DefaultActivity implements TaskService {
 
     @OnClick(R.id.button_login_fxpc)
     public void onFXPCClicked() {
+        Log.d("CLicked", "isClicked");
         startActivity(new Intent(this, FXPCLoginActvity.class));
         finish();
     }

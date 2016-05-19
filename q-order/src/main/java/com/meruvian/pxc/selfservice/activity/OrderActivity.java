@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.meruvian.pxc.selfservice.R;
 import com.meruvian.pxc.selfservice.SignageVariables;
 import com.meruvian.pxc.selfservice.content.database.adapter.CategoryDatabaseAdapter;
@@ -34,8 +35,6 @@ import com.meruvian.pxc.selfservice.entity.Order;
 import com.meruvian.pxc.selfservice.entity.OrderMenu;
 import com.meruvian.pxc.selfservice.entity.Product;
 import com.meruvian.pxc.selfservice.util.AuthenticationUtils;
-import com.meruvian.pxc.selfservice.util.ImageUtil;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -52,7 +51,6 @@ public class OrderActivity extends AppCompatActivity {
     private TextView productName, productCategory, productNameSub, productPrice, productDesc, orderType, orderPrice, orderDesc;
     private Product product;
     private Category category;
-    private ImageLoader imagePreview;
     private Spinner orderSpin;
     private FloatingActionButton orderButtonFloat;
     private CollapsingToolbarLayout collapsingToolbarLayout;
@@ -139,13 +137,12 @@ public class OrderActivity extends AppCompatActivity {
         categoryDatabaseAdapter = new CategoryDatabaseAdapter(this);
         orderDatabaseAdapter = new OrderDatabaseAdapter(this);
         orderMenuDatabaseAdapter = new OrderMenuDatabaseAdapter(this);
-        imagePreview = ImageLoader.getInstance();
     }
 
     private void initSet() {
         String loadImage = SignageVariables.SERVER_URL+"/api/products/" + product.getId() + "/image?access_token=" + AuthenticationUtils.getCurrentAuthentication().getAccessToken();
         collapsingToolbarLayout.setTitle("Order " + product.getName());
-        imagePreview.displayImage(loadImage, prodcutThumb);
+        Glide.with(this).load(loadImage).into(prodcutThumb);
         productName.setText(product.getName());
         productNameSub.setText(product.getName());
         productDesc.setText(product.getDescription());

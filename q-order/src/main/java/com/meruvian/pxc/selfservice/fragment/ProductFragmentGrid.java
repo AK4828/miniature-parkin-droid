@@ -18,18 +18,13 @@ import com.meruvian.pxc.selfservice.activity.MainActivity;
 import com.meruvian.pxc.selfservice.activity.MainActivityMaterial;
 import com.meruvian.pxc.selfservice.activity.OrderActivity;
 import com.meruvian.pxc.selfservice.adapter.ProductAdapter;
-import com.meruvian.pxc.selfservice.content.database.adapter.OrderDatabaseAdapter;
-import com.meruvian.pxc.selfservice.content.database.adapter.OrderMenuDatabaseAdapter;
 import com.meruvian.pxc.selfservice.content.database.adapter.ProductDatabaseAdapter;
 import com.meruvian.pxc.selfservice.entity.Category;
 import com.meruvian.pxc.selfservice.entity.MainBody;
-import com.meruvian.pxc.selfservice.entity.OrderMenu;
 import com.meruvian.pxc.selfservice.entity.Product;
 import com.meruvian.pxc.selfservice.entity.ProductUom;
 import com.meruvian.pxc.selfservice.service.ProductService;
 import com.meruvian.pxc.selfservice.util.AuthenticationUtils;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -47,7 +42,6 @@ import retrofit.Retrofit;
  */
 public class ProductFragmentGrid extends Fragment {
 
-    private ImageLoader imageLoader = ImageLoader.getInstance();
     private GridView gridView;
     private ProductAdapter productAdapter;
     private ProductDatabaseAdapter productDbAdapter;
@@ -84,9 +78,6 @@ public class ProductFragmentGrid extends Fragment {
     public View onCreateView(final LayoutInflater infater, final ViewGroup container, Bundle savedInstanceState) {
         View view = infater.inflate(R.layout.fragment_product_grid, container, false);
 
-        if (!imageLoader.isInited()) {
-            imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
-        }
         productAdapter = new ProductAdapter(getActivity());
         productDbAdapter = new ProductDatabaseAdapter(getActivity());
 

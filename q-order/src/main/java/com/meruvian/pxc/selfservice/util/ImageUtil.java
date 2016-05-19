@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.meruvian.pxc.selfservice.SignageVariables;
 
 import org.apache.commons.io.FileUtils;
@@ -35,9 +34,6 @@ public class ImageUtil {
 	}
 
     public static void clearImageCache() {
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.clearDiskCache();
-        imageLoader.clearMemoryCache();
     }
 
     public static Uri savePublic(Context context, String name, Bitmap image) {

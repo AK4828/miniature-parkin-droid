@@ -14,15 +14,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.meruvian.pxc.selfservice.R;
 import com.meruvian.pxc.selfservice.SignageVariables;
 import com.meruvian.pxc.selfservice.entity.Product;
 import com.meruvian.pxc.selfservice.util.AuthenticationUtils;
-import com.meruvian.pxc.selfservice.util.ImageUtil;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -33,7 +29,6 @@ import java.util.List;
  */
 public class ProductAdapter extends BaseAdapter {
     private Context mcontext;
-    private ImageLoader imageLoader = ImageLoader.getInstance();
     private List<Product> products = new ArrayList<Product>();
     private DecimalFormat decimalFormat = new DecimalFormat("#,###");
     private int mutedColor;
@@ -44,11 +39,6 @@ public class ProductAdapter extends BaseAdapter {
     public ProductAdapter(Context c) {
         mcontext = c;
         infalter = (LayoutInflater) mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        if (!imageLoader.isInited()) {
-            imageLoader.init(ImageLoaderConfiguration.createDefault(mcontext));
-        }
-
     }
 
     @Override
@@ -77,7 +67,6 @@ public class ProductAdapter extends BaseAdapter {
 
         holder.title = (TextView) itemView.findViewById(R.id.text_name);
         holder.price = (TextView)itemView.findViewById(R.id.text_price);
-        holder.progressImage = (ProgressBar) itemView.findViewById(R.id.progressbar);
         holder.imageView = (ImageView) itemView.findViewById(R.id.image);
         holder.detailLayout = (RelativeLayout) itemView.findViewById(R.id.detail_layout);
 
@@ -85,29 +74,7 @@ public class ProductAdapter extends BaseAdapter {
 
         holder.price.setText(decimalFormat.format(product.getSellPrice()) + " Pt");
 
-        Log.d("check point", String.valueOf(product.getSellPrice()));
-
-        imageLoader.displayImage(loadImage, holder.imageView, new SimpleImageLoadingListener() {
-            @Override
-            public void onLoadingStarted(String imageUri, View view) {
-                holder.progressImage.setVisibility(View.VISIBLE);
-                holder.imageView.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                holder.progressImage.setVisibility(View.GONE);
-                holder.imageView.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                holder.progressImage.setVisibility(View.GONE);
-                holder.imageView.setImageResource(R.drawable.no_image);
-            }
-        });
-
-        Log.d("path image",loadImage);
+        Glide.with(mcontext).load(loadImage).into(holder.imageView);
 
         Bitmap bitmap = BitmapFactory.decodeFile(loadImage);
 
@@ -133,7 +100,6 @@ public class ProductAdapter extends BaseAdapter {
     public class Holder {
 
         TextView title,price;
-        ProgressBar progressImage;
         ImageView imageView;
         RelativeLayout detailLayout;
     }

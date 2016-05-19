@@ -138,7 +138,13 @@ public class OrderListFragment extends Fragment implements TaskService{
 
             textTotalItem.setText("Jumlah Item: " + orderMenus.size());
             textTotalOrder.setText("Total Order: "+ decimalFormat.format(totalPrice) + " Pt");
-            textTotalPoint.setText("Total Point: "+ decimalFormat.format(preferences.getLong("default_point", 0)));
+            String getPoint = preferences.getString("user_point", "");
+            if (getPoint.isEmpty()) {
+                point = Double.valueOf("0.00");
+            } else {
+                point = Double.valueOf(getPoint);
+                textTotalPoint.setText("Total Point: "+ point + " Pt");
+            }
 
             orderListAdapter.addAll(orderMenus);
         }
@@ -147,13 +153,6 @@ public class OrderListFragment extends Fragment implements TaskService{
 
         return view;
     }
-
-    public void onEventMainThread(PointJob.PointEvent event) {
-        int status = event.getStatus();
-        point = event.getPoint();
-
-    }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -171,15 +170,23 @@ public class OrderListFragment extends Fragment implements TaskService{
 
                 orderId = orderDbAdapter.getOrderId();
                 orderMenus = orderMenuDbAdapter.findOrderMenuByOrderId(orderId);
+                String getPoint = preferences.getString("user_point", "");
+                Log.d("JHUIBB JB", getPoint);
+                if (getPoint.isEmpty()) {
+                    point = Double.valueOf("0.00");
+                } else {
+                    point = Double.valueOf(getPoint);
+                }
+                Log.d("FFFFFF", String.valueOf(point));
 
                 if (orderMenus.size() <=0) {
-                    Toast.makeText(getActivity(), "Order is empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),"Order is empty", Toast.LENGTH_SHORT).show();
                 } else if (point < totalPrice){
-                    Toast.makeText(getActivity(),"Jumlah order anda melebihi point yang dimiliki", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"Not enough Point", Toast.LENGTH_LONG).show();
                 } else {
                     setEnabledMenuItem(item, false);
                     dialog = new ProgressDialog(getActivity());
-                    dialog.setMessage("Menyimpan data ...");
+                    dialog.setMessage("Saving data ...");
                     dialog.show();
                     dialog.setCancelable(false);
 

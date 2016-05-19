@@ -13,13 +13,6 @@ import com.joanzapata.iconify.fonts.TypiconsModule;
 import com.meruvian.pxc.selfservice.interceptor.SecurityInterceptor;
 import com.meruvian.pxc.selfservice.job.RefreshTokenJob;
 import com.meruvian.pxc.selfservice.util.AuthenticationUtils;
-import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.path.android.jobqueue.JobManager;
 import com.path.android.jobqueue.config.Configuration;
 import com.squareup.okhttp.OkHttpClient;
@@ -55,29 +48,6 @@ public class SignageAppication extends Application {
         Iconify
                 .with(new FontAwesomeModule())
                 .with(new TypiconsModule());
-
-
-        DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageForEmptyUri(R.drawable.no_image)
-                .showImageOnFail(R.drawable.no_image)
-                .resetViewBeforeLoading(true)  // default
-                .cacheInMemory(true) // default
-                .cacheOnDisk(true) // default
-                .bitmapConfig(Bitmap.Config.ARGB_8888) // default
-                .build();
-
-        File cacheDir = StorageUtils.getCacheDirectory(this);
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
-                .memoryCache(new WeakMemoryCache())
-                .denyCacheImageMultipleSizesInMemory()
-                .tasksProcessingOrder(QueueProcessingType.LIFO) // default
-                .diskCache(new UnlimitedDiscCache(cacheDir))
-                .diskCacheSize(50 * 1024 * 1024)
-                .diskCacheFileCount(10)
-                .defaultDisplayImageOptions(options)
-                .build();
-
-        ImageLoader.getInstance().init(config);
 
         objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

@@ -21,7 +21,6 @@ public class SignageVariables {
     public static final String PGA_CURRENT_ME = "/api/users/me";
     public static final String PGA_CURRENT_SITE = "/api/sites/me";
     public static final String PGA_CURRENT_ROLE = "/api/users/me/roles";
-    public static final long DEFAULT_POINT = 100000000;
 
     public static final String PUBLIC_FOLDER = "signage";
 

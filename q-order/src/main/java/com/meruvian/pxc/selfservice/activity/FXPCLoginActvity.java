@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,7 +39,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by akm on 26/02/16.
  */
-public class FXPCLoginActvity extends DefaultActivity implements TaskService {
+public class FXPCLoginActvity extends AppCompatActivity implements TaskService {
 
     @Bind(R.id.button_login) Button submit;
     @Bind(R.id.edit_username) TextView username;
@@ -49,11 +50,6 @@ public class FXPCLoginActvity extends DefaultActivity implements TaskService {
 
     private JobManager jobManager;
     private SharedPreferences preferences;
-
-    @Override
-    protected int layout() {
-        return R.layout.activity_login_fxpc;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,12 +68,7 @@ public class FXPCLoginActvity extends DefaultActivity implements TaskService {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-
-
-    @Override
-    public void onViewCreated(Bundle bundle) {
+        setContentView(R.layout.activity_login_fxpc);
         preferences = getSharedPreferences(SignageVariables.PREFS_SERVER, 0);
         EventBus.getDefault().register(this);
         SharedPreferences.Editor editor = preferences.edit();

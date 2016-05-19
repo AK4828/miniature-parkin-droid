@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.meruvian.pxc.selfservice.R;
 import com.meruvian.pxc.selfservice.SignageAppication;
@@ -25,7 +26,10 @@ import com.meruvian.pxc.selfservice.SignageVariables;
 import com.meruvian.pxc.selfservice.fragment.CategoryFragmentGrid;
 import com.meruvian.pxc.selfservice.fragment.OrderListFragment;
 import com.meruvian.pxc.selfservice.fragment.ProductFragmentGrid;
+import com.meruvian.pxc.selfservice.job.PXCPointJob;
+import com.meruvian.pxc.selfservice.job.PointJob;
 import com.meruvian.pxc.selfservice.job.RefreshTokenJob;
+import com.meruvian.pxc.selfservice.service.JobStatus;
 import com.meruvian.pxc.selfservice.util.AuthenticationUtils;
 import com.path.android.jobqueue.JobManager;
 
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int ORDER_REQUEST = 300;
     private static final int ORDER_REQUEST_OPTIONS = 301;
     private SharedPreferences preferences;
+    private JobManager jobManager;
 
 
 
@@ -84,6 +89,14 @@ public class MainActivity extends AppCompatActivity {
         categoryGrid.addToBackStack(null);
         categoryGrid.commit();
 
+        preferences = this.getSharedPreferences(SignageVariables.PREFS_SERVER, 0);
+        jobManager = SignageAppication.getInstance().getJobManager();
+        if (preferences.getString("login status", "").equals("fxpc user")) {
+            jobManager.addJobInBackground(PointJob.newInstance());
+        } else if (preferences.getString("login status", "").equals("pxc user")) {
+            jobManager.addJobInBackground(PXCPointJob.newInstance());
+        }
+
 
     }
 
@@ -92,6 +105,40 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void onEventMainThread(PointJob.PointEvent event) {
+        int status = event.getStatus();
+        double point = event.getPoint();
+
+        if (status == JobStatus.SUCCESS) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("user_point", Double.toString(point));
+            editor.commit();
+        }
+        if (status == JobStatus.USER_ERROR) {
+            Toast.makeText(this, "No Point Available", Toast.LENGTH_LONG).show();
+        }
+        if (status == JobStatus.SYSTEM_ERROR) {
+            Toast.makeText(this, "Failed" ,Toast.LENGTH_LONG).show();
+        }
+        if (status == JobStatus.ABORTED) {
+            Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void setNav() {
